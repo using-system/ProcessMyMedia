@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PMM.Tasks\PMM.Tasks.csproj" />
+    <ProjectReference Include="..\ProcessMyMedia\ProcessMyMedia.csproj" />
   </ItemGroup>
 
 </Project>

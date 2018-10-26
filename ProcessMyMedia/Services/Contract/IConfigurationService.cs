@@ -1,4 +1,4 @@
-﻿namespace PMM.Core.Services.Contract
+﻿namespace ProcessMyMedia.Services.Contract
 {
     public interface IConfigurationService
     {

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="windowsazure.mediaservices" Version="4.2.0" />
+    <PackageReference Include="windowsazure.mediaservices.extensions" Version="4.2.0" />
+    <PackageReference Include="WorkflowCore" Version="1.6.8" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PMM.Samples
+namespace ProcessMyMedia.Samples
 {
     class Program
     {

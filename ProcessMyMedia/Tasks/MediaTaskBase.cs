@@ -1,4 +1,4 @@
-﻿namespace PMM.Tasks
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
 
@@ -6,7 +6,8 @@
 
     using WorkflowCore.Primitives;
 
-    using PMM.Core.Services.Contract;
+    using ProcessMyMedia.Services.Contract;
+
 
     public abstract class MediaTaskBase : ContainerStepBody
     {

@@ -1,4 +1,4 @@
-﻿namespace PMM.Samples
+﻿namespace ProcessMyMedia.Samples
 {
     using System;
 

@@ -1,20 +1,23 @@
-﻿namespace PMM.Tasks
+﻿namespace ProcessMyMedia.Tasks
 {
-    using Microsoft.WindowsAzure.MediaServices.Client;
-    using PMM.Core.Services.Contract;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
+
+    using Microsoft.WindowsAzure.MediaServices.Client;
+
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
+
+    using ProcessMyMedia.Services.Contract;
 
     public class IngestTask : MediaTaskBase
     {
         public string AssetName { get; set; }
 
-        public string  AssetPath { get; set; }
+        public string AssetPath { get; set; }
 
         public IngestTask(IConfigurationService configurationService) : base(configurationService)
         {

@@ -1,4 +1,4 @@
-﻿namespace PMM.Samples
+﻿namespace ProcessMyMedia.Samples
 {
     public abstract class SampleBase
     {
