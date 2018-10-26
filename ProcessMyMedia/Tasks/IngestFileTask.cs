@@ -5,7 +5,7 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Services.Contract;
+    using ProcessMyMedia.Model;
 
     /// <summary>
     /// Ingest File Task
@@ -24,8 +24,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="IngestFileTask"/> class.
         /// </summary>
-        /// <param name="configurationService">The configuration service.</param>
-        public IngestFileTask(IConfigurationService configurationService) : base(configurationService)
+        /// <param name="configuration">The configuration.</param>
+        public IngestFileTask(MediaConfiguration configuration) : base(configuration)
         {
         }
 

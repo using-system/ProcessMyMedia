@@ -11,11 +11,9 @@
     using Microsoft.Rest.Azure.Authentication;
 
     using ProcessMyMedia.Model;
-    using ProcessMyMedia.Services.Contract;
-
 
     /// <summary>
-    /// 
+    /// Media Task Base
     /// </summary>
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
     public abstract class MediaTaskBase : StepBodyAsync, IDisposable
@@ -27,10 +25,10 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
         /// </summary>
-        /// <param name="configurationService">The configuration service.</param>
-        public MediaTaskBase(IConfigurationService configurationService)
+        /// <param name="configuration">The configuration.</param>
+        public MediaTaskBase(MediaConfiguration configuration)
         {
-            this.configuration = configurationService.Configuration;
+            this.configuration = configuration;
         }
 
         /// <summary>

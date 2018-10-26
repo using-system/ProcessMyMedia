@@ -6,8 +6,6 @@
     using Microsoft.Extensions.DependencyInjection;
 
     using ProcessMyMedia.Model;
-    using ProcessMyMedia.Services;
-    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Middleware Extensions
@@ -18,41 +16,21 @@
         /// Adds the media services.
         /// </summary>
         /// <param name="services">The services.</param>
+        /// <param name="configuration">The configuration.</param>
         /// <returns></returns>
-        public static IServiceCollection AddMediaServices(this IServiceCollection services)
+        public static IServiceCollection AddMediaServices(this IServiceCollection services, MediaConfiguration configuration = null)
         {
             services.AddWorkflow();
-            services.AddSingleton<IConfigurationService, DefaultConfigurationService>();
             services.AddMediaTasks();
+
+            if (configuration != null)
+            {
+                services.AddSingleton<MediaConfiguration>((provider) => configuration);
+            }
 
             return services;
         }
 
-        /// <summary>
-        /// Uses the media services.
-        /// </summary>
-        /// <param name="app">The application.</param>
-        /// <param name="configuration">The configuration.</param>
-        /// <returns></returns>
-        public static IApplicationBuilder UseMediaServices(this IApplicationBuilder app,
-            MediaConfiguration configuration)
-        {
-            app.ApplicationServices.UseMediaServices(configuration);
-
-            return app;
-        }
-
-        /// <summary>
-        /// Uses the media services.
-        /// </summary>
-        /// <param name="servicesProvider">The services provider.</param>
-        /// <param name="configuratio">The configuratio.</param>
-        /// <returns></returns>
-        public static IServiceProvider UseMediaServices(this IServiceProvider servicesProvider, MediaConfiguration configuration)
-        {
-            servicesProvider.GetService<IConfigurationService>().Initialize(configuration);
-            return servicesProvider;
-        }
 
         private static void AddMediaTasks(this IServiceCollection services)
         {

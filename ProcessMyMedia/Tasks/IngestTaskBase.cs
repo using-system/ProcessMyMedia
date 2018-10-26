@@ -13,7 +13,7 @@
     using Microsoft.Azure.Management.Media;
     using Microsoft.WindowsAzure.Storage.Blob;
 
-    using ProcessMyMedia.Services.Contract;
+    using ProcessMyMedia.Model;
 
     /// <summary>
     /// Ingest Task
@@ -40,8 +40,8 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
         /// </summary>
-        /// <param name="configurationService">The configuration service.</param>
-        public IngestTaskBase(IConfigurationService configurationService) : base(configurationService)
+        /// <param name="configuration">The configuration.</param>
+        public IngestTaskBase(MediaConfiguration configuration) : base(configuration)
         {
             this.AssetFiles = new List<string>();
         }

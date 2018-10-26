@@ -5,9 +5,6 @@ namespace ProcessMyMedia.Samples
     using System;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
-    using ProcessMyMedia.Services;
-    using ProcessMyMedia.Services.Contract;
     using WorkflowCore.Interface;
 
     public class Ingest : SampleBase

@@ -2,8 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ProcessMyMedia.Model;
-using ProcessMyMedia.Services;
-using ProcessMyMedia.Services.Contract;
 using System;
 
 namespace ProcessMyMedia.Samples
@@ -23,16 +21,7 @@ namespace ProcessMyMedia.Samples
         {
             //setup dependency injection
             IServiceCollection services = new ServiceCollection();
-            services.AddMediaServices();
-            services.AddLogging();
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            //config logging
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            loggerFactory.AddDebug();
-
-            serviceProvider.UseMediaServices(new MediaConfiguration()
+            services.AddMediaServices(configuration: new MediaConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
                 SubscriptionId = this.configuration["SubscriptionId"],
@@ -42,6 +31,13 @@ namespace ProcessMyMedia.Samples
                 AadClientId = this.configuration["AadClientId"],
                 AadSecret = this.configuration["AadSecret"]
             });
+            services.AddLogging();
+
+            var serviceProvider = services.BuildServiceProvider();
+
+            //config logging
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            loggerFactory.AddDebug();
 
             return serviceProvider;
         }
