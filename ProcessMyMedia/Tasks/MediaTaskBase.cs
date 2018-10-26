@@ -18,7 +18,7 @@
     /// 
     /// </summary>
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
-    public abstract class MediaTaskBase : StepBodyAsync
+    public abstract class MediaTaskBase : StepBodyAsync, IDisposable
     {
         protected AzureMediaServicesClient client;
 
@@ -58,5 +58,14 @@
         /// <param name="context">The context.</param>
         /// <returns></returns>
         public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            client?.Dispose();
+            client = null;
+        }
     }
 }
