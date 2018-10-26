@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             // In this example, we are assuming that the asset name is unique.
             //

@@ -1,9 +1,9 @@
-﻿
-
-namespace ProcessMyMedia.Tasks
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
+    using System.Threading.Tasks;
 
+    using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -31,13 +31,32 @@ namespace ProcessMyMedia.Tasks
         public MediaTaskBase(IConfigurationService configurationService)
         {
             this.configuration = configurationService.Configuration;
+        }
 
-            ClientCredential clientCredential = new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
-            var clientCredentials = Microsoft.Rest.Azure.Authentication.ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId, clientCredential, ActiveDirectoryServiceSettings.Azure).Result;
-            this.client =  new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
+        /// <summary>
+        /// Runs the asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
+        {
+            ClientCredential clientCredential =
+                new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
+            var clientCredentials = await ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId,
+                clientCredential, ActiveDirectoryServiceSettings.Azure);
+            this.client = new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
             {
                 SubscriptionId = this.configuration.SubscriptionId,
             };
+
+            return await this.RunMediaTaskAsync(context);
         }
+
+        /// <summary>
+        /// Runs the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
     }
 }
