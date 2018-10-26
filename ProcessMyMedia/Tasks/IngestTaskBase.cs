@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.IO;
     using System.Threading.Tasks;
@@ -18,7 +19,7 @@
     /// Ingest Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public class IngestTask : MediaTaskBase
+    public abstract class IngestTaskBase : MediaTaskBase
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -34,15 +35,15 @@
         /// <value>
         /// The asset path.
         /// </value>
-        public string AssetPath { get; set; }
+        protected List<string> AssetFiles { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestTask"/> class.
+        /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
         /// </summary>
         /// <param name="configurationService">The configuration service.</param>
-        public IngestTask(IConfigurationService configurationService) : base(configurationService)
+        public IngestTaskBase(IConfigurationService configurationService) : base(configurationService)
         {
-
+            this.AssetFiles = new List<string>();
         }
 
         /// <summary>
@@ -79,10 +80,11 @@
             // Use Storage API to get a reference to the Asset container
             // that was created by calling Asset's CreateOrUpdate method.  
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            var blob = container.GetBlockBlobReference(Path.GetFileName(this.AssetPath));
-
-            // Use Strorage API to upload the file into the container in storage.
-            await blob.UploadFromFileAsync(this.AssetPath);
+            foreach (string assetPath in this.AssetFiles)
+            {
+                var blob = container.GetBlockBlobReference(Path.GetFileName(assetPath));
+                await blob.UploadFromFileAsync(assetPath);
+            }
 
             return ExecutionResult.Next();
         }
