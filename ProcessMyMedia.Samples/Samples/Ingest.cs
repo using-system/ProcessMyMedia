@@ -1,7 +1,9 @@
-﻿namespace ProcessMyMedia.Samples
+﻿using ProcessMyMedia.Model;
+
+namespace ProcessMyMedia.Samples
 {
     using System;
-
+    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using ProcessMyMedia.Services;
@@ -10,6 +12,11 @@
 
     public class Ingest : SampleBase
     {
+        public Ingest(IConfigurationRoot configuration) : base(configuration)
+        {
+
+        }
+
         public override void Execute()
         {
             IServiceProvider serviceProvider = ConfigureServices();
@@ -22,7 +29,6 @@
             string result = host.StartWorkflow("Ingest").Result;
 
             Console.ReadLine();
-
 
             host.Stop();
         }
@@ -40,24 +46,6 @@
                     .Input(task => task.AssetPath, data => @"C:\Users\mnicolescu\Pictures\untitled.png")
                     .Input(task => task.AssetName, data => "MyAsset");
             }
-        }
-
-        private static IServiceProvider ConfigureServices()
-        {
-            //setup dependency injection
-            IServiceCollection services = new ServiceCollection();
-            services.AddLogging();
-            services.AddWorkflow();
-            services.AddSingleton<IConfigurationService, DefaultConfigurationService>();
-            //services.AddWorkflow(x => x.UseMongoDB(@"mongodb://localhost:27017", "workflow"));
-            services.AddTransient<Tasks.IngestTask>();
-
-            var serviceProvider = services.BuildServiceProvider();
-
-            //config logging
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            loggerFactory.AddDebug();
-            return serviceProvider;
         }
 
     }

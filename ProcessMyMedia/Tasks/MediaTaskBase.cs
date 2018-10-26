@@ -4,21 +4,30 @@ namespace ProcessMyMedia.Tasks
 {
     using System;
 
-    using WorkflowCore.Primitives;
+    using WorkflowCore.Models;
 
-    using ProcessMyMedia.Services.Contract;
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.Azure.Management.Media;
     using Microsoft.Rest.Azure.Authentication;
 
     using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
-    public abstract class MediaTaskBase : ContainerStepBody
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
+    public abstract class MediaTaskBase : StepBodyAsync
     {
         protected AzureMediaServicesClient client;
 
         protected MediaConfiguration configuration;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
+        /// </summary>
+        /// <param name="configurationService">The configuration service.</param>
         public MediaTaskBase(IConfigurationService configurationService)
         {
             this.configuration = configurationService.Configuration;

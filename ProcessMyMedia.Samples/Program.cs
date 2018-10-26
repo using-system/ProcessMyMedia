@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.IO;
 
 namespace ProcessMyMedia.Samples
 {
@@ -6,7 +8,14 @@ namespace ProcessMyMedia.Samples
     {
         static void Main(string[] args)
         {
-            //new Samples.Ingest().Execute();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.override.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            new Samples.Ingest(configuration).Execute();
             Console.ReadLine();
         }
     }

@@ -14,53 +14,43 @@
 
     using ProcessMyMedia.Services.Contract;
 
+    /// <summary>
+    /// Ingest Task
+    /// </summary>
+    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
     public class IngestTask : MediaTaskBase
     {
+        /// <summary>
+        /// Gets or sets the name of the asset.
+        /// </summary>
+        /// <value>
+        /// The name of the asset.
+        /// </value>
         public string AssetName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the asset path.
+        /// </summary>
+        /// <value>
+        /// The asset path.
+        /// </value>
         public string AssetPath { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IngestTask"/> class.
+        /// </summary>
+        /// <param name="configurationService">The configuration service.</param>
         public IngestTask(IConfigurationService configurationService) : base(configurationService)
         {
 
         }
 
-        public override ExecutionResult Run(IStepExecutionContext context)
-        {
-            //AssetCreationOptions assetCreationOptions = AssetCreationOptions.None;*
-           
-            //    this.client.Assets.CreateOrUpdateWithHttpMessagesAsync()
-
-            //// Create a new asset and upload a local file using a single extension method.
-            //IAsset asset = this.context.Assets.Create(this.AssetName, assetCreationOptions);
-
-            //var accessPolicy = this.context.AccessPolicies.Create(this.AssetName, TimeSpan.FromDays(30),
-            //    AccessPermissions.Write | AccessPermissions.List);
-
-            //var locator = this.context.Locators.CreateLocator(LocatorType.Sas, asset, accessPolicy);
-
-            //var blobTransferClient = new BlobTransferClient();
-            //blobTransferClient.NumberOfConcurrentTransfers = 20;
-            //blobTransferClient.ParallelTransferThreadCount = 20;
-
-            //var uploadTasks = new List<Task>();
-
-            //var assetFile = asset.AssetFiles.Create(Path.GetFileName(this.AssetPath));
-            //uploadTasks.Add(assetFile.UploadAsync(this.AssetPath, blobTransferClient, locator, CancellationToken.None));
-            //Task.WaitAll(uploadTasks.ToArray());
-
-            //locator.Delete();
-            //accessPolicy.Delete();
-
-            return ExecutionResult.Next();
-        }
-
-        private static async Task<Asset> CreateInputAssetAsync(
-        IAzureMediaServicesClient client,
-        string resourceGroupName,
-        string accountName,
-        string assetName,
-        string fileToUpload)
+        /// <summary>
+        /// Runs the asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
         {
             // In this example, we are assuming that the asset name is unique.
             //
@@ -71,16 +61,16 @@
             // Call Media Services API to create an Asset.
             // This method creates a container in storage for the Asset.
             // The files (blobs) associated with the asset will be stored in this container.
-            Asset asset = await client.Assets.CreateOrUpdateAsync(resourceGroupName, accountName, assetName, new Asset());
+            Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.AccountName, this.AssetName, new Asset());
 
             // Use Media Services API to get back a response that contains
             // SAS URL for the Asset container into which to upload blobs.
             // That is where you would specify read-write permissions 
             // and the exparation time for the SAS URL.
             var response = await client.Assets.ListContainerSasAsync(
-                resourceGroupName,
-                accountName,
-                assetName,
+                this.configuration.ResourceGroup,
+                this.configuration.AccountName,
+                this.AssetName,
                 permissions: AssetContainerPermission.ReadWrite,
                 expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime());
 
@@ -89,12 +79,13 @@
             // Use Storage API to get a reference to the Asset container
             // that was created by calling Asset's CreateOrUpdate method.  
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            var blob = container.GetBlockBlobReference(Path.GetFileName(fileToUpload));
+            var blob = container.GetBlockBlobReference(Path.GetFileName(this.AssetPath));
 
             // Use Strorage API to upload the file into the container in storage.
-            await blob.UploadFromFileAsync(fileToUpload);
+            await blob.UploadFromFileAsync(this.AssetPath);
 
-            return asset;
+            return ExecutionResult.Next();
         }
+
     }
 }
