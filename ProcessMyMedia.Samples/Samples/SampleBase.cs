@@ -23,11 +23,8 @@ namespace ProcessMyMedia.Samples
         {
             //setup dependency injection
             IServiceCollection services = new ServiceCollection();
+            services.AddMediaServices();
             services.AddLogging();
-            services.AddWorkflow();
-            services.AddSingleton<IConfigurationService, DefaultConfigurationService>();
-            //services.AddWorkflow(x => x.UseMongoDB(@"mongodb://localhost:27017", "workflow"));
-            services.AddTransient<Tasks.IngestTask>();
 
             var serviceProvider = services.BuildServiceProvider();
 
@@ -35,7 +32,7 @@ namespace ProcessMyMedia.Samples
             var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             loggerFactory.AddDebug();
 
-            serviceProvider.GetService<IConfigurationService>().Initialize(new MediaConfiguration()
+            serviceProvider.UseMediaServices(new MediaConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
                 SubscriptionId = this.configuration["SubscriptionId"],

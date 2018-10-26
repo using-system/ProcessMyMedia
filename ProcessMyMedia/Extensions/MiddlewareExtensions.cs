@@ -1,9 +1,12 @@
 ﻿namespace ProcessMyMedia
 {
+    using System;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services;
     using ProcessMyMedia.Services.Contract;
 
     /// <summary>
@@ -11,6 +14,20 @@
     /// </summary>
     public static class MiddlewareExtensions
     {
+        /// <summary>
+        /// Adds the media services.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <returns></returns>
+        public static IServiceCollection AddMediaServices(this IServiceCollection services)
+        {
+            services.AddWorkflow();
+            services.AddSingleton<IConfigurationService, DefaultConfigurationService>();
+            services.AddTransient<Tasks.IngestTask>();
+
+            return services;
+        }
+
         /// <summary>
         /// Uses the media services.
         /// </summary>
@@ -20,9 +37,21 @@
         public static IApplicationBuilder UseMediaServices(this IApplicationBuilder app,
             MediaConfiguration configuration)
         {
-            app.ApplicationServices.GetService<IConfigurationService>().Initialize(configuration);
+            app.ApplicationServices.UseMediaServices(configuration);
 
             return app;
+        }
+
+        /// <summary>
+        /// Uses the media services.
+        /// </summary>
+        /// <param name="servicesProvider">The services provider.</param>
+        /// <param name="configuratio">The configuratio.</param>
+        /// <returns></returns>
+        public static IServiceProvider UseMediaServices(this IServiceProvider servicesProvider, MediaConfiguration configuration)
+        {
+            servicesProvider.GetService<IConfigurationService>().Initialize(configuration);
+            return servicesProvider;
         }
     }
 }
