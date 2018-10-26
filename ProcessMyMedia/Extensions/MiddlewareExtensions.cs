@@ -23,7 +23,7 @@
         {
             services.AddWorkflow();
             services.AddSingleton<IConfigurationService, DefaultConfigurationService>();
-            services.AddTransient<Tasks.IngestTask>();
+            services.AddMediaTasks();
 
             return services;
         }
@@ -52,6 +52,19 @@
         {
             servicesProvider.GetService<IConfigurationService>().Initialize(configuration);
             return servicesProvider;
+        }
+
+        private static void AddMediaTasks(this IServiceCollection services)
+        {
+            foreach (Type type in typeof(MiddlewareExtensions).Assembly.GetTypes())
+            {
+                if (type.IsClass 
+                    && !type.IsAbstract
+                    && typeof(Tasks.MediaTaskBase).IsAssignableFrom(type))
+                {
+                    services.AddTransient(type);
+                }
+            }
         }
     }
 }
