@@ -6,7 +6,8 @@ namespace ProcessMyMedia.Samples
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            //new Samples.Ingest().Execute();
+            Console.ReadLine();
         }
     }
 }

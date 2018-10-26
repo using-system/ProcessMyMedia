@@ -1,25 +1,34 @@
-﻿namespace ProcessMyMedia.Tasks
+﻿
+
+namespace ProcessMyMedia.Tasks
 {
     using System;
-
-    using Microsoft.WindowsAzure.MediaServices.Client;
 
     using WorkflowCore.Primitives;
 
     using ProcessMyMedia.Services.Contract;
+    using Microsoft.IdentityModel.Clients.ActiveDirectory;
+    using Microsoft.Azure.Management.Media;
+    using Microsoft.Rest.Azure.Authentication;
 
+    using ProcessMyMedia.Model;
 
     public abstract class MediaTaskBase : ContainerStepBody
     {
-        protected CloudMediaContext context;
+        protected AzureMediaServicesClient client;
+
+        protected MediaConfiguration configuration;
 
         public MediaTaskBase(IConfigurationService configurationService)
         {
-            var tokenCredentials = new AzureAdTokenCredentials("%Your AAD Tenant Domain Here",
-                new AzureAdClientSymmetricKey("%Client ID Here%", "%Client Secret Here%"),
-                AzureEnvironments.AzureCloudEnvironment);
-            var tokenProvider = new AzureAdTokenProvider(tokenCredentials);
-            this.context = new CloudMediaContext(new Uri("%Your Rest API Endpoint Here%"), tokenProvider);
+            this.configuration = configurationService.Configuration;
+
+            ClientCredential clientCredential = new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
+            var clientCredentials = Microsoft.Rest.Azure.Authentication.ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId, clientCredential, ActiveDirectoryServiceSettings.Azure).Result;
+            this.client =  new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
+            {
+                SubscriptionId = this.configuration.SubscriptionId,
+            };
         }
     }
 }
