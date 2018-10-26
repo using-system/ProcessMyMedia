@@ -61,7 +61,7 @@
             // Call Media Services API to create an Asset.
             // This method creates a container in storage for the Asset.
             // The files (blobs) associated with the asset will be stored in this container.
-            Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.AccountName, this.AssetName, new Asset());
+            Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, this.AssetName, new Asset());
 
             // Use Media Services API to get back a response that contains
             // SAS URL for the Asset container into which to upload blobs.
@@ -69,7 +69,7 @@
             // and the exparation time for the SAS URL.
             var response = await client.Assets.ListContainerSasAsync(
                 this.configuration.ResourceGroup,
-                this.configuration.AccountName,
+                this.configuration.MediaAccountName,
                 this.AssetName,
                 permissions: AssetContainerPermission.ReadWrite,
                 expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime());

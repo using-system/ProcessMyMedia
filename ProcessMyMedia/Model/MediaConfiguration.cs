@@ -14,12 +14,12 @@
         public string ArmEndpoint { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the account.
+        /// Gets or sets the name of the media account.
         /// </summary>
         /// <value>
-        /// The name of the account.
+        /// The name of the media account.
         /// </value>
-        public string AccountName { get; set; }
+        public string MediaAccountName { get; set; }
 
         /// <summary>
         /// Gets or sets the subscription identifier.

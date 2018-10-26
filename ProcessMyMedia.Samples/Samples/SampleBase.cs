@@ -36,7 +36,7 @@ namespace ProcessMyMedia.Samples
             {
                 ArmEndpoint = "https://management.azure.com/",
                 SubscriptionId = this.configuration["SubscriptionId"],
-                AccountName = this.configuration["AccountName"],
+                MediaAccountName = this.configuration["MediaAccountName"],
                 ResourceGroup = this.configuration["ResourceGroup"],
                 AadTenantId = this.configuration["AadTenantId"],
                 AadClientId = this.configuration["AadClientId"],
