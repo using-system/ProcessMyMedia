@@ -3,6 +3,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Azure.Management.Media;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
@@ -36,12 +37,13 @@
         /// Runs the asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
         {
             this.AssetFiles.Add(this.AssetFilePath);
 
-            return await base.RunMediaTaskAsync(context);
+            return await base.RunMediaTaskAsync(context, client);
         }
     }
 }

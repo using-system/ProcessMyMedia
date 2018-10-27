@@ -4,6 +4,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Azure.Management.Media;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
@@ -51,13 +52,19 @@
             this.TopDirectoryOnly = true;
         }
 
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        /// <summary>
+        /// Runs the asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="client">The client.</param>
+        /// <returns></returns>
+        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
         {
             this.AssetFiles.AddRange(Directory.GetFiles(this.AssetDirectoryPath, 
                 this.SearchPattern, 
                 this.TopDirectoryOnly? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories));
 
-            return base.RunMediaTaskAsync(context);
+            return base.RunMediaTaskAsync(context, client);
         }
     }
 }

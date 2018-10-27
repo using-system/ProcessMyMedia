@@ -19,8 +19,6 @@
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
     public abstract class MediaTaskBase : StepBodyAsync, IDisposable
     {
-        protected AzureMediaServicesClient client;
-
         protected MediaConfiguration configuration;
 
         protected ILogger logger;
@@ -47,28 +45,30 @@
                 new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
             var clientCredentials = await ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId,
                 clientCredential, ActiveDirectoryServiceSettings.Azure);
-            this.client = new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
+
+            using (var client = new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
             {
                 SubscriptionId = this.configuration.SubscriptionId,
-            };
-
-            return await this.RunMediaTaskAsync(context);
+            })
+            {
+                return await this.RunMediaTaskAsync(context, client);
+            }               
         }
 
         /// <summary>
         /// Runs the specified context.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
+        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
-            client?.Dispose();
-            client = null;
+
         }
     }
 }

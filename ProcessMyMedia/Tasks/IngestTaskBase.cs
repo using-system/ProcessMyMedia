@@ -78,8 +78,9 @@
         /// Runs the asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
+        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
         {
             Asset assetParameters = new Asset()
             {
