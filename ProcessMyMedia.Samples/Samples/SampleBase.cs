@@ -38,6 +38,7 @@ namespace ProcessMyMedia.Samples
             //config logging
             var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             loggerFactory.AddDebug();
+            loggerFactory.AddConsole();
 
             return serviceProvider;
         }

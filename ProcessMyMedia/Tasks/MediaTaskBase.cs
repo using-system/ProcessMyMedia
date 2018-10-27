@@ -41,6 +41,9 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
         {
+            this.logger.LogDebug($"Start execution of the task {this.GetType().Name}");
+
+            ExecutionResult result;
             ClientCredential clientCredential =
                 new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
             var clientCredentials = await ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId,
@@ -51,8 +54,12 @@
                 SubscriptionId = this.configuration.SubscriptionId,
             })
             {
-                return await this.RunMediaTaskAsync(context, client);
-            }               
+                result = await this.RunMediaTaskAsync(context, client);
+            }
+
+            this.logger.LogDebug($"End execution of the task {this.GetType().Name}");
+
+            return result;
         }
 
         /// <summary>
