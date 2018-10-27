@@ -55,12 +55,21 @@
         public string StorageAccountName { get; set; }
 
         /// <summary>
+        /// Gets or sets the metadatas.
+        /// </summary>
+        /// <value>
+        /// The metadatas.
+        /// </value>
+        public Dictionary<string, string> Metadata { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         public IngestTaskBase(MediaConfiguration configuration) : base(configuration)
         {
             this.AssetFiles = new List<string>();
+            this.Metadata = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -89,8 +98,22 @@
             foreach (string assetPath in this.AssetFiles)
             {
                 var blob = container.GetBlockBlobReference(Path.GetFileName(assetPath));
-                await blob.UploadFromFileAsync(assetPath);
+                await blob.UploadFromFileAsync(assetPath);              
             }
+
+            foreach (var metadata in this.Metadata)
+            {
+                if (container.Metadata.ContainsKey(metadata.Key))
+                {
+                    container.Metadata[metadata.Key] = metadata.Value;
+                }
+                else
+                {
+                    container.Metadata.Add(metadata.Key, metadata.Value);
+                }
+            }
+
+            await container.SetMetadataAsync();
 
             return ExecutionResult.Next();
         }
