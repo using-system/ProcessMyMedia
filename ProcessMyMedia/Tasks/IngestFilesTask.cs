@@ -2,7 +2,9 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    
+
+    using Microsoft.Extensions.Logging;
+
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
@@ -22,10 +24,11 @@
         public new List<string> AssetFiles { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFilesTask"/> class.
+        /// Initializes a new instance of the <see cref="IngestFilesTask" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public IngestFilesTask(MediaConfiguration configuration) : base(configuration)
+        /// <param name="loggerFactory"></param>
+        public IngestFilesTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
         }

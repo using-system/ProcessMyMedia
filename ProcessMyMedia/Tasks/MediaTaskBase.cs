@@ -7,6 +7,7 @@
     using WorkflowCore.Models;
 
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Azure.Management.Media;
     using Microsoft.Rest.Azure.Authentication;
 
@@ -22,13 +23,17 @@
 
         protected MediaConfiguration configuration;
 
+        protected ILogger logger;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public MediaTaskBase(MediaConfiguration configuration)
+        /// <param name="loggerFactory">The logger factory.</param>
+        public MediaTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory)
         {
             this.configuration = configuration;
+            this.logger = loggerFactory.CreateLogger(this.GetType());
         }
 
         /// <summary>

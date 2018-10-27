@@ -2,6 +2,8 @@
 {
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Logging;
+
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
@@ -22,10 +24,11 @@
         public string  AssetFilePath { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFileTask"/> class.
+        /// Initializes a new instance of the <see cref="IngestFileTask" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public IngestFileTask(MediaConfiguration configuration) : base(configuration)
+        /// <param name="loggerFactory"></param>
+        public IngestFileTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
         }
 

@@ -3,6 +3,8 @@
     using System.IO;
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Logging;
+
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
@@ -40,10 +42,11 @@
         public bool TopDirectoryOnly { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFromDirectoryTask"/> class.
+        /// Initializes a new instance of the <see cref="IngestFromDirectoryTask" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public IngestFromDirectoryTask(MediaConfiguration configuration) : base(configuration)
+        /// <param name="loggerFactory"></param>
+        public IngestFromDirectoryTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
             this.TopDirectoryOnly = true;
         }

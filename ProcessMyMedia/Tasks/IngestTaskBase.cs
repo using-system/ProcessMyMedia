@@ -12,6 +12,7 @@
     using Microsoft.Azure.Management.Media.Models;
     using Microsoft.Azure.Management.Media;
     using Microsoft.WindowsAzure.Storage.Blob;
+    using Microsoft.Extensions.Logging;
 
     using ProcessMyMedia.Model;
 
@@ -63,10 +64,11 @@
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="IngestTaskBase" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public IngestTaskBase(MediaConfiguration configuration) : base(configuration)
+        /// <param name="loggerFactory"></param>
+        public IngestTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
             this.AssetFiles = new List<string>();
             this.Metadata = new Dictionary<string, string>();
