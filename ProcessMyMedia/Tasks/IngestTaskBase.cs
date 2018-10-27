@@ -55,10 +55,10 @@
         public string StorageAccountName { get; set; }
 
         /// <summary>
-        /// Gets or sets the metadatas.
+        /// Gets or sets the metadata.
         /// </summary>
         /// <value>
-        /// The metadatas.
+        /// The metadata.
         /// </value>
         public Dictionary<string, string> Metadata { get; set; }
 
