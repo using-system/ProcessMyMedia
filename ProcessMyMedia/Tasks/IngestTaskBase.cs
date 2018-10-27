@@ -30,12 +30,29 @@
         public string AssetName { get; set; }
 
         /// <summary>
+        /// Gets or sets the asset description. (Optionnal)
+        /// </summary>
+        /// <value>
+        /// The asset description.
+        /// </value>
+        public string AssetDescription { get; set; }
+
+        /// <summary>
         /// Gets or sets the asset path.
         /// </summary>
         /// <value>
         /// The asset path.
         /// </value>
         protected List<string> AssetFiles { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the storage account.
+        /// Optionnal. Default behavior : get the primary storage account associated to the media services account)
+        /// </summary>
+        /// <value>
+        /// The name of the storage account.
+        /// </value>
+        public string StorageAccountName { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
@@ -53,32 +70,21 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-            // In this example, we are assuming that the asset name is unique.
-            //
-            // If you already have an asset with the desired name, use the Assets.Get method
-            // to get the existing asset. In Media Services v3, the Get method on entities returns null 
-            // if the entity doesn't exist (a case-insensitive check on the name).
+            Asset assetParameters = new Asset()
+            {
+                StorageAccountName = this.StorageAccountName,
+                Description = this.AssetDescription                
+            };
+            Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, this.AssetName, assetParameters);
 
-            // Call Media Services API to create an Asset.
-            // This method creates a container in storage for the Asset.
-            // The files (blobs) associated with the asset will be stored in this container.
-            Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, this.AssetName, new Asset());
-
-            // Use Media Services API to get back a response that contains
-            // SAS URL for the Asset container into which to upload blobs.
-            // That is where you would specify read-write permissions 
-            // and the exparation time for the SAS URL.
             var response = await client.Assets.ListContainerSasAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
                 this.AssetName,
                 permissions: AssetContainerPermission.ReadWrite,
                 expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime());
-
             var sasUri = new Uri(response.AssetContainerSasUrls.First());
 
-            // Use Storage API to get a reference to the Asset container
-            // that was created by calling Asset's CreateOrUpdate method.  
             CloudBlobContainer container = new CloudBlobContainer(sasUri);
             foreach (string assetPath in this.AssetFiles)
             {
