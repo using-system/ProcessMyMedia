@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.Azure.Management.Media;
@@ -40,6 +41,22 @@
         public DeleteJobTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.TransformName))
+            {
+                throw new ArgumentException($"{nameof(this.TransformName)} is required");
+            }
+
+            if (string.IsNullOrEmpty(this.JobName))
+            {
+                throw new ArgumentException($"{nameof(this.JobName)} is required");
+            }
         }
 
         /// <summary>

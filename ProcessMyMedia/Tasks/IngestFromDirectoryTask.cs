@@ -1,4 +1,6 @@
-﻿namespace ProcessMyMedia.Tasks
+﻿using System;
+
+namespace ProcessMyMedia.Tasks
 {
     using System.IO;
     using System.Threading.Tasks;
@@ -50,6 +52,20 @@
         public IngestFromDirectoryTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
             this.TopDirectoryOnly = true;
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">AssetDirectoryPath</exception>
+        public override void ValidateInput()
+        {
+            base.ValidateInput();
+
+            if (string.IsNullOrEmpty(this.AssetDirectoryPath))
+            {
+                throw new ArgumentException($"{nameof(this.AssetDirectoryPath)} is required");
+            }
         }
 
         /// <summary>

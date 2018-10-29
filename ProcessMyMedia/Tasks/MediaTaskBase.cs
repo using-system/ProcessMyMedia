@@ -72,6 +72,9 @@
         public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
         {
             ExecutionResult result;
+
+            this.ValidateInput();
+
             ClientCredential clientCredential =
                 new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
 
@@ -88,6 +91,11 @@
 
             return result;
         }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        public abstract void ValidateInput();
 
         /// <summary>
         /// Runs the specified context.

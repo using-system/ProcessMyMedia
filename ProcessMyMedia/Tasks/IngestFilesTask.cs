@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -32,6 +33,19 @@
         public IngestFilesTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        public override void ValidateInput()
+        {
+            base.ValidateInput();
+
+            if (this.AssetFiles?.Count <= 0)
+            {
+                throw new ArgumentException($"{nameof(this.AssetFiles)} is required");
+            }
         }
 
         /// <summary>

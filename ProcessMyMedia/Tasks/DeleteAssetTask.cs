@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.Azure.Management.Media;
@@ -32,6 +33,17 @@
         public DeleteAssetTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.AssetName))
+            {
+                throw new ArgumentException($"{nameof(this.AssetName)} is required");
+            }
         }
 
         /// <summary>

@@ -76,6 +76,18 @@
         }
 
         /// <summary>
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">AssetName is required</exception>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.AssetName))
+            {
+                throw new ArgumentException($"{nameof(this.AssetName)} is required");
+            }
+        }
+
+        /// <summary>
         /// Runs the asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>

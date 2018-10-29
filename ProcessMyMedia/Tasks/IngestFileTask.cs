@@ -1,4 +1,6 @@
-﻿namespace ProcessMyMedia.Tasks
+﻿using System;
+
+namespace ProcessMyMedia.Tasks
 {
     using System.Threading.Tasks;
 
@@ -31,6 +33,19 @@
         /// <param name="loggerFactory"></param>
         public IngestFileTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        public override void ValidateInput()
+        {
+            base.ValidateInput();
+
+            if (string.IsNullOrEmpty(this.AssetFilePath))
+            {
+                throw new ArgumentException($"{nameof(this.AssetFilePath)} is required");
+            }
         }
 
         /// <summary>
