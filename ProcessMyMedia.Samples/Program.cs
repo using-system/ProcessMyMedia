@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
-
-namespace ProcessMyMedia.Samples
+﻿namespace ProcessMyMedia.Samples
 {
+    using System;
+    using System.IO;
+
+    using Microsoft.Extensions.Configuration;
+
     class Program
     {
         static void Main(string[] args)
@@ -15,8 +16,7 @@ namespace ProcessMyMedia.Samples
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.Ingest(configuration).Execute();
-            Console.ReadLine();
+            new Samples.IngestFromDirectory(configuration).Execute();
         }
     }
 }

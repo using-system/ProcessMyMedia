@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using ProcessMyMedia.Model;
-using System;
-
-namespace ProcessMyMedia.Samples
+﻿namespace ProcessMyMedia.Samples
 {
+    using System;
+
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
+    using ProcessMyMedia.Model;
+
     public abstract class SampleBase
     {
         protected IConfigurationRoot configuration;
