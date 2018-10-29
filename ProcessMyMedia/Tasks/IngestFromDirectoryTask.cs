@@ -60,6 +60,11 @@
         /// <returns></returns>
         public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
         {
+            if (string.IsNullOrEmpty(this.SearchPattern))
+            {
+                this.SearchPattern = "*.*";
+            }
+
             this.AssetFiles.AddRange(Directory.GetFiles(this.AssetDirectoryPath, 
                 this.SearchPattern, 
                 this.TopDirectoryOnly? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories));

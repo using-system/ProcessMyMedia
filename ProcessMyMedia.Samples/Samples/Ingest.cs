@@ -39,8 +39,8 @@ namespace ProcessMyMedia.Samples
             public void Build(IWorkflowBuilder<object> builder)
             {
                 builder
-                    .StartWith<Tasks.IngestFileTask>()
-                    .Input(task => task.AssetFilePath, data => @"C:\Users\mnicolescu\Pictures\untitled.png")
+                    .StartWith<Tasks.IngestFromDirectoryTask>()
+                    .Input(task => task.AssetDirectoryPath, data => @"C:\Users\mnicolescu\Documents\Asset")
                     .Input(task => task.AssetName, data => "MyAsset");
             }
         }
