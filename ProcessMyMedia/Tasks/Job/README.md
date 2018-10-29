@@ -1,0 +1,5 @@
+﻿# Job tasks
+## DeleteJobTask
+
+```c#
+```
