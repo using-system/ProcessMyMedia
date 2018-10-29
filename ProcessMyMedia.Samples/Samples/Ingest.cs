@@ -40,8 +40,10 @@ namespace ProcessMyMedia.Samples
             {
                 builder
                     .StartWith<Tasks.IngestFromDirectoryTask>()
-                    .Input(task => task.AssetDirectoryPath, data => @"C:\Users\mnicolescu\Documents\Asset")
-                    .Input(task => task.AssetName, data => "MyAsset");
+                        .Input(task => task.AssetDirectoryPath, data => @"C:\Users\mnicolescu\Documents\Asset")
+                        .Input(task => task.AssetName, data => "MyAsset")
+                    .Then<Tasks.DeleteAssetTask>()
+                        .Input(task => task.AssetName, data => "MyAsset");
             }
         }
 

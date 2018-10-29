@@ -19,13 +19,9 @@
     /// <typeparam name="T">Output class</typeparam>
     /// <seealso cref="System.IDisposable" />
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
-    public abstract class MediaTaskBase<T> : StepBodyAsync, IMediaTask
+    public abstract class MediaTaskBase<T> : MediaTaskBase
         where T : class   
     {
-        protected MediaConfiguration configuration;
-
-        protected ILogger logger;
-
         /// <summary>
         /// Gets or sets the output.
         /// </summary>
@@ -33,6 +29,29 @@
         /// The output.
         /// </value>
         public T Output { get; protected set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public MediaTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory)  :base(configuration, loggerFactory)
+        {
+            this.configuration = configuration;
+            this.logger = loggerFactory.CreateLogger(this.GetType());
+        }
+    }
+
+
+    /// <summary>
+    /// Media Task Base
+    /// </summary>
+    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
+    public abstract class MediaTaskBase : StepBodyAsync, IMediaTask
+    {
+        protected MediaConfiguration configuration;
+
+        protected ILogger logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.

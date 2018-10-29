@@ -21,7 +21,7 @@
     /// Ingest Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class IngestTaskBase : MediaTaskBase<Model.IngestTaskOutput>
+    public abstract class IngestTaskBase : MediaTaskBase<IngestTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the asset.
