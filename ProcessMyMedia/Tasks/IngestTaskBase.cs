@@ -88,6 +88,7 @@
                 StorageAccountName = this.StorageAccountName,
                 Description = this.AssetDescription                
             };
+
             Asset asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, this.AssetName, assetParameters);
 
             var response = await client.Assets.ListContainerSasAsync(

@@ -21,6 +21,7 @@ namespace ProcessMyMedia.Samples
         {
             //setup dependency injection
             IServiceCollection services = new ServiceCollection();
+
             services.AddMediaServices(configuration: new MediaConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
@@ -31,16 +32,15 @@ namespace ProcessMyMedia.Samples
                 AadClientId = this.configuration["AadClientId"],
                 AadSecret = this.configuration["AadSecret"]
             });
-            services.AddLogging();
 
-            var serviceProvider = services.BuildServiceProvider();
+            services.AddLogging(builder =>
+            {
+                builder.SetMinimumLevel(LogLevel.Debug);
+                builder.AddConsole();
+                builder.AddDebug();
+            });
 
-            //config logging
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            loggerFactory.AddDebug();
-            loggerFactory.AddConsole();
-
-            return serviceProvider;
+            return services.BuildServiceProvider();
         }
     }
 }
