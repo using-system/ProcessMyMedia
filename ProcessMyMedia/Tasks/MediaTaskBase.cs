@@ -16,12 +16,23 @@
     /// <summary>
     /// Media Task Base
     /// </summary>
+    /// <typeparam name="T">Output class</typeparam>
+    /// <seealso cref="System.IDisposable" />
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
-    public abstract class MediaTaskBase : StepBodyAsync, IDisposable
+    public abstract class MediaTaskBase<T> : StepBodyAsync, IMediaTask
+        where T : class   
     {
         protected MediaConfiguration configuration;
 
         protected ILogger logger;
+
+        /// <summary>
+        /// Gets or sets the output.
+        /// </summary>
+        /// <value>
+        /// The output.
+        /// </value>
+        public T Output { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.

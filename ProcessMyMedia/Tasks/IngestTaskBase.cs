@@ -15,12 +15,13 @@
     using Microsoft.Extensions.Logging;
 
     using ProcessMyMedia.Model;
+    using ProcessMyMedia.Extensions;
 
     /// <summary>
     /// Ingest Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class IngestTaskBase : MediaTaskBase
+    public abstract class IngestTaskBase : MediaTaskBase<Model.IngestTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -116,7 +117,15 @@
                 }
             }
 
-            await container.SetMetadataAsync();
+            if (container.Metadata.Count > 0)
+            {
+                await container.SetMetadataAsync();
+            }
+
+            this.Output = new IngestTaskOutput()
+            {
+                Asset =  asset.ToEntity()
+            };
 
             return ExecutionResult.Next();
         }
