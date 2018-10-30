@@ -43,3 +43,17 @@ Create a new asset and upload the file specified
   <td>No</td>
  </tr>
 </table>
+
+<table>
+ <caption>Output</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Asset</td>
+  <td>AssetEntity</td>
+  <td>The asset created or updated by the task.</td>
+ </tr>
+</table>
