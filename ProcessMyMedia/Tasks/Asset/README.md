@@ -33,7 +33,7 @@ Create a new asset and upload the file specified
  <tr>
   <td>StorageAccountName</td>
   <td>string</td>
-  <td>if not specified, the task upload the file into the primary storage account associated to the Media Services account</td>
+  <td>If not specified, the task upload the file into the primary storage account associated to the Media Services account</td>
   <td>No</td>
  </tr>
 </table>
