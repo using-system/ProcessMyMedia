@@ -53,7 +53,10 @@ Create a new asset and upload the file specified
  </tr>
  <tr>
   <td>Asset</td>
-  <td>[AssetEntity](ProcessMyMedia/Model)</td>
+  <td> [AssetEntity](ProcessMyMedia/Model) </td>
   <td>The asset created or updated by the task.</td>
  </tr>
 </table>
+[AssetEntity] (/ProcessMyMedia/Model)
+[Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
+* [Asset Samples](/ProcessMyMedia.Samples/Samples/Asset)
