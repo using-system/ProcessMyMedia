@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessMyMedia", "ProcessMy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProcessMyMedia.Samples", "ProcessMyMedia.Samples\ProcessMyMedia.Samples.csproj", "{5ADBB810-3750-4E3A-B5CC-144574C84792}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessMyMedia.Tests", "ProcessMyMedia.Tests\ProcessMyMedia.Tests.csproj", "{30824660-623F-488D-A31F-EDB939EC57AB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{5ADBB810-3750-4E3A-B5CC-144574C84792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ADBB810-3750-4E3A-B5CC-144574C84792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5ADBB810-3750-4E3A-B5CC-144574C84792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30824660-623F-488D-A31F-EDB939EC57AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30824660-623F-488D-A31F-EDB939EC57AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30824660-623F-488D-A31F-EDB939EC57AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30824660-623F-488D-A31F-EDB939EC57AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
