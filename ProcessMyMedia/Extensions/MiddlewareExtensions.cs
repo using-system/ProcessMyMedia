@@ -35,7 +35,11 @@
         }
 
 
-        private static void AddMediaTasks(this IServiceCollection services)
+        /// <summary>
+        /// Adds the media tasks.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        public static void AddMediaTasks(this IServiceCollection services)
         {
             foreach (Type type in typeof(MiddlewareExtensions).Assembly.GetTypes())
             {

@@ -52,7 +52,6 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-
             await this.mediaService.DeleteAssetAsync(this.AssetName);
 
             return ExecutionResult.Next();
