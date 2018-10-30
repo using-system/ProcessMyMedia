@@ -38,7 +38,7 @@ Create a new asset and upload the file specified
  </tr>
  <tr>
   <td>Metadata</td>
-  <td>Dictionary<string, string></td>
+  <td>Dictionary</td>
   <td>Metadata informations to associate with the asset</td>
   <td>No</td>
  </tr>
