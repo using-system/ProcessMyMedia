@@ -10,6 +10,8 @@
 
     public abstract class SampleBase
     {
+        internal const string WORKFLOW_NAME = "SampleWorklow";
+
         protected IConfigurationRoot configuration;
 
         public SampleBase(IConfigurationRoot configuration)

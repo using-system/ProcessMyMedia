@@ -7,37 +7,22 @@
 
     using WorkflowCore.Interface;
 
-    public class IngestFromDirectory : SampleBase
+    public class IngestFromDirectory : WofkflowSampleBase<IngestFromDirectory.IngestFromDirectoryWorkflow, IngestFromDirectory.IngestFromDirectoryWorkflowData>
     {
         public IngestFromDirectory(IConfigurationRoot configuration) : base(configuration)
         {
 
         }
 
-        public override void Execute()
+        protected override IngestFromDirectoryWorkflowData WorflowDatas => new IngestFromDirectoryWorkflowData()
         {
-            IServiceProvider serviceProvider = ConfigureServices();
-
-            //start the workflow host
-            var host = serviceProvider.GetService<IWorkflowHost>();
-            host.RegisterWorkflow<IngestFromDirectoryWorkflow, IngestFromDirectoryWorkflowData>();
-            host.Start();
-
-            string result = host.StartWorkflow<IngestFromDirectoryWorkflowData>("Ingest", data: new IngestFromDirectoryWorkflowData()
-            {
-                AssetName = "MyAsset",
-                Directory = @"C:\Users\mnicolescu\Documents\Asset"
-            }).Result;
-
-            Console.WriteLine(("Press Enter to stop the workflow host"));
-            Console.ReadLine();
-
-            host.Stop();
-        }
+            AssetName = "MyAsset",
+            Directory = @"C:\Users\mnicolescu\Documents\Asset"
+        };
 
         public class IngestFromDirectoryWorkflow : IWorkflow<IngestFromDirectoryWorkflowData>
         {
-            public string Id => "IngestFromDirectoryWorkflow";
+            public string Id => SampleBase.WORKFLOW_NAME;
 
             public int Version => 1;
 
