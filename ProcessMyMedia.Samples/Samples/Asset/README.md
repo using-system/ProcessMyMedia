@@ -1,4 +1,4 @@
-#IngestFromDirectory Task
+# IngestFromDirectory Task
 
 ```c#
 public class IngestFromDirectoryWorkflow : IWorkflow<IngestFromDirectoryWorkflowData>
