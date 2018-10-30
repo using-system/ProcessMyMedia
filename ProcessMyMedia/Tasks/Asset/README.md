@@ -59,4 +59,4 @@ Create a new asset and upload the file specified
 </table>
 [AssetEntity] (/ProcessMyMedia/Model)
 [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
-* [Asset Samples](../../../ProcessMyMedia.Samples/Samples/Asset)
+* [Asset Samples](../../ProcessMyMedia.Samples/Samples/Asset)
