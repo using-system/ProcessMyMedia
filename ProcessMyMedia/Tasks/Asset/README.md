@@ -57,5 +57,5 @@ Create a new asset and upload the file specified
   <td>The asset created or updated by the task.</td>
  </tr>
 </table>
-[AssetEntity] (using-system/ProcessMyMedia/blob/master/ProcessMyMedia/Model)
+[AssetEntity] (https://github.com/using-system/ProcessMyMedia/blob/branch/ProcessMyMedia/Model)
 * [Asset Samples](https://www.google.com)
