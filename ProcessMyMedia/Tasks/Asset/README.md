@@ -53,7 +53,7 @@ Create a new asset and upload the file specified
  </tr>
  <tr>
   <td>Asset</td>
-  <td> [AssetEntity](../../../ProcessMyMedia) </td>
+  <td> [AssetEntity](../../../../ProcessMyMedia) </td>
   <td>The asset created or updated by the task.</td>
  </tr>
 </table>
