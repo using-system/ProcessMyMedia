@@ -36,4 +36,10 @@ Create a new asset and upload the file specified
   <td>If not specified, the task upload the file into the primary storage account associated to the Media Services account</td>
   <td>No</td>
  </tr>
+ <tr>
+  <td>Metadata</td>
+  <td>Dictionary<string, string></td>
+  <td>Metadata informations to associate with the asset</td>
+  <td>No</td>
+ </tr>
 </table>
