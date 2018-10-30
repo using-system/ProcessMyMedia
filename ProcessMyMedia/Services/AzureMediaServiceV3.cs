@@ -87,6 +87,11 @@ namespace ProcessMyMedia.Services
             IEnumerable<string> files,
             IDictionary<string, string> metadata = null)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var response = await this.client.Assets.ListContainerSasAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
@@ -122,6 +127,11 @@ namespace ProcessMyMedia.Services
         /// <returns></returns>
         public async Task DeleteAssetAsync(string assetName)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
         }
 
@@ -133,6 +143,11 @@ namespace ProcessMyMedia.Services
         /// <returns></returns>
         public async Task DeleteJobAsync(string jobName, string transformationName)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
                 transformationName,

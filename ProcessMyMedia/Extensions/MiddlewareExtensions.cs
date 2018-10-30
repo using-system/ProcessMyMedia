@@ -2,10 +2,11 @@
 {
     using System;
 
-    using Microsoft.AspNetCore.Builder;
     using Microsoft.Extensions.DependencyInjection;
 
     using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Middleware Extensions
@@ -22,6 +23,8 @@
         {
             services.AddWorkflow();
             services.AddMediaTasks();
+
+            services.AddTransient<IMediaService, AzureMediaServiceV3>();
 
             if (configuration != null)
             {
