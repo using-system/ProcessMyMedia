@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory)  :base(configuration, loggerFactory)
+        public MediaTaskBase(WamsConfiguration configuration, ILoggerFactory loggerFactory)  :base(configuration, loggerFactory)
         {
             this.configuration = configuration;
             this.logger = loggerFactory.CreateLogger(this.GetType());
@@ -49,7 +49,7 @@
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
     public abstract class MediaTaskBase : StepBodyAsync, IMediaTask
     {
-        protected MediaConfiguration configuration;
+        protected WamsConfiguration configuration;
 
         protected ILogger logger;
 
@@ -58,7 +58,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory)
+        public MediaTaskBase(WamsConfiguration configuration, ILoggerFactory loggerFactory)
         {
             this.configuration = configuration;
             this.logger = loggerFactory.CreateLogger(this.GetType());

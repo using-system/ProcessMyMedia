@@ -69,7 +69,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory"></param>
-        public IngestTaskBase(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public IngestTaskBase(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
             this.AssetFiles = new List<string>();
             this.Metadata = new Dictionary<string, string>();

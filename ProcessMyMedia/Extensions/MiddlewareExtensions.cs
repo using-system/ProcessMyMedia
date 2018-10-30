@@ -18,14 +18,14 @@
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
         /// <returns></returns>
-        public static IServiceCollection AddMediaServices(this IServiceCollection services, MediaConfiguration configuration = null)
+        public static IServiceCollection AddMediaServices(this IServiceCollection services, WamsConfiguration configuration = null)
         {
             services.AddWorkflow();
             services.AddMediaTasks();
 
             if (configuration != null)
             {
-                services.AddSingleton<MediaConfiguration>((provider) => configuration);
+                services.AddSingleton<WamsConfiguration>((provider) => configuration);
             }
 
             return services;

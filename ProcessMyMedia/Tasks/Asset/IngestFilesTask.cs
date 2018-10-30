@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory"></param>
-        public IngestFilesTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public IngestFilesTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
         }

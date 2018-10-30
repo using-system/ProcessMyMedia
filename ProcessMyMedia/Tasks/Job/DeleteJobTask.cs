@@ -38,7 +38,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public DeleteJobTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public DeleteJobTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
         }

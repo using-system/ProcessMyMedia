@@ -31,7 +31,7 @@ namespace ProcessMyMedia.Tasks
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory"></param>
-        public IngestFileTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public IngestFileTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
         }
 

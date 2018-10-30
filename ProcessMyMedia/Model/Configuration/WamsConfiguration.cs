@@ -3,7 +3,7 @@
     /// <summary>
     /// Media Configuration
     /// </summary>
-    public class MediaConfiguration
+    public class WamsConfiguration
     {
         /// <summary>
         /// Gets or sets the arm endpoint.

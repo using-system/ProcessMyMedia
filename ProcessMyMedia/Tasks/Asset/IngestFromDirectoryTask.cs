@@ -49,7 +49,7 @@ namespace ProcessMyMedia.Tasks
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory"></param>
-        public IngestFromDirectoryTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public IngestFromDirectoryTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
             this.TopDirectoryOnly = true;
         }

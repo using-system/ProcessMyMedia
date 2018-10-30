@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public DeleteAssetTask(MediaConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public DeleteAssetTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
         {
 
         }
