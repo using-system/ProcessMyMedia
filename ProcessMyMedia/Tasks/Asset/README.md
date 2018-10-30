@@ -57,5 +57,5 @@ Create a new asset and upload the file specified
   <td>The asset created or updated by the task.</td>
  </tr>
 </table>
-[AssetEntity](../../Model/README.md)
+[AssetEntity](../)
 * [Asset Samples](https://www.google.com)
