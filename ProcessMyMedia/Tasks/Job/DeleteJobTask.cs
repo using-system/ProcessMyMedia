@@ -3,13 +3,12 @@
     using System;
     using System.Threading.Tasks;
 
-    using Microsoft.Azure.Management.Media;
     using Microsoft.Extensions.Logging;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Delete Job Task
@@ -36,9 +35,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteJobTask"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public DeleteJobTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public DeleteJobTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }
@@ -59,19 +58,15 @@
             }
         }
 
+
         /// <summary>
-        /// Runs the specified context.
+        /// Runs the media task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-            await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                this.TransformName,
-                this.JobName);
+            await this.mediaService.DeleteJobAsync(this.TransformName, this.JobName);
 
             return ExecutionResult.Next();
         }

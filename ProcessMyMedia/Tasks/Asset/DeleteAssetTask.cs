@@ -3,13 +3,12 @@
     using System;
     using System.Threading.Tasks;
 
-    using Microsoft.Azure.Management.Media;
     using Microsoft.Extensions.Logging;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Delete Asset Task
@@ -28,9 +27,9 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="DeleteAssetTask"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public DeleteAssetTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        public DeleteAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }
@@ -47,14 +46,14 @@
         }
 
         /// <summary>
-        /// Runs the specified context.
+        /// Runs the media task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-            await client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, this.AssetName);
+
+            await this.mediaService.DeleteAssetAsync(this.AssetName);
 
             return ExecutionResult.Next();
         }

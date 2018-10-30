@@ -5,12 +5,11 @@ namespace ProcessMyMedia.Tasks
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Azure.Management.Media;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Ingest File Task
@@ -26,12 +25,13 @@ namespace ProcessMyMedia.Tasks
         /// </value>
         public string  AssetFilePath { get; set; }
 
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFileTask" /> class.
+        /// Initializes a new instance of the <see cref="IngestFileTask"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="loggerFactory"></param>
-        public IngestFileTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        /// <param name="mediaService">The media service.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public IngestFileTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
         }
 
@@ -48,17 +48,17 @@ namespace ProcessMyMedia.Tasks
             }
         }
 
+
         /// <summary>
         /// Runs the asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
+        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             this.AssetFiles.Add(this.AssetFilePath);
 
-            return await base.RunMediaTaskAsync(context, client);
+            return await base.RunMediaTaskAsync(context);
         }
     }
 }

@@ -1,17 +1,13 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
-    using System;
     using System.Threading.Tasks;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.Extensions.Logging;
-    using Microsoft.Azure.Management.Media;
-    using Microsoft.Rest.Azure.Authentication;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Media Task Base
@@ -30,15 +26,15 @@
         /// </value>
         public T Output { get; protected set; }
 
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.
+        /// Initializes a new instance of the <see cref="MediaTaskBase{T}"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(WamsConfiguration configuration, ILoggerFactory loggerFactory)  :base(configuration, loggerFactory)
+        public MediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory)  :base(mediaService, loggerFactory)
         {
-            this.configuration = configuration;
-            this.logger = loggerFactory.CreateLogger(this.GetType());
+
         }
     }
 
@@ -49,18 +45,19 @@
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
     public abstract class MediaTaskBase : StepBodyAsync, IMediaTask
     {
-        protected WamsConfiguration configuration;
+        protected IMediaService mediaService;
 
         protected ILogger logger;
 
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.
+        /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(WamsConfiguration configuration, ILoggerFactory loggerFactory)
+        public MediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory)
         {
-            this.configuration = configuration;
+            this.mediaService = mediaService;
             this.logger = loggerFactory.CreateLogger(this.GetType());
         }
 
@@ -71,25 +68,11 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunAsync(IStepExecutionContext context)
         {
-            ExecutionResult result;
-
             this.ValidateInput();
 
-            ClientCredential clientCredential =
-                new ClientCredential(this.configuration.AadClientId, this.configuration.AadSecret);
+            await this.mediaService.AuthAsync();
 
-            var clientCredentials = await ApplicationTokenProvider.LoginSilentAsync(this.configuration.AadTenantId,
-                clientCredential, ActiveDirectoryServiceSettings.Azure);
-
-            using (var client = new AzureMediaServicesClient(new Uri(this.configuration.ArmEndpoint), clientCredentials)
-            {
-                SubscriptionId = this.configuration.SubscriptionId,
-            })
-            {
-                result = await this.RunMediaTaskAsync(context, client);
-            }
-
-            return result;
+            return await this.RunMediaTaskAsync(context);
         }
 
         /// <summary>
@@ -98,12 +81,11 @@
         public abstract void ValidateInput();
 
         /// <summary>
-        /// Runs the specified context.
+        /// Runs the media task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client);
+        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

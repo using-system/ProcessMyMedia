@@ -5,12 +5,11 @@
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Azure.Management.Media;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Ingest Files Task 
@@ -26,11 +25,11 @@
         public new List<string> AssetFiles { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFilesTask" /> class.
+        /// Initializes a new instance of the <see cref="IngestFilesTask"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="loggerFactory"></param>
-        public IngestFilesTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        /// <param name="mediaService">The media service.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public IngestFilesTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }
@@ -54,9 +53,9 @@
         /// <param name="context">The context.</param>
         /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
+        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-            return base.RunMediaTaskAsync(context, client);
+            return base.RunMediaTaskAsync(context);
         }
     }
 }

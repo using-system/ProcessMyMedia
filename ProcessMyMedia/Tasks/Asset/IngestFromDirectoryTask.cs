@@ -1,17 +1,16 @@
-﻿using System;
-
-namespace ProcessMyMedia.Tasks
+﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
+
     using System.IO;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Azure.Management.Media;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
+    using ProcessMyMedia.Services.Contract;
 
     /// <summary>
     /// Ingest From Directory Task
@@ -44,12 +43,13 @@ namespace ProcessMyMedia.Tasks
         /// </value>
         public bool TopDirectoryOnly { get; set; }
 
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFromDirectoryTask" /> class.
+        /// Initializes a new instance of the <see cref="IngestFromDirectoryTask"/> class.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        /// <param name="loggerFactory"></param>
-        public IngestFromDirectoryTask(WamsConfiguration configuration, ILoggerFactory loggerFactory) : base(configuration, loggerFactory)
+        /// <param name="mediaService">The media service.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public IngestFromDirectoryTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.TopDirectoryOnly = true;
         }
@@ -72,9 +72,8 @@ namespace ProcessMyMedia.Tasks
         /// Runs the asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <param name="client">The client.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context, AzureMediaServicesClient client)
+        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             if (string.IsNullOrEmpty(this.SearchPattern))
             {
@@ -85,7 +84,7 @@ namespace ProcessMyMedia.Tasks
                 this.SearchPattern, 
                 this.TopDirectoryOnly? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories));
 
-            return base.RunMediaTaskAsync(context, client);
+            return base.RunMediaTaskAsync(context);
         }
     }
 }
