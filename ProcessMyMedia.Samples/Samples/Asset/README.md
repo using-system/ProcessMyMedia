@@ -1,4 +1,8 @@
-# IngestFromDirectory Task
+# Asset Samples
+
+## Ingest from directory
+
+The sample create a new asset and upload files from a directory to the asset, then delete the asset (after doing somes stuffs).
 
 ```c#
 public class IngestFromDirectoryWorkflow : IWorkflow<IngestFromDirectoryWorkflowData>
