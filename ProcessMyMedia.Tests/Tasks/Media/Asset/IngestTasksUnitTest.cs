@@ -34,7 +34,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.AreEqual(Guid.Empty, this.GetData(workflowId).AssetID);
+            Assert.AreEqual(null, this.GetData(workflowId).AssetID);
 
         }
 
@@ -43,7 +43,7 @@
         {
             AssetEntity expected = new AssetEntity()
             {
-                AssetID = Guid.NewGuid()
+                AssetID = Guid.NewGuid().ToString()
             };
 
             var workflowDatas = new IngestWorkflowData()
@@ -84,7 +84,7 @@
         {
             AssetEntity expected = new AssetEntity()
             {
-                AssetID = Guid.NewGuid()
+                AssetID = Guid.NewGuid().ToString()
             };
 
             var workflowDatas = new IngestWorkflowData()
@@ -129,7 +129,7 @@
         {
             AssetEntity expected = new AssetEntity()
             {
-                AssetID = Guid.NewGuid()
+                AssetID = Guid.NewGuid().ToString()
             };
 
             var workflowDatas = new IngestWorkflowData()
@@ -211,7 +211,7 @@
 
             public string Directory { get; set; }
 
-            public Guid AssetID { get; set; }
+            public string AssetID { get; set; }
         }
     }
 }

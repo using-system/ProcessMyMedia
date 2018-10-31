@@ -1,5 +1,7 @@
 ﻿namespace ProcessMyMedia.Extensions
 {
+    using System;
+
     using ProcessMyMedia.Model;
 
     /// <summary>
@@ -21,7 +23,7 @@
 
             return new AssetEntity()
             {
-                AssetID = source.AssetId,
+                AssetID = (source.AssetId == Guid.Empty) ? string.Empty : source.AssetId.ToString(),
                 Name = source.Name,
                 Description = source.Description,
                 CreationDate =  source.Created,

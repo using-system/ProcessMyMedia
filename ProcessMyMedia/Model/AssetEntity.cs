@@ -13,7 +13,7 @@
         /// <value>
         /// The asset identifier.
         /// </value>
-        public Guid AssetID { get; set; }
+        public string AssetID { get; set; }
 
         /// <summary>
         /// Gets or sets the name.

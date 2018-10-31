@@ -39,11 +39,26 @@
             IDictionary<string, string> metadata = null);
 
         /// <summary>
+        /// Downloads the files.
+        /// </summary>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <param name="directoryToDownload">The directory to download.</param>
+        /// <returns></returns>
+        Task DownloadFilesAsync(string assetName, string directoryToDownload);
+
+        /// <summary>
         /// Deletes the asset.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
         /// <returns></returns>
         Task DeleteAssetAsync(string assetName);
+
+        /// <summary>
+        /// Annalyses the specified asset name.
+        /// </summary>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <returns></returns>
+        Task<JobEntity> StartAnalyseAsync(string assetName);
 
         /// <summary>
         /// Deletes the job.

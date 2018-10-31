@@ -1,8 +1,7 @@
-﻿using System.Security;
-
-namespace ProcessMyMedia.Services
+﻿namespace ProcessMyMedia.Services
 {
     using System;
+    using System.Security;
     using System.IO;
     using System.Linq;
     using System.Collections.Generic;
@@ -121,6 +120,17 @@ namespace ProcessMyMedia.Services
         }
 
         /// <summary>
+        /// Downloads the files.
+        /// </summary>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <param name="directoryToDownload">The directory to download.</param>
+        /// <returns></returns>
+        public Task DownloadFilesAsync(string assetName, string directoryToDownload)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Deletes the asset.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
@@ -133,6 +143,11 @@ namespace ProcessMyMedia.Services
             }
 
             await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+        }
+
+        public async Task<JobEntity> StartAnalyseAsync(string assetName)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
