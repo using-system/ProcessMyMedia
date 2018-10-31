@@ -12,7 +12,7 @@
 
     [TestClass]
     [TestCategory("Asset")]
-    public class DeleteAssetTaskUnitTest : UnitTestBase<DeleteAssetTaskUnitTest.TestWorfklow, DeleteAssetTaskUnitTest.TestWorkflowData>
+    public class DeleteAssetTaskUnitTest : UnitTestBase<DeleteAssetTaskUnitTest.DeleteAssetWorkflow, DeleteAssetTaskUnitTest.DeleteAssetWorkflowData>
     {
         public DeleteAssetTaskUnitTest()
         {
@@ -22,9 +22,11 @@
         [TestMethod]
         public void  DeleteAssetWithoutAssetNameTest()
         {
-            var workflowId = this.StartWorkflow(new TestWorkflowData());
-            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+            this.mediaService.Setup(mock => mock.AuthAsync()).Throws<Exception>();
+            this.mediaService.Setup(mock => mock.Dispose()).Throws<Exception>();
 
+            var workflowId = this.StartWorkflow(new DeleteAssetWorkflowData());
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
         }
@@ -32,18 +34,19 @@
         [TestMethod]
         public void DeleteAssetTest()
         {
-            var workflowId = this.StartWorkflow(new TestWorkflowData()
+            this.mediaService.Setup(mock => mock.DeleteAssetAsync(It.Is<string>(s => s == "MyAsset")))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.AuthAsync())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
+
+            var workflowId = this.StartWorkflow(new DeleteAssetWorkflowData()
             {
                 AssetNameToDelete = "MyAsset"
             });
-
-            this.mediaService.Setup(mock => mock.DeleteAssetAsync(It.Is<string>(s => s == "MyAsset")))
-                .Returns(() =>
-                {
-                    return Task.CompletedTask;
-                })
-                .Verifiable();
-            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
@@ -51,16 +54,41 @@
 
             Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
             
-            this.mediaService.Verify();
+           mediaService.Verify();
         }
 
-        public class TestWorfklow : IWorkflow<TestWorkflowData>
+        [TestMethod]
+        public void DeleteAssetKoTest()
         {
-            public string Id => nameof(TestWorfklow);
+            this.mediaService.Setup(mock => mock.DeleteAssetAsync(It.Is<string>(s => s == "MyAsset")))
+                .Throws<Exception>();
+            this.mediaService.Setup(mock => mock.AuthAsync())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
+
+            var workflowId = this.StartWorkflow(new DeleteAssetWorkflowData()
+            {
+                AssetNameToDelete = "MyAsset"
+            });
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+
+            mediaService.Verify();
+        }
+
+        public class DeleteAssetWorkflow : IWorkflow<DeleteAssetWorkflowData>
+        {
+            public string Id => nameof(DeleteAssetWorkflow);
 
             public int Version => 1;
 
-            public void Build(IWorkflowBuilder<TestWorkflowData> builder)
+            public void Build(IWorkflowBuilder<DeleteAssetWorkflowData> builder)
             {
                 builder
                     .StartWith<ProcessMyMedia.Tasks.DeleteAssetTask>()
@@ -69,7 +97,7 @@
             }
         }
 
-        public class TestWorkflowData
+        public class DeleteAssetWorkflowData
         {
             public string AssetNameToDelete { get; set; }
         }

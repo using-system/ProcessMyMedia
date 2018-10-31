@@ -16,7 +16,7 @@
         where TWorkflow : IWorkflow<TData>, new()
         where TData : class, new()
     {
-        protected Mock<IMediaService> mediaService;
+        protected  Mock<IMediaService> mediaService;
 
         public UnitTestBase()
         {
