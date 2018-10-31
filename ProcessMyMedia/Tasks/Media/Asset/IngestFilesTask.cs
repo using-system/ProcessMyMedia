@@ -55,6 +55,8 @@
         /// <returns></returns>
         public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
+            base.AssetFiles = this.AssetFiles;
+
             return base.RunMediaTaskAsync(context);
         }
     }

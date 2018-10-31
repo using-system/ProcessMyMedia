@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Tests.Tasks.Media.Asset
 {
     using System;
+    using System.IO;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -77,6 +78,92 @@
             mediaService.Verify();
         }
 
+
+        [TestMethod]
+        public void IngestFilesTest()
+        {
+            AssetEntity expected = new AssetEntity()
+            {
+                AssetID = Guid.NewGuid()
+            };
+
+            var workflowDatas = new IngestWorkflowData()
+            {
+                AssetName = "MyAsset",
+                Files =
+                {
+                    "c:\test1.mpg",
+                    "c:\test2.mpg",
+                    "c:\test3.mpg"
+                }
+            };
+
+            this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
+                    It.Is<string>(s => s == "MyAsset"), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(() => Task.FromResult(expected))
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
+                    It.Is<string>(s => s == "MyAsset"),
+                    It.Is<IEnumerable<string>>(files => files.Count() == 3),
+                    It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.AuthAsync())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
+
+            var workflowId = this.StartWorkflow(workflowDatas);
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+            Assert.AreEqual(expected.AssetID, this.GetData(workflowId).AssetID);
+
+            mediaService.Verify();
+        }
+
+        [TestMethod]
+        public void IngestFromDirectoryTest()
+        {
+            AssetEntity expected = new AssetEntity()
+            {
+                AssetID = Guid.NewGuid()
+            };
+
+            var workflowDatas = new IngestWorkflowData()
+            {
+                AssetName = "MyAsset",
+                Directory = Directory.GetCurrentDirectory()
+            };
+
+            this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
+                    It.Is<string>(s => s == "MyAsset"), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(() => Task.FromResult(expected))
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
+                    It.Is<string>(s => s == "MyAsset"),
+                    It.Is<IEnumerable<string>>(files => files.Count() > 0),
+                    It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.AuthAsync())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
+
+            var workflowId = this.StartWorkflow(workflowDatas);
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+            Assert.AreEqual(expected.AssetID, this.GetData(workflowId).AssetID);
+
+            mediaService.Verify();
+        }
+
         public class IngestWorkflow: IWorkflow<IngestWorkflowData>
         {
             public string Id => nameof(IngestWorkflow);
@@ -93,15 +180,36 @@
                         then.StartWith<ProcessMyMedia.Tasks.IngestFileTask>()
                             .Input(task => task.AssetFilePath, data => data.FilePath)
                             .Input(task => task.AssetName, data => data.AssetName)
-                            .Output(data => data.AssetID, task=> task.Output.Asset.AssetID));
+                            .Output(data => data.AssetID, task => task.Output.Asset.AssetID))
+                    .If(data => data.Files.Count > 0)
+                    .Do(then =>
+                        then.StartWith<ProcessMyMedia.Tasks.IngestFilesTask>()
+                            .Input(task => task.AssetFiles, data => data.Files)
+                            .Input(task => task.AssetName, data => data.AssetName)
+                            .Output(data => data.AssetID, task => task.Output.Asset.AssetID))
+                    .If(data => !string.IsNullOrEmpty(data.Directory))
+                    .Do(then =>
+                        then.StartWith<ProcessMyMedia.Tasks.IngestFromDirectoryTask>()
+                            .Input(task => task.AssetDirectoryPath, data => data.Directory)
+                            .Input(task => task.AssetName, data => data.AssetName)
+                            .Output(data => data.AssetID, task => task.Output.Asset.AssetID));
             }
         }
 
         public class IngestWorkflowData
         {
+            public IngestWorkflowData()
+            {
+                this.Files = new List<string>();
+            }
+
             public string AssetName { get; set; }
 
             public string FilePath { get; set; }
+
+            public List<string> Files { get; set; }
+
+            public string Directory { get; set; }
 
             public Guid AssetID { get; set; }
         }
