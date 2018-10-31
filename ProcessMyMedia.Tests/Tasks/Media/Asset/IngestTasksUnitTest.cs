@@ -1,4 +1,4 @@
-﻿namespace ProcessMyMedia.Tests.Tasks.Asset
+﻿namespace ProcessMyMedia.Tests.Tasks.Media.Asset
 {
     using System;
     using System.Collections.Generic;

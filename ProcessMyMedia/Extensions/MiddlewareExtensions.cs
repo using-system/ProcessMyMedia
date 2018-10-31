@@ -45,7 +45,7 @@
             {
                 if (type.IsClass 
                     && !type.IsAbstract
-                    && typeof(Tasks.IMediaTask).IsAssignableFrom(type))
+                    && typeof(Tasks.ITask).IsAssignableFrom(type))
                 {
                     services.AddTransient(type);
                 }

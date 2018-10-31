@@ -29,12 +29,12 @@
             services.AddMediaServices(configuration: new WamsConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
-                SubscriptionId = this.configuration["SubscriptionId"],
-                MediaAccountName = this.configuration["MediaAccountName"],
-                ResourceGroup = this.configuration["ResourceGroup"],
-                AadTenantId = this.configuration["AadTenantId"],
-                AadClientId = this.configuration["AadClientId"],
-                AadSecret = this.configuration["AadSecret"]
+                SubscriptionId = this.configuration["MediaServices:SubscriptionId"],
+                MediaAccountName = this.configuration["MediaServices:MediaAccountName"],
+                ResourceGroup = this.configuration["MediaServices:ResourceGroup"],
+                AadTenantId = this.configuration["MediaServices:AadTenantId"],
+                AadClientId = this.configuration["MediaServices:AadClientId"],
+                AadSecret = this.configuration["MediaServices:AadSecret"]
             });
 
             services.AddLogging(builder =>

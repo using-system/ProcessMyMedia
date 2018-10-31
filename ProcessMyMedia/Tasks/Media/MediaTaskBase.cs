@@ -43,7 +43,7 @@
     /// Media Task Base
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class MediaTaskBase : StepBodyAsync, IMediaTask
+    public abstract class MediaTaskBase : StepBodyAsync, ITask
     {
         protected IMediaService mediaService;
 
