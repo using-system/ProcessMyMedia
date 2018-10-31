@@ -1,4 +1,4 @@
-﻿namespace ProcessMyMedia.Tasks.Media.Analyzing
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Threading.Tasks;
