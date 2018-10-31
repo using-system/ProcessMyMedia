@@ -72,7 +72,11 @@
 
             await this.mediaService.AuthAsync();
 
-            return await this.RunMediaTaskAsync(context);
+            var result = await this.RunMediaTaskAsync(context);
+
+            this.mediaService.Dispose();
+
+            return result;
         }
 
         /// <summary>

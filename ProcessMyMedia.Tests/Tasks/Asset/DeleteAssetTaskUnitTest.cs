@@ -37,20 +37,21 @@
                 AssetNameToDelete = "MyAsset"
             });
 
-            bool assetDeleted = false;
             this.mediaService.Setup(mock => mock.DeleteAssetAsync(It.Is<string>(s => s == "MyAsset")))
                 .Returns(() =>
                 {
-                    assetDeleted = true;
                     return Task.CompletedTask;
-                });
+                })
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
 
 
             Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
-            Assert.IsTrue(assetDeleted);
+            
+            this.mediaService.Verify();
         }
 
         public class TestWorfklow : IWorkflow<TestWorkflowData>
