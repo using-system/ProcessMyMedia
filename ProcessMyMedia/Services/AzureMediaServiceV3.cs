@@ -212,11 +212,12 @@
             AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}", 
                 assetDescription: $"Media Analysing for {assetName}");
 
-            string transformName = $"MediaAnalysing-{Guid.NewGuid()}";
             TransformOutput[] outputs = new TransformOutput[]
             {
-                new TransformOutput(parameters.ToAnalyzerPreset()),
+                new TransformOutput(parameters.ToAnalyzerPreset(), onError: OnErrorType.StopProcessingJob),
             };
+
+            string transformName = $"MediaAnalysing-{Guid.NewGuid()}";
             Transform transform = await client.Transforms.CreateOrUpdateAsync
                 (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
 
