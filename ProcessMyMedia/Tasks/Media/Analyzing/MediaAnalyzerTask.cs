@@ -10,6 +10,7 @@
 
     using ProcessMyMedia.Model.Tasks;
     using ProcessMyMedia.Services.Contract;
+    using ProcessMyMedia.Model;
 
     /// <summary>
     /// Media Analyzer Task
@@ -29,9 +30,22 @@
         /// </value>
         public string AssetName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the analyzing parameters.
+        /// </summary>
+        /// <value>
+        /// The analyzing parameters.
+        /// </value>
+        public AnalyzingParameters AnalyzingParameters { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MediaAnalyzerTask"/> class.
+        /// </summary>
+        /// <param name="mediaService">The media service.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
         public MediaAnalyzerTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
-
+            this.AnalyzingParameters = new AnalyzingParameters();
         }
 
         /// <summary>

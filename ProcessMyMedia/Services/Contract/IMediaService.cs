@@ -54,11 +54,12 @@
         Task DeleteAssetAsync(string assetName);
 
         /// <summary>
-        /// Annalyses the specified asset name.
+        /// Starts the analyse asynchronous.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
+        /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        Task<JobEntity> StartAnalyseAsync(string assetName);
+        Task<JobEntity> StartAnalyseAsync(string assetName, AnalyzingParameters parameters);
 
         /// <summary>
         /// Deletes the job.

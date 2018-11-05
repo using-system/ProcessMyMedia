@@ -82,6 +82,14 @@
             return asset.ToEntity();
         }
 
+        /// <summary>
+        /// Uploads the files to asset.
+        /// </summary>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <param name="files">The files.</param>
+        /// <param name="metadata">The metadata.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
         public async Task UploadFilesToAssetAsync(string assetName,
             IEnumerable<string> files,
             IDictionary<string, string> metadata = null)
@@ -145,8 +153,39 @@
             await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
         }
 
-        public async Task<JobEntity> StartAnalyseAsync(string assetName)
+        /// <summary>
+        /// Annalyses the specified asset name.
+        /// </summary>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <param name="parameters">The parameters.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<JobEntity> StartAnalyseAsync(string assetName, AnalyzingParameters parameters)
         {
+            AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}", 
+                assetDescription: $"Media Analysing for {assetName}");
+
+            string transformName = $"MediaAnalysing-{Guid.NewGuid()}";
+            TransformOutput[] outputs = new TransformOutput[]
+            {
+                new TransformOutput(parameters.ToAnalyzerPreset()),
+            };
+            Transform transform = await client.Transforms.CreateOrUpdateAsync
+                (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
+
+            Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                transformName,
+                $"job-{Guid.NewGuid()}",
+                new Job()
+                {
+                    Input = new JobInputAsset(assetName),
+                    Outputs =
+                    {
+                        new JobOutputAsset(outputAsset.Name)
+                    }
+                });
+
             throw new NotImplementedException();
         }
 
