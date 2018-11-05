@@ -72,14 +72,13 @@
             {
                 //First call: stat analyse
                 job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
-                return ExecutionResult.Sleep(TimeSpan.FromSeconds(30), job);
             }
 
             this.Output.Job = job;
 
             if (!job.IsFinished)
             {
-                return ExecutionResult.Sleep(TimeSpan.FromSeconds(30), job);
+                return ExecutionResult.Sleep(TimeSpan.FromSeconds(60), job);
             }
             else if (job.OnError)
             {
