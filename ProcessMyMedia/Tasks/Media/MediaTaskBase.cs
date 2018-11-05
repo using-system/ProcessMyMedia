@@ -16,7 +16,7 @@
     /// <seealso cref="System.IDisposable" />
     /// <seealso cref="WorkflowCore.Models.StepBodyAsync" />
     public abstract class MediaTaskBase<T> : MediaTaskBase
-        where T : class   
+        where T : class, new()   
     {
         /// <summary>
         /// Gets or sets the output.
@@ -34,7 +34,7 @@
         /// <param name="loggerFactory">The logger factory.</param>
         public MediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory)  :base(mediaService, loggerFactory)
         {
-
+            this.Output = new T();
         }
     }
 

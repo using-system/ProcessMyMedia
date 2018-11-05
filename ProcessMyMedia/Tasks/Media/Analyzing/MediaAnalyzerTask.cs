@@ -8,7 +8,6 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model.Tasks;
     using ProcessMyMedia.Services.Contract;
     using ProcessMyMedia.Model;
 
@@ -75,6 +74,8 @@
                 job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
                 return ExecutionResult.Sleep(TimeSpan.FromSeconds(30), job);
             }
+
+            this.Output.Job = job;
 
             if (!job.IsFinished)
             {
