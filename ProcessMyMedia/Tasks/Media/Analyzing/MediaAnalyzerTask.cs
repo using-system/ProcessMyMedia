@@ -80,16 +80,12 @@
             {
                 return ExecutionResult.Sleep(TimeSpan.FromSeconds(60), job);
             }
-            else if (job.OnError)
-            {
-                //TODO:implement exception
-            }
             else if (job.Canceled)
             {
-                //TODO/implement exeception
+                throw new Exception("Analysing Job was canceled");
             }
 
-            //TODO:get result
+            this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
 
             return ExecutionResult.Next();
         }

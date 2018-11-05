@@ -62,6 +62,13 @@
         Task<JobEntity> StartAnalyseAsync(string assetName, AnalyzingParameters parameters);
 
         /// <summary>
+        /// Ends the analyse.
+        /// </summary>
+        /// <param name="job">The job associated to the analyse.</param>
+        /// <returns></returns>
+        Task<AnalyzingResult> EndAnalyseAsync(JobEntity job);
+
+        /// <summary>
         /// Gets the job.
         /// </summary>
         /// <param name="name">The name.</param>

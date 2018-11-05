@@ -12,5 +12,13 @@
         /// The job.
         /// </value>
         public JobEntity Job { get; set; }
+
+        /// <summary>
+        /// Gets or sets the result.
+        /// </summary>
+        /// <value>
+        /// The result.
+        /// </value>
+        public AnalyzingResult Result { get; set; }
     }
 }

@@ -150,9 +150,6 @@
             Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
             CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
 
-            string directory = Path.Combine(directoryToDownload, assetName);
-            Directory.CreateDirectory(directory);
-
             BlobContinuationToken continuationToken = null;
             IList<Task> downloadTasks = new List<Task>();
 
@@ -165,7 +162,7 @@
                     CloudBlockBlob blob = blobItem as CloudBlockBlob;
                     if (blob != null)
                     {
-                        string path = Path.Combine(directory, blob.Name);
+                        string path = Path.Combine(directoryToDownload, blob.Name);
 
                         downloadTasks.Add(blob.DownloadToFileAsync(path, FileMode.Create));
                     }
@@ -230,6 +227,23 @@
         }
 
         /// <summary>
+        /// Ends the analyse.
+        /// </summary>
+        /// <param name="job">The job associated to the analyse.</param>
+        /// <returns></returns>
+        public async Task<AnalyzingResult> EndAnalyseAsync(JobEntity job)
+        {
+            string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.ID);
+
+            foreach (var assetToDownload in job.OutputAssetNames)
+            {
+                await this.DownloadFilesAsync(assetToDownload, workingDirectory);
+            }
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Gets the job asynchronous.
         /// </summary>
         /// <param name="jobName">Name of the job.</param>
@@ -272,6 +286,5 @@
         {
             this.client?.Dispose();
         }
-
     }
 }
