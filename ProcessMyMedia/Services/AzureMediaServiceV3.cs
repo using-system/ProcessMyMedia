@@ -228,7 +228,7 @@
                 new Job()
                 {
                     Input = new JobInputAsset(assetName),
-                    Outputs =
+                    Outputs = new List<JobOutput>
                     {
                         new JobOutputAsset(outputAsset.Name)
                     }
@@ -249,7 +249,7 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.ID);
+            string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
 
             foreach (var assetToDownload in job.OutputAssetNames)
             {
@@ -272,12 +272,11 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var job = await this.client.Jobs.GetAsync(this.configuration.ResourceGroup,
+            var job = await this.client.Jobs.ListAsync(configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
-                jobName,
                 templateName);
 
-            return job.ToJobEntity(templateName:templateName);
+            return job.FirstOrDefault()?.ToJobEntity(templateName:templateName);
         }
 
         /// <summary>

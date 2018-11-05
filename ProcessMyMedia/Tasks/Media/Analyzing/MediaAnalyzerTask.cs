@@ -82,12 +82,16 @@
                 //First call: stat analyse
                 job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
             }
+            else
+            {
+                job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
+            }
 
             this.Output.Job = job;
 
             if (!job.IsFinished)
             {
-                return ExecutionResult.Sleep(TimeSpan.FromSeconds(60), job);
+                return ExecutionResult.Sleep(TimeSpan.FromSeconds(5), job);
             }
             else if (job.Canceled)
             {

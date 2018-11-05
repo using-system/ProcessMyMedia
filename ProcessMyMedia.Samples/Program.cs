@@ -16,7 +16,7 @@
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.IngestFromDirectory(configuration).Execute();
+            new Samples.AnalyzeMedia(configuration).Execute();
         }
     }
 }
