@@ -16,12 +16,15 @@
         /// To the job entity.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="templateName">Name of the template.</param>
         /// <returns></returns>
-        public static JobEntity ToJobEntity(this Job source)
+        public static JobEntity ToJobEntity(this Job source, string templateName = null)
         {
             return new JobEntity()
             {
-                JobID = source.Id,
+                ID = source.Id,
+                Name = source.Name,
+                TemplateName = templateName,
                 InputAssetNames = source.Input.ToAssetNames(),
                 OutputAssetNames = source.Outputs.SelectMany(output => output.ToAssetNames()),
                 Canceled = source.State == JobState.Canceled,

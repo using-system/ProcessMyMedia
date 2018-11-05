@@ -186,16 +186,33 @@
                     }
                 });
 
-            return job.ToJobEntity();
+            return job.ToJobEntity(templateName:transformName);
+        }
+
+        /// <summary>
+        /// Gets the job asynchronous.
+        /// </summary>
+        /// <param name="jobName">Name of the job.</param>
+        /// <param name="templateName">Name of the template.</param>
+        /// <returns></returns>
+        public async Task<JobEntity> GetJobAsync(string jobName, string templateName)
+        {
+            var job = await this.client.Jobs.GetAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                jobName,
+                templateName);
+
+            return job.ToJobEntity(templateName:templateName);
         }
 
         /// <summary>
         /// Deletes the job.
         /// </summary>
         /// <param name="jobName">Name of the job.</param>
-        /// <param name="transformationName">Name of the transformation.</param>
+        /// <param name="templateName">Name of the template.</param>
         /// <returns></returns>
-        public async Task DeleteJobAsync(string jobName, string transformationName)
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task DeleteJobAsync(string jobName, string templateName)
         {
             if (this.client == null)
             {
@@ -204,7 +221,7 @@
 
             await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
-                transformationName,
+                templateName,
                 jobName);
         }
 
@@ -215,5 +232,6 @@
         {
             this.client?.Dispose();
         }
+
     }
 }

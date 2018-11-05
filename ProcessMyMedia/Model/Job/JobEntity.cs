@@ -13,7 +13,23 @@
         /// <value>
         /// The job identifier.
         /// </value>
-        public string JobID { get; set; }
+        public string ID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the template.
+        /// </summary>
+        /// <value>
+        /// The name of the template.
+        /// </value>
+        public string TemplateName { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is finished.

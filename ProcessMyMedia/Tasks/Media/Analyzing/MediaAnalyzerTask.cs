@@ -67,7 +67,29 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
-            JobEntity job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
+            JobEntity job = context.PersistenceData as JobEntity;
+
+            if (job == null)
+            {
+                //First call: stat analyse
+                job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
+                return ExecutionResult.Sleep(TimeSpan.FromSeconds(30), job);
+            }
+
+            if (!job.IsFinished)
+            {
+                return ExecutionResult.Sleep(TimeSpan.FromSeconds(30), job);
+            }
+            else if (job.OnError)
+            {
+                //TODO:implement exception
+            }
+            else if (job.Canceled)
+            {
+                //TODO/implement exeception
+            }
+
+            //TODO:get result
 
             return ExecutionResult.Next();
         }

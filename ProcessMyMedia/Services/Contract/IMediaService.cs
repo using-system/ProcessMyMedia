@@ -62,11 +62,19 @@
         Task<JobEntity> StartAnalyseAsync(string assetName, AnalyzingParameters parameters);
 
         /// <summary>
+        /// Gets the job.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="templateName">Name of the template.</param>
+        /// <returns></returns>
+        Task<JobEntity> GetJobAsync(string name, string templateName);
+
+        /// <summary>
         /// Deletes the job.
         /// </summary>
         /// <param name="jobName">Name of the job.</param>
-        /// <param name="transformationName">Name of the transformation.</param>
+        /// <param name="templateName">Name of the template.</param>
         /// <returns></returns>
-        Task DeleteJobAsync(string jobName, string transformationName);
+        Task DeleteJobAsync(string jobName, string templateName);
     }
 }
