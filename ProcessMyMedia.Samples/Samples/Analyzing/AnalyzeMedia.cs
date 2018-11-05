@@ -17,7 +17,7 @@
         protected override AnalyzeMediaWorkflowData WorflowDatas => new AnalyzeMediaWorkflowData()
         {
             InputAssetName = "AnalyzeMediaAsset",
-            MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset1")
+            MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2")
         };
 
         public class AnalyzeMediaWorkflow : IWorkflow<AnalyzeMediaWorkflowData>
