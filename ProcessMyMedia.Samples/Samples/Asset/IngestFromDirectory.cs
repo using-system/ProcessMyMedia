@@ -1,9 +1,9 @@
 ﻿namespace ProcessMyMedia.Samples
 {
-    using System;
+    using System.IO;
+
 
     using Microsoft.Extensions.Configuration;
-    using Microsoft.Extensions.DependencyInjection;
 
     using WorkflowCore.Interface;
 
@@ -16,8 +16,8 @@
 
         protected override IngestFromDirectoryWorkflowData WorflowDatas => new IngestFromDirectoryWorkflowData()
         {
-            AssetName = "MyAsset",
-            Directory = @"C:\Users\mnicolescu\Documents\Asset"
+            AssetName = "Asset1",
+            Directory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset1")
         };
 
         public class IngestFromDirectoryWorkflow : IWorkflow<IngestFromDirectoryWorkflowData>
@@ -45,7 +45,7 @@
 
             public string AssetName { get; set; }
 
-            public Guid AssetID { get; set; }
+            public string AssetID { get; set; }
         }
 
     }
