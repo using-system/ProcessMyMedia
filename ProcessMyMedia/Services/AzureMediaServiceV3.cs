@@ -133,9 +133,49 @@
         /// <param name="assetName">Name of the asset.</param>
         /// <param name="directoryToDownload">The directory to download.</param>
         /// <returns></returns>
-        public Task DownloadFilesAsync(string assetName, string directoryToDownload)
+        public async Task DownloadFilesAsync(string assetName, string directoryToDownload)
         {
-            throw new NotImplementedException();
+            if (!Directory.Exists(directoryToDownload))
+            {
+                Directory.CreateDirectory(directoryToDownload);
+            }
+
+            AssetContainerSas assetContainerSas = await client.Assets.ListContainerSasAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                assetName,
+                permissions: AssetContainerPermission.Read,
+                expiryTime: DateTime.UtcNow.AddHours(1).ToUniversalTime());
+
+            Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
+            CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
+
+            string directory = Path.Combine(directoryToDownload, assetName);
+            Directory.CreateDirectory(directory);
+
+            BlobContinuationToken continuationToken = null;
+            IList<Task> downloadTasks = new List<Task>();
+
+            do
+            {
+                BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, null, continuationToken, null, null);
+
+                foreach (IListBlobItem blobItem in segment.Results)
+                {
+                    CloudBlockBlob blob = blobItem as CloudBlockBlob;
+                    if (blob != null)
+                    {
+                        string path = Path.Combine(directory, blob.Name);
+
+                        downloadTasks.Add(blob.DownloadToFileAsync(path, FileMode.Create));
+                    }
+                }
+
+                continuationToken = segment.ContinuationToken;
+            }
+            while (continuationToken != null);
+
+            await Task.WhenAll(downloadTasks);
         }
 
         /// <summary>
