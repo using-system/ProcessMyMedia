@@ -67,6 +67,8 @@
         /// <returns></returns>
         public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
+            JobEntity job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
+
             return ExecutionResult.Next();
         }
     }

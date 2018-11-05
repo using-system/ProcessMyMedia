@@ -186,7 +186,7 @@
                     }
                 });
 
-            throw new NotImplementedException();
+            return job.ToJobEntity();
         }
 
         /// <summary>
