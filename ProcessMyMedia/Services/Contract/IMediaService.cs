@@ -83,5 +83,12 @@
         /// <param name="templateName">Name of the template.</param>
         /// <returns></returns>
         Task DeleteJobAsync(string jobName, string templateName);
+
+        /// <summary>
+        /// Deletes the template.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task DeleteTemplateAsync(string name);
     }
 }

@@ -135,6 +135,11 @@
         /// <returns></returns>
         public async Task DownloadFilesAsync(string assetName, string directoryToDownload)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             if (!Directory.Exists(directoryToDownload))
             {
                 Directory.CreateDirectory(directoryToDownload);
@@ -199,6 +204,11 @@
         /// <exception cref="NotImplementedException"></exception>
         public async Task<JobEntity> StartAnalyseAsync(string assetName, AnalyzingParameters parameters)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}", 
                 assetDescription: $"Media Analysing for {assetName}");
 
@@ -233,6 +243,11 @@
         /// <returns></returns>
         public async Task<AnalyzingResult> EndAnalyseAsync(JobEntity job)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.ID);
 
             foreach (var assetToDownload in job.OutputAssetNames)
@@ -251,6 +266,11 @@
         /// <returns></returns>
         public async Task<JobEntity> GetJobAsync(string jobName, string templateName)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var job = await this.client.Jobs.GetAsync(this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
                 jobName,
@@ -277,6 +297,24 @@
                 this.configuration.MediaAccountName,
                 templateName,
                 jobName);
+        }
+
+        /// <summary>
+        /// Deletes the template.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task DeleteTemplateAsync(string name)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            await client.Transforms.DeleteAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                name);
         }
 
         /// <summary>

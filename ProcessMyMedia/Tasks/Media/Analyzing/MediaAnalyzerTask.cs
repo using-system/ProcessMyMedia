@@ -38,6 +38,14 @@
         public AnalyzingParameters AnalyzingParameters { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [cleanup resources].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [cleanup resources]; otherwise, <c>false</c>.
+        /// </value>
+        public bool CleanupResources { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MediaAnalyzerTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
@@ -45,6 +53,7 @@
         public MediaAnalyzerTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.AnalyzingParameters = new AnalyzingParameters();
+            this.CleanupResources = true;
         }
 
         /// <summary>
@@ -86,6 +95,18 @@
             }
 
             this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
+
+            if (this.CleanupResources)
+            {
+                await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
+
+                await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+
+                foreach (var assetToDelete in job.OutputAssetNames)
+                {
+                    await this.mediaService.DeleteAssetAsync(assetToDelete);
+                }
+            }
 
             return ExecutionResult.Next();
         }
