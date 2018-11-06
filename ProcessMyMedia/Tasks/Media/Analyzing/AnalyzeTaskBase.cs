@@ -12,14 +12,15 @@
     using ProcessMyMedia.Model;
 
     /// <summary>
-    /// Media Analyzer Task
+    /// Analyse task base class
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.Tasks.MediaAnalyzerTaskOutput}" />
-    public class MediaAnalyzerTask : MediaTaskBase<MediaAnalyzerTaskOutput>
+    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.MediaAnalyzerTaskOutput}" />
+    public abstract class AnalyzeTaskBase : MediaTaskBase<MediaAnalyzerTaskOutput>
     {
         /***
          * https://docs.microsoft.com/en-us/azure/media-services/latest/analyze-videos-tutorial-with-api
          * https://github.com/Azure-Samples/media-services-v3-dotnet-tutorials/tree/master/AMSV3Tutorials/AnalyzeVideos
+         * https://docs.microsoft.com/en-us/azure/media-services/latest/analyzing-video-audio-files-concept
          */
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -27,7 +28,7 @@
         /// <value>
         /// The name of the asset.
         /// </value>
-        public string AssetName { get; set; }
+        protected string AssetName { get; set; }
 
         /// <summary>
         /// Gets or sets the analyzing parameters.
@@ -50,7 +51,7 @@
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaAnalyzerTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.AnalyzingParameters = new AnalyzingParameters();
             this.CleanupResources = true;
@@ -102,17 +103,27 @@
 
             if (this.CleanupResources)
             {
-                await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
-
-                await this.mediaService.DeleteTemplateAsync(job.TemplateName);
-
-                foreach (var assetToDelete in job.OutputAssetNames)
-                {
-                    await this.mediaService.DeleteAssetAsync(assetToDelete);
-                }
+                await this.Cleanup(job);
             }
 
             return ExecutionResult.Next();
+        }
+
+        /// <summary>
+        /// Cleanups the specified job.
+        /// </summary>
+        /// <param name="job">The job.</param>
+        /// <returns></returns>
+        protected async virtual Task Cleanup(JobEntity job)
+        {
+            await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
+
+            await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+
+            foreach (var assetToDelete in job.OutputAssetNames)
+            {
+                await this.mediaService.DeleteAssetAsync(assetToDelete);
+            }
         }
     }
 }

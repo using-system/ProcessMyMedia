@@ -34,7 +34,7 @@
                     .StartWith<Tasks.IngestFromDirectoryTask>()
                         .Input(task => task.AssetDirectoryPath, data => data.MediaDirectory)
                         .Input(task => task.AssetName, data => data.InputAssetName)
-                    .Then<Tasks.MediaAnalyzerTask>()
+                    .Then<Tasks.AnalyzeMediaAssetTask>()
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .Then<Tasks.DeleteAssetTask>()
                         .Input(task => task.AssetName, data => data.InputAssetName);
