@@ -256,7 +256,7 @@
                 await this.DownloadFilesAsync(assetToDownload, workingDirectory);
             }
 
-            throw new NotImplementedException();
+           return new AnalyzingResult();
         }
 
         /// <summary>
