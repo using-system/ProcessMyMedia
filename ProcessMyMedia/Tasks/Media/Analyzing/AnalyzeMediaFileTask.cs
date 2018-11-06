@@ -36,6 +36,18 @@
         }
 
         /// <summary>
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">AssetName</exception>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.FilePath))
+            {
+                throw new ArgumentException($"{nameof(this.FilePath)} is required");
+            }
+        }
+
+        /// <summary>
         /// Runs the media task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>

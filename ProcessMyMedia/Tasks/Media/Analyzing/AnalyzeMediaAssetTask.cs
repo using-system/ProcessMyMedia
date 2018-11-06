@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -31,6 +32,18 @@
         public AnalyzeMediaAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
+        }
+
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">AssetName</exception>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.AssetName))
+            {
+                throw new ArgumentException($"{nameof(this.AssetName)} is required");
+            }
         }
 
         public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)

@@ -40,8 +40,6 @@ namespace ProcessMyMedia.Tasks
         /// </summary>
         public override void ValidateInput()
         {
-            base.ValidateInput();
-
             if (string.IsNullOrEmpty(this.AssetFilePath))
             {
                 throw new ArgumentException($"{nameof(this.AssetFilePath)} is required");

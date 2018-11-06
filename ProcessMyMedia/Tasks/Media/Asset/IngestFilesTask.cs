@@ -39,7 +39,6 @@
         /// </summary>
         public override void ValidateInput()
         {
-            base.ValidateInput();
 
             if (this.AssetFiles?.Count <= 0)
             {
