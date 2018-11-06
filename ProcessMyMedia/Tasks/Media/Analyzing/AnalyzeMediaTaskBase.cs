@@ -14,8 +14,8 @@
     /// <summary>
     /// Analyse task base class
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.MediaAnalyzerTaskOutput}" />
-    public abstract class AnalyzeTaskBase : MediaTaskBase<MediaAnalyzerTaskOutput>
+    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.AnalyzeTaskOutput}" />
+    public abstract class AnalyzeMediaTaskBase : MediaTaskBase<AnalyzeTaskOutput>
     {
         /***
          * https://docs.microsoft.com/en-us/azure/media-services/latest/analyze-videos-tutorial-with-api
@@ -51,7 +51,7 @@
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public AnalyzeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeMediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.AnalyzingParameters = new AnalyzingParameters();
             this.CleanupResources = true;

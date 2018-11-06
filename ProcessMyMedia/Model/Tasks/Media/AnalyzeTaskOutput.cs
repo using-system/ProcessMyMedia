@@ -3,7 +3,7 @@
     /// <summary>
     /// MediaAnalyzer Task Output
     /// </summary>
-    public class MediaAnalyzerTaskOutput
+    public class AnalyzeTaskOutput
     {
         /// <summary>
         /// Gets or sets the job.

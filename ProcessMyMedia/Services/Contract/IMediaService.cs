@@ -69,6 +69,14 @@
         Task<AnalyzingResult> EndAnalyseAsync(JobEntity job);
 
         /// <summary>
+        /// Starts the encode.
+        /// </summary>
+        /// <param name="assetNames">The asset names.</param>
+        /// <param name="encodingOutputs">The encoding outputs.</param>
+        /// <returns></returns>
+        Task<JobEntity> StartEncodeAsync(IEnumerable<string> assetNames, IEnumerable<EncodingOutputBase> encodingOutputs);
+
+        /// <summary>
         /// Gets the job.
         /// </summary>
         /// <param name="name">The name.</param>

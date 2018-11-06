@@ -13,7 +13,7 @@
     /// Media Analyzer Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.Tasks.MediaAnalyzerTaskOutput}" />
-    public class AnalyzeMediaAssetTask : AnalyzeTaskBase
+    public class AnalyzeMediaAssetTask : AnalyzeMediaTaskBase
     {
         /// <summary>
         /// Gets or sets the name of the asset.

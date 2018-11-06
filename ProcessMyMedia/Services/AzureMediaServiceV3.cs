@@ -260,6 +260,49 @@
         }
 
         /// <summary>
+        /// Starts the encode.
+        /// </summary>
+        /// <param name="assetNames">The asset names.</param>
+        /// <param name="encodingOutputs">The encoding outputs.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task<JobEntity> StartEncodeAsync(IEnumerable<string> assetNames, IEnumerable<EncodingOutputBase> encodingOutputs)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"Encoding-{Guid.NewGuid()}");
+
+            //TODO:generate preset
+            TransformOutput[] outputs = new TransformOutput[]
+            {
+                new TransformOutput(null , onError: OnErrorType.StopProcessingJob),
+            };
+
+            string transformName = $"Encoding-{Guid.NewGuid()}";
+            Transform transform = await client.Transforms.CreateOrUpdateAsync
+                (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
+
+            Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                transformName,
+                $"job-{Guid.NewGuid()}",
+                new Job()
+                {
+                    Input = new JobInputs(inputs:assetNames.Select(asset => 
+                        new JobInputAsset(asset)).Cast<JobInput>().ToList()),
+                    Outputs = new List<JobOutput>
+                    {
+                        new JobOutputAsset(outputAsset.Name)
+                    }
+                });
+
+            return job.ToJobEntity(templateName: transformName);
+        }
+
+        /// <summary>
         /// Gets the job asynchronous.
         /// </summary>
         /// <param name="jobName">Name of the job.</param>

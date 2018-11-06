@@ -14,8 +14,8 @@
     /// <summary>
     /// Analyze Media File Task
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.AnalyzeTaskBase" />
-    public class AnalyzeMediaFileTask : AnalyzeTaskBase
+    /// <seealso cref="ProcessMyMedia.Tasks.AnalyzeMediaTaskBase" />
+    public class AnalyzeMediaFileTask : AnalyzeMediaTaskBase
     {
         /// <summary>
         /// Gets or sets the file path.
