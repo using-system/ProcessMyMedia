@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Model
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -70,5 +71,13 @@
         /// The output asset names.
         /// </value>
         public IEnumerable<string> OutputAssetNames { get; set; }
+
+        /// <summary>
+        /// Gets or sets the created.
+        /// </summary>
+        /// <value>
+        /// The created.
+        /// </value>
+        public DateTime Created { get; set; }
     }
 }

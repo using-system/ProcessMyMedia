@@ -31,7 +31,8 @@
                 OnError = source.State == JobState.Error,
                 IsFinished = source.State == JobState.Canceled 
                              || source.State == JobState.Error
-                             || source.State == JobState.Finished
+                             || source.State == JobState.Finished,
+                Created = source.Created
             };
         }
 

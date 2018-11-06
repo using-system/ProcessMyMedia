@@ -91,7 +91,7 @@
 
             if (!job.IsFinished)
             {
-                return ExecutionResult.Sleep(TimeSpan.FromSeconds(5), job);
+                return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)
             {
