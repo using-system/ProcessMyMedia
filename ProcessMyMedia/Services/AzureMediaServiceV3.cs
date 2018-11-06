@@ -276,10 +276,7 @@
             AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"Encoding-{Guid.NewGuid()}");
 
             //TODO:generate preset
-            TransformOutput[] outputs = new TransformOutput[]
-            {
-                new TransformOutput(null , onError: OnErrorType.StopProcessingJob),
-            };
+            TransformOutput[] outputs = encodingOutputs.ToTransformOutputs().ToArray();
 
             string transformName = $"Encoding-{Guid.NewGuid()}";
             Transform transform = await client.Transforms.CreateOrUpdateAsync
