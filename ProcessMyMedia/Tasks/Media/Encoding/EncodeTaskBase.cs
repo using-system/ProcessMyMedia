@@ -1,4 +1,4 @@
-﻿namespace ProcessMyMedia.Tasks.Media.Encoding
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,7 @@
     /// Encode media task base class
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.EncodeTaskOutput}" />
-    public abstract class EncodeMediaTaskBase : MediaTaskBase<EncodeTaskOutput>
+    public abstract class EncodeTaskBase : MediaTaskBase<EncodeTaskOutput>
     {
         /// <summary>
         /// Gets or sets the asset names.
@@ -37,14 +37,15 @@
         public bool CleanupResources { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeMediaTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="EncodeTaskBase"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeMediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
+        public EncodeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
             loggerFactory)
         {
-
+            this.AssetNames = new List<string>();
+            this.Outputs = new List<EncodingOutputBase>();
         }
 
         /// <summary>
