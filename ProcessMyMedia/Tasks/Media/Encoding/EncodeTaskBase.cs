@@ -106,7 +106,6 @@
             }
 
             await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
-
             await this.mediaService.DeleteTemplateAsync(job.TemplateName);
         }
 
