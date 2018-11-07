@@ -17,7 +17,8 @@
         protected override AnalyzeAssetWorkflowData WorflowDatas => new AnalyzeAssetWorkflowData()
         {
             InputAssetName = "AnalyzeAsset",
-            MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2")
+            MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2"),
+            DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output")
         };
 
         public class AnalyzeAssetWorkflow : IWorkflow<AnalyzeAssetWorkflowData>
@@ -40,7 +41,10 @@
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .If(data => !string.IsNullOrEmpty(data.OutputAssetName))
                     .Do(then =>
-                        then.StartWith<Tasks.DeleteAssetTask>()
+                        then.StartWith<Tasks.DownloadAssetTask>()
+                            .Input(task => task.AssetName, data => data.OutputAssetName)
+                            .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
+                        .Then< Tasks.DeleteAssetTask>()
                             .Input(task => task.AssetName, data => data.InputAssetName));
             }
         }
@@ -52,6 +56,8 @@
             public string InputAssetName { get; set; }
 
             public string OutputAssetName { get; set; }
+
+            public string DirectoryToDownload { get; set; }
         }
     }
 }

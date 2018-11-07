@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
     using System;
+    using System.IO;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -46,14 +47,19 @@
             {
                 throw new ArgumentException($"{nameof(this.FilePath)} is required");
             }
+
+            if (!File.Exists(this.FilePath))
+            {
+                throw new ArgumentException($"File {this.FilePath} does not exsist");
+            }
         }
 
         /// <summary>
-        /// Runs the media task asynchronous.
+        /// Runs the media encoding task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override async Task RunMediaEncodingTaskAsync(IStepExecutionContext context)
         {
             string assetName = $"input-{Guid.NewGuid()}";
 
@@ -62,8 +68,6 @@
             await mediaService.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 
             this.AssetNames.Add (assetName);
-
-            return await base.RunMediaTaskAsync(context);
         }
 
         /// <summary>

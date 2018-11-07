@@ -46,11 +46,15 @@
             }
         }
 
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
-        {
-            base.AssetName = this.AssetName;
 
-            return await base.RunMediaTaskAsync(context);
+        /// <summary>
+        /// Runs the media analyse task asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected async override Task RunMediaAnalyseTaskAsync(IStepExecutionContext context)
+        {
+            await Task.Run(() =>base.AssetName = this.AssetName);
         }
 
     }

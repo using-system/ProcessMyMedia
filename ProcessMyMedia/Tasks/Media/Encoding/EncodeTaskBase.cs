@@ -44,6 +44,7 @@
         public EncodeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
             loggerFactory)
         {
+            this.CleanupResources = true;
             this.AssetNames = new List<string>();
             this.Outputs = new List<EncodingOutputBase>();
         }
@@ -61,6 +62,7 @@
             if (job == null)
             {
                 //First call: stat encoding
+                await this.RunMediaEncodingTaskAsync(context);
                 job = await this.mediaService.StartEncodeAsync(this.AssetNames, this.Outputs);
             }
             else
@@ -86,6 +88,13 @@
 
             return ExecutionResult.Next();
         }
+
+        /// <summary>
+        /// Runs the media encoding task asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected abstract Task RunMediaEncodingTaskAsync(IStepExecutionContext context);
 
         /// <summary>
         /// Cleanups the specified job.

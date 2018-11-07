@@ -65,15 +65,15 @@
         }
 
         /// <summary>
-        /// Runs the media task asynchronous.
+        /// Runs the media encoding task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task RunMediaEncodingTaskAsync(IStepExecutionContext context)
         {
             this.Outputs.AddRange(this.buildInPresets.Select(preset => new BuiltInPresetEncodingOutput(preset)));
 
-            return base.RunMediaTaskAsync(context);
+            await base.RunMediaEncodingTaskAsync(context);
         }
     }
 }

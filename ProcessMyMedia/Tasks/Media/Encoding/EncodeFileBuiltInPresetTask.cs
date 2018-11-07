@@ -1,4 +1,4 @@
-﻿namespace ProcessMyMedia.Tasks.Media.Encoding
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Threading.Tasks;
@@ -55,16 +55,17 @@
             }
         }
 
+
         /// <summary>
-        /// Runs the media task asynchronous.
+        /// Runs the media encoding task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task RunMediaEncodingTaskAsync(IStepExecutionContext context)
         {
             this.Outputs.Add(new BuiltInPresetEncodingOutput(this.buildInPreset));
 
-            return base.RunMediaTaskAsync(context);
+            await base.RunMediaEncodingTaskAsync(context);
         }
     }
 }

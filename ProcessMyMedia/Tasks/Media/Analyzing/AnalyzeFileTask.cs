@@ -48,11 +48,11 @@
         }
 
         /// <summary>
-        /// Runs the media task asynchronous.
+        /// Runs the media analyse task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task RunMediaAnalyseTaskAsync(IStepExecutionContext context)
         {
             string assetName = $"input-{Guid.NewGuid()}";
 
@@ -61,8 +61,6 @@
             await mediaService.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 
             this.AssetName = assetName;
-
-            return await base.RunMediaTaskAsync(context);
         }
 
         /// <summary>
