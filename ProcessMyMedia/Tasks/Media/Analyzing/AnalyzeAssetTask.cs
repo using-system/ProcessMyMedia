@@ -14,7 +14,7 @@
     /// Media Analyzer Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.Tasks.MediaAnalyzerTaskOutput}" />
-    public class AnalyzeMediaAssetTask : AnalyzeMediaTaskBase
+    public class AnalyzeAssetTask : AnalyzeTaskBase
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -25,11 +25,11 @@
         public new string AssetName { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnalyzeMediaAssetTask"/> class.
+        /// Initializes a new instance of the <see cref="AnalyzeAssetTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public AnalyzeMediaAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }

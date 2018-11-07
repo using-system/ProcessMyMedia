@@ -14,8 +14,8 @@
     /// <summary>
     /// Analyze Media File Task
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.AnalyzeMediaTaskBase" />
-    public class AnalyzeMediaFileTask : AnalyzeMediaTaskBase
+    /// <seealso cref="ProcessMyMedia.Tasks.AnalyzeTaskBase" />
+    public class AnalyzeFileTask : AnalyzeTaskBase
     {
         /// <summary>
         /// Gets or sets the file path.
@@ -26,11 +26,11 @@
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnalyzeMediaFileTask"/> class.
+        /// Initializes a new instance of the <see cref="AnalyzeFileTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public AnalyzeMediaFileTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeFileTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }
