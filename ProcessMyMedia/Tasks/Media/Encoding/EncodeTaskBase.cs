@@ -81,11 +81,6 @@
                 throw new Exception("Encoding Job was canceled");
             }
 
-            if (this.CleanupResources)
-            {
-                await this.Cleanup(job);
-            }
-
             return ExecutionResult.Next();
         }
 
@@ -97,12 +92,19 @@
         protected abstract Task RunMediaEncodingTaskAsync(IStepExecutionContext context);
 
         /// <summary>
-        /// Cleanups the specified job.
+        /// Cleanups the specified context.
         /// </summary>
-        /// <param name="job">The job.</param>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected async virtual Task Cleanup(JobEntity job)
+        protected async override Task Cleanup(IStepExecutionContext context)
         {
+            JobEntity job = context.PersistenceData as JobEntity;
+
+            if (job == null)
+            {
+                return;
+            }
+
             await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
 
             await this.mediaService.DeleteTemplateAsync(job.TemplateName);

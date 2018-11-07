@@ -63,14 +63,22 @@
             this.AssetName = assetName;
         }
 
+
         /// <summary>
-        /// Cleanups the specified job.
+        /// Cleanups the specified context.
         /// </summary>
-        /// <param name="job">The job.</param>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected async override Task Cleanup(JobEntity job)
+        protected async override Task Cleanup(IStepExecutionContext context)
         {
-            await base.Cleanup(job);
+            await base.Cleanup(context);
+
+            JobEntity job = context.PersistenceData as JobEntity;
+
+            if (job == null)
+            {
+                return;
+            }
 
             foreach (var input in job.InputAssetNames)
             {

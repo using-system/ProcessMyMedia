@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ProcessMyMedia.Tasks
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Threading.Tasks;
@@ -41,14 +39,6 @@ namespace ProcessMyMedia.Tasks
         public AnalyzingParameters AnalyzingParameters { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [cleanup resources].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [cleanup resources]; otherwise, <c>false</c>.
-        /// </value>
-        public bool CleanupResources { get; set; }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MediaAnalyzerTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
@@ -56,7 +46,6 @@ namespace ProcessMyMedia.Tasks
         public AnalyzeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.AnalyzingParameters = new AnalyzingParameters();
-            this.CleanupResources = true;
         }
 
         /// <summary>
@@ -68,39 +57,30 @@ namespace ProcessMyMedia.Tasks
         {
             JobEntity job = context.PersistenceData as JobEntity;
 
-            try
+            if (job == null)
             {
-                if (job == null)
-                {
-                    //First call: stat analyse
-                    await this.RunMediaAnalyseTaskAsync(context);
-                    job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
-                }
-                else
-                {
-                    job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
-                }
-
-                this.Output.Job = job;
-
-                if (!job.IsFinished)
-                {
-                    return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
-                }
-                else if (job.Canceled)
-                {
-                    throw new Exception("Analysing Job was canceled");
-                }
-
-                this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
-
-                await this.Cleanup(job);
+                //First call: stat analyse
+                await this.RunMediaAnalyseTaskAsync(context);
+                job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
             }
-            catch
+            else
             {
-                await this.Cleanup(job);
-                throw;
+                job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
             }
+
+            this.Output.Job = job;
+
+            if (!job.IsFinished)
+            {
+                return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
+            }
+            else if (job.Canceled)
+            {
+                throw new Exception("Analysing Job was canceled");
+            }
+
+            this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
+
 
             return ExecutionResult.Next();
         }
@@ -113,12 +93,19 @@ namespace ProcessMyMedia.Tasks
         protected abstract Task RunMediaAnalyseTaskAsync(IStepExecutionContext context);
 
         /// <summary>
-        /// Cleanups the specified job.
+        /// Cleanups the specified context.
         /// </summary>
-        /// <param name="job">The job.</param>
+        /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected async virtual Task Cleanup(JobEntity job)
+        protected async override Task Cleanup(IStepExecutionContext context)
         {
+            JobEntity job = context.PersistenceData as JobEntity;
+
+            if (job == null)
+            {
+                return;
+            }
+
             var jobToDelete = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
             if (jobToDelete != null)
             {

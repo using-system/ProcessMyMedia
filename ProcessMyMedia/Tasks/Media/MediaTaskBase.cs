@@ -50,6 +50,16 @@
 
         protected ILogger logger;
 
+        protected bool onError;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [cleanup resources].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [cleanup resources]; otherwise, <c>false</c>.
+        /// </value>
+        public bool CleanupResources { get; set; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
@@ -60,6 +70,8 @@
         {
             this.mediaService = mediaService;
             this.logger = loggerFactory.CreateLogger(this.GetType());
+            this.CleanupResources = true;
+            this.onError = false;
         }
 
         /// <summary>
@@ -75,7 +87,15 @@
 
             try
             {
-                return await this.RunMediaTaskAsync(context);
+                var result = await this.RunMediaTaskAsync(context);
+                await this.Cleanup(context);
+                return result;
+            }
+            catch
+            {
+                this.onError = true;
+                await this.Cleanup(context);
+                throw;
             }
             finally
             {
@@ -94,6 +114,13 @@
         /// <param name="context">The context.</param>
         /// <returns></returns>
         public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
+
+        /// <summary>
+        /// Cleanups the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected abstract Task Cleanup(IStepExecutionContext context);
 
         /// <summary>
         /// Gets the time to sleep.

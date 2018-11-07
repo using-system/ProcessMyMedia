@@ -70,5 +70,15 @@
 
             return ExecutionResult.Next();
         }
+
+        /// <summary>
+        /// Cleanups the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected async override Task Cleanup(IStepExecutionContext context)
+        {
+
+        }
     }
 }

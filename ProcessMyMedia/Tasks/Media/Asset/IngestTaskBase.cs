@@ -93,5 +93,22 @@
             return ExecutionResult.Next();
         }
 
+        /// <summary>
+        /// Cleanups the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected async override Task Cleanup(IStepExecutionContext context)
+        {
+            if (this.onError && !String.IsNullOrEmpty(this.AssetName))
+            {
+                var assetToDelete = this.mediaService.GetAssetAsync(this.AssetName);
+                if (assetToDelete != null)
+                {
+                    await this.mediaService.DeleteAssetAsync(this.AssetName);
+                }
+            }
+        }
+
     }
 }
