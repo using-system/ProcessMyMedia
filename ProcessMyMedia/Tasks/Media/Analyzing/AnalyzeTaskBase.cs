@@ -69,6 +69,7 @@
             if (job == null)
             {
                 //First call: stat analyse
+                await this.RunMediaAnalyseTaskAsync(context);
                 job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
             }
             else
@@ -96,6 +97,13 @@
 
             return ExecutionResult.Next();
         }
+
+        /// <summary>
+        /// Runs the media analyse task asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected abstract Task RunMediaAnalyseTaskAsync(IStepExecutionContext context);
 
         /// <summary>
         /// Cleanups the specified job.

@@ -1,5 +1,6 @@
-﻿namespace ProcessMyMedia.Tasks.Media.Encoding
+﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -16,13 +17,15 @@
     /// <seealso cref="ProcessMyMedia.Tasks.EncodeFileTaskBase" />
     public class EncodeFileBuiltInPresetTask : EncodeFileTaskBase
     {
+        private BuiltInPreset buildInPreset;
+
         /// <summary>
         /// Gets or sets the preset.
         /// </summary>
         /// <value>
         /// The preset.
         /// </value>
-        public BuiltInPreset Preset { get; set; }
+        public string Preset { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetTask"/> class.
@@ -36,15 +39,33 @@
         }
 
         /// <summary>
-        /// Runs the media task asynchronous.
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">AssetName</exception>
+        public override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.Preset))
+            {
+                throw new ArgumentException($"{nameof(this.Preset)} is required");
+            }
+
+            if(!Enum.TryParse<BuiltInPreset>(this.Preset, out this.buildInPreset))
+            {
+                throw new ArgumentException($"{this.Preset} is not a valid preset for {nameof(this.Preset)} argument");
+            }
+        }
+
+
+        /// <summary>
+        /// Runs the media encoding task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task RunMediaEncodingTaskAsync(IStepExecutionContext context)
         {
-            this.Outputs.Add(new BuiltInPresetEncodingOutput(this.Preset));
+            this.Outputs.Add(new BuiltInPresetEncodingOutput(this.buildInPreset));
 
-            return base.RunMediaTaskAsync(context);
+            await base.RunMediaEncodingTaskAsync(context);
         }
     }
 }

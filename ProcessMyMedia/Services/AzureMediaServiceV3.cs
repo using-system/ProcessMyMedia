@@ -114,6 +114,11 @@
                 await blob.UploadFromFileAsync(assetPath);
             }
 
+            if (metadata == null)
+            {
+                return;
+            }
+
             foreach (var entry in metadata)
             {
                 if (container.Metadata.ContainsKey(entry.Key))
