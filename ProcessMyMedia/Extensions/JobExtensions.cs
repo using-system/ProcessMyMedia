@@ -20,6 +20,11 @@
         /// <returns></returns>
         public static JobEntity ToJobEntity(this Job source, string templateName = null)
         {
+            if (source == null)
+            {
+                return null;
+            }
+
             return new JobEntity()
             {
                 ID = source.Id,

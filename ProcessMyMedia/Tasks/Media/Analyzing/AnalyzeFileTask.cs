@@ -74,7 +74,11 @@
 
             foreach (var input in job.InputAssetNames)
             {
-                await this.mediaService.DeleteAssetAsync(input);
+                var assetToDelete = this.mediaService.GetAssetAsync(input);
+                if (assetToDelete != null)
+                {
+                    await this.mediaService.DeleteAssetAsync(input);
+                }
             }
         }
     }

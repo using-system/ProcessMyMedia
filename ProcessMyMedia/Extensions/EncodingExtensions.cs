@@ -38,5 +38,24 @@
             return new TransformOutput(new BuiltInStandardEncoderPreset(Enum.Parse<EncoderNamedPreset>(source.Preset.ToString())), 
                 onError: OnErrorType.StopProcessingJob);
         }
+
+        /// <summary>
+        /// To the template entity.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static TemplateEntity ToTemplateEntity(this Transform source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            return new TemplateEntity()
+            {
+                Name = source.Name,
+                Created = source.Created
+            };
+        }
     }
 }

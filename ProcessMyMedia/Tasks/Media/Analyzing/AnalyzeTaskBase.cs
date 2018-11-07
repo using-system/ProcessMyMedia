@@ -1,4 +1,6 @@
-﻿namespace ProcessMyMedia.Tasks
+﻿using Microsoft.AspNetCore.Http;
+
+namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Threading.Tasks;
@@ -66,33 +68,38 @@
         {
             JobEntity job = context.PersistenceData as JobEntity;
 
-            if (job == null)
+            try
             {
-                //First call: stat analyse
-                await this.RunMediaAnalyseTaskAsync(context);
-                job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
-            }
-            else
-            {
-                job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
-            }
+                if (job == null)
+                {
+                    //First call: stat analyse
+                    await this.RunMediaAnalyseTaskAsync(context);
+                    job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
+                }
+                else
+                {
+                    job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
+                }
 
-            this.Output.Job = job;
+                this.Output.Job = job;
 
-            if (!job.IsFinished)
-            {
-                return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
+                if (!job.IsFinished)
+                {
+                    return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
+                }
+                else if (job.Canceled)
+                {
+                    throw new Exception("Analysing Job was canceled");
+                }
+
+                this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
+
+                await this.Cleanup(job);
             }
-            else if (job.Canceled)
-            {
-                throw new Exception("Analysing Job was canceled");
-            }
-
-            this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
-
-            if (this.CleanupResources)
+            catch
             {
                 await this.Cleanup(job);
+                throw;
             }
 
             return ExecutionResult.Next();
@@ -112,9 +119,17 @@
         /// <returns></returns>
         protected async virtual Task Cleanup(JobEntity job)
         {
-            await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
+            var jobToDelete = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
+            if (jobToDelete != null)
+            {
+                await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
+            }
 
-            await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+            var templateToDelete = await this.mediaService.GetTemplateAsync(job.TemplateName);
+            if (templateToDelete != null)
+            {
+                await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+            }
         }
     }
 }

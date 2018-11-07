@@ -56,6 +56,26 @@
         }
 
         /// <summary>
+        /// Gets the asset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task<AssetEntity> GetAssetAsync(string name)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            var asset = await this.client.Assets.GetAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                name);
+
+            return asset.ToEntity();
+        }
+
+        /// <summary>
         /// Creates the or update asset.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
@@ -350,6 +370,26 @@
                 this.configuration.MediaAccountName,
                 templateName,
                 jobName);
+        }
+
+        /// <summary>
+        /// Gets the template.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<TemplateEntity> GetTemplateAsync(string name)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            var transform = await this.client.Transforms.GetAsync(this.configuration.ResourceGroup,
+                this.configuration.MediaAccountName,
+                name);
+
+            return transform.ToTemplateEntity();
         }
 
         /// <summary>

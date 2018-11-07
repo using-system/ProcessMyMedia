@@ -47,6 +47,13 @@
         Task DownloadFilesAsync(string assetName, string directoryToDownload);
 
         /// <summary>
+        /// Gets the asset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<AssetEntity> GetAssetAsync(string name);
+
+        /// <summary>
         /// Deletes the asset.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>
@@ -91,6 +98,13 @@
         /// <param name="templateName">Name of the template.</param>
         /// <returns></returns>
         Task DeleteJobAsync(string jobName, string templateName);
+
+        /// <summary>
+        /// Gets the template.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<TemplateEntity> GetTemplateAsync(string name);
 
         /// <summary>
         /// Deletes the template.

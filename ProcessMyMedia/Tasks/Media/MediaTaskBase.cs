@@ -102,7 +102,7 @@
         /// <returns></returns>
         protected TimeSpan GetTimeToSleep(DateTime startDate)
         {
-            double totalSeconds = (DateTime.Now - startDate).TotalSeconds;
+            double totalSeconds = (DateTime.Now - startDate.ToLocalTime()).TotalSeconds;
 
             if (totalSeconds < 60)
             {
@@ -114,7 +114,7 @@
             }
             else if (totalSeconds < 60 * 30)
             {
-                return TimeSpan.FromSeconds(60);
+               return TimeSpan.FromSeconds(60);
             }
             else
             {
