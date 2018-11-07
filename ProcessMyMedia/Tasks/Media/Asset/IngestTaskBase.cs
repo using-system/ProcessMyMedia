@@ -77,7 +77,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             AssetEntity asset = await this.mediaService.CreateOrUpdateAssetAsync(this.AssetName,
                 this.AssetDescription,

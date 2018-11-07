@@ -71,7 +71,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             if (string.IsNullOrEmpty(this.SearchPattern))
             {

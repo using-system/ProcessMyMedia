@@ -53,7 +53,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             JobEntity job = context.PersistenceData as JobEntity;
 

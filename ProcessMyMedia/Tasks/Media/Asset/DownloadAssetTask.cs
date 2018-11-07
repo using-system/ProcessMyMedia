@@ -65,7 +65,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public async override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
         {
             await this.mediaService.DownloadFilesAsync(this.AssetName, this.DirectoryToDownload);
 

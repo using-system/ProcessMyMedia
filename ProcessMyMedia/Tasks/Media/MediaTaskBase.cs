@@ -113,7 +113,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        public abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
+        protected abstract Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context);
 
         /// <summary>
         /// Cleanups the specified context.
