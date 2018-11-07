@@ -7,28 +7,27 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    public class AnalyzeMedia : WofkflowSampleBase<AnalyzeMedia.AnalyzeMediaWorkflow, AnalyzeMedia.AnalyzeMediaWorkflowData>
+    public class AnalyseAsset : WofkflowSampleBase<AnalyseAsset.AnalyzeAssetWorkflow, AnalyseAsset.AnalyzeAssetWorkflowData>
     {
-        public AnalyzeMedia(IConfigurationRoot configuration) : base(configuration)
+        public AnalyseAsset(IConfigurationRoot configuration) : base(configuration)
         {
 
         }
 
-        protected override AnalyzeMediaWorkflowData WorflowDatas => new AnalyzeMediaWorkflowData()
+        protected override AnalyzeAssetWorkflowData WorflowDatas => new AnalyzeAssetWorkflowData()
         {
-            InputAssetName = "AnalyzeMediaAsset",
+            InputAssetName = "AnalyzeAsset",
             MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2")
         };
 
-        public class AnalyzeMediaWorkflow : IWorkflow<AnalyzeMediaWorkflowData>
+        public class AnalyzeAssetWorkflow : IWorkflow<AnalyzeAssetWorkflowData>
         {
             public string Id => SampleBase.WORKFLOW_NAME;
 
             public int Version => 1;
 
-            public void Build(IWorkflowBuilder<AnalyzeMediaWorkflowData> builder)
+            public void Build(IWorkflowBuilder<AnalyzeAssetWorkflowData> builder)
             {
-
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.IngestFromDirectoryTask>()
@@ -36,16 +35,23 @@
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .Then<Tasks.AnalyzeAssetTask>()
                         .Input(task => task.AssetName, data => data.InputAssetName)
+                        .Output(data => data.OutputAssetName, task => task.Output.Result.OutputAssetID)
                     .Then<Tasks.DeleteAssetTask>()
-                        .Input(task => task.AssetName, data => data.InputAssetName);
+                        .Input(task => task.AssetName, data => data.InputAssetName)
+                    .If(data => !string.IsNullOrEmpty(data.OutputAssetName))
+                    .Do(then =>
+                        then.StartWith<Tasks.DeleteAssetTask>()
+                            .Input(task => task.AssetName, data => data.InputAssetName));
             }
         }
 
-        public class AnalyzeMediaWorkflowData
+        public class AnalyzeAssetWorkflowData
         {
             public string MediaDirectory { get; set; }
 
             public string InputAssetName { get; set; }
+
+            public string OutputAssetName { get; set; }
         }
     }
 }

@@ -244,6 +244,8 @@
         /// <returns></returns>
         public async Task<AnalyzingResult> EndAnalyseAsync(JobEntity job)
         {
+            var result = new AnalyzingResult();
+
             if (this.client == null)
             {
                 throw new SecurityException("Not Authenticated");
@@ -251,12 +253,18 @@
 
             string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
 
-            foreach (var assetToDownload in job.OutputAssetNames)
+            if (job.OutputAssetNames.Count() > 0)
             {
+                var assetToDownload = job.OutputAssetNames.First();
                 await this.DownloadFilesAsync(assetToDownload, workingDirectory);
+                result.OutputAssetID = assetToDownload;
             }
 
-           return new AnalyzingResult();
+            //TODO:analyse result
+
+            Directory.Delete(workingDirectory);
+
+            return result;
         }
 
         /// <summary>

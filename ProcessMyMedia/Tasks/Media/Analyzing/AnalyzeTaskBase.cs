@@ -107,11 +107,6 @@
             await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
 
             await this.mediaService.DeleteTemplateAsync(job.TemplateName);
-
-            foreach (var assetToDelete in job.OutputAssetNames)
-            {
-                await this.mediaService.DeleteAssetAsync(assetToDelete);
-            }
         }
     }
 }
