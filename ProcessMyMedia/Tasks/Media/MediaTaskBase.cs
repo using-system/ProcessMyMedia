@@ -88,13 +88,23 @@
             try
             {
                 var result = await this.RunMediaTaskAsync(context);
-                await this.Cleanup(context);
+
+                if (this.CleanupResources)
+                {
+                    await this.Cleanup(context);
+                }
+
                 return result;
             }
             catch
             {
                 this.onError = true;
-                await this.Cleanup(context);
+
+                if (this.CleanupResources)
+                {
+                    await this.Cleanup(context);
+                }
+
                 throw;
             }
             finally
