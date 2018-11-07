@@ -1,5 +1,5 @@
 # ProcessMyMedia
-Build your Azure Media Services workflow in .NET Core
+Build your Azure Media Services workflow in .NET Core 
 
 ## Tasks documentation
 
