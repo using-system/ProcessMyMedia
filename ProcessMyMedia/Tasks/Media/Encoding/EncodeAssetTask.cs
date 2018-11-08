@@ -1,4 +1,4 @@
-﻿namespace ProcessMyMedia.Tasks.Media.Encoding
+﻿namespace ProcessMyMedia.Tasks
 {
     using System;
     using System.Collections.Generic;
@@ -19,15 +19,16 @@
     /// https://docs.microsoft.com/en-us/azure/media-services/latest/customize-encoder-presets-how-to
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.EncodeTaskBase" />
-    public class EncodeAssetsTask : EncodeTaskBase
+    public class EncodeAssetTask : EncodeTaskBase
     {
+
         /// <summary>
-        /// Gets or sets the asset names.
+        /// Gets or sets the input.
         /// </summary>
         /// <value>
-        /// The asset names.
+        /// The input.
         /// </value>
-        public new List<JobInputEntity> Inputs { get; set; }
+        public JobInputEntity Input { get; set; }
 
         /// <summary>
         /// Gets or sets the encoding output.
@@ -38,11 +39,11 @@
         public CustomPresetEncodingOutput EncodingOutput { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeAssetsTask"/> class.
+        /// Initializes a new instance of the <see cref="EncodeAssetTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeAssetsTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
+        public EncodeAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
             loggerFactory)
         {
             this.Inputs = new List<JobInputEntity>();
@@ -53,14 +54,9 @@
         /// </summary>
         public override void ValidateInput()
         {
-            if(this.Inputs.Count == 0)
+            if(this.Input == null)
             {
-                throw new ArgumentException($"{nameof(this.Inputs)} is empty");
-            }
-
-            if (this.Inputs.Count > 1)
-            {
-                throw new ArgumentException($"{nameof(this.Inputs)} does not support actually more than one asset");
+                throw new ArgumentException($"{nameof(this.Input)} is required");
             }
 
             if (this.EncodingOutput == null)
@@ -68,11 +64,7 @@
                 throw new ArgumentException($"{nameof(this.Output)} is required");
             }
 
-            foreach(var input in this.Inputs)
-            {
-                input.Validate();
-            }
-
+            this.Input.Validate();
             this.EncodingOutput.Validate();
         }
 
