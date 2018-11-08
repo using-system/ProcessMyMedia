@@ -9,6 +9,15 @@
     public class JobEntity
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="JobEntity"/> class.
+        /// </summary>
+        public JobEntity()
+        {
+            this.Inputs = new List<JobInputEntity>();
+            this.Outputs = new List<JobOutputEntity>();
+        }
+
+        /// <summary>
         /// Gets or sets the job identifier.
         /// </summary>
         /// <value>
@@ -62,7 +71,7 @@
         /// <value>
         /// The input asset names.
         /// </value>
-        public IEnumerable<string> InputAssetNames { get; set; }
+        public List<JobInputEntity> Inputs { get; set; }
 
         /// <summary>
         /// Gets or sets the output asset names.
@@ -70,7 +79,7 @@
         /// <value>
         /// The output asset names.
         /// </value>
-        public IEnumerable<string> OutputAssetNames { get; set; }
+        public List<JobOutputEntity> Outputs { get; set; }
 
         /// <summary>
         /// Gets or sets the created.

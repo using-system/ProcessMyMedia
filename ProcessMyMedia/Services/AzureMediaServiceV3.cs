@@ -278,11 +278,11 @@
 
             string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
 
-            if (job.OutputAssetNames.Count() > 0)
+            if (job.Outputs.Count() > 0)
             {
-                var assetToDownload = job.OutputAssetNames.First();
-                await this.DownloadFilesAsync(assetToDownload, workingDirectory);
-                result.OutputAssetID = assetToDownload;
+                var assetToDownload = job.Outputs.First();
+                await this.DownloadFilesAsync(assetToDownload.Name, workingDirectory);
+                result.OutputAssetName = assetToDownload.Name;
             }
 
             //TODO:analyse result
@@ -295,25 +295,29 @@
         /// <summary>
         /// Starts the encode.
         /// </summary>
-        /// <param name="assetNames">The asset names.</param>
+        /// <param name="inputs">The inputs.</param>
         /// <param name="encodingOutputs">The encoding outputs.</param>
         /// <returns></returns>
         /// <exception cref="SecurityException">Not Authenticated</exception>
-        public async Task<JobEntity> StartEncodeAsync(IEnumerable<string> assetNames, IEnumerable<EncodingOutputBase> encodingOutputs)
+        public async Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, IEnumerable<EncodingOutputBase> encodingOutputs)
         {
             if (this.client == null)
             {
                 throw new SecurityException("Not Authenticated");
             }
 
-            AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"Encoding-{Guid.NewGuid()}");
-
-            //TODO:generate preset
             TransformOutput[] outputs = encodingOutputs.ToTransformOutputs().ToArray();
-
             string transformName = $"Encoding-{Guid.NewGuid()}";
             Transform transform = await client.Transforms.CreateOrUpdateAsync
                 (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
+
+            IList<JobOutput> jobOutputs = new List<JobOutput>();
+            foreach (var jobOuput in encodingOutputs)
+            {
+                string assetName = Guid.NewGuid().ToString();
+                await this.CreateOrUpdateAssetAsync(assetName);
+                jobOutputs.Add(new JobOutputAsset(assetName, label: jobOuput.Label));
+            }
 
             Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
                 this.configuration.MediaAccountName,
@@ -321,12 +325,8 @@
                 $"job-{Guid.NewGuid()}",
                 new Job()
                 {
-                    Input = new JobInputs(inputs:assetNames.Select(asset => 
-                        new JobInputAsset(asset)).Cast<JobInput>().ToList()),
-                    Outputs = new List<JobOutput>
-                    {
-                        new JobOutputAsset(outputAsset.Name)
-                    }
+                    Input = inputs.ToJobInput(),
+                    Outputs = jobOutputs
                 });
 
             return job.ToJobEntity(templateName: transformName);

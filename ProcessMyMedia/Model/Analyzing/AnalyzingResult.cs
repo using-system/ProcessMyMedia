@@ -11,6 +11,6 @@
         /// <value>
         /// The output asset identifier.
         /// </value>
-        public string OutputAssetID { get; set; }
+        public string OutputAssetName { get; set; }
     }
 }

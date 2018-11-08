@@ -67,7 +67,7 @@
 
             await mediaService.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 
-            this.AssetNames.Add (assetName);
+            this.Inputs.Add (new JobInputEntity(){ Name = assetName});
         }
 
         /// <summary>
@@ -86,9 +86,9 @@
                 return;
             }
 
-            foreach (var input in job.InputAssetNames)
+            foreach (var input in job.Inputs)
             {
-                await this.mediaService.DeleteAssetAsync(input);
+                await this.mediaService.DeleteAssetAsync(input.Name);
             }
         }
     }

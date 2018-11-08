@@ -80,12 +80,12 @@
                 return;
             }
 
-            foreach (var input in job.InputAssetNames)
+            foreach (var input in job.Inputs)
             {
-                var assetToDelete = this.mediaService.GetAssetAsync(input);
+                var assetToDelete = this.mediaService.GetAssetAsync(input.Name);
                 if (assetToDelete != null)
                 {
-                    await this.mediaService.DeleteAssetAsync(input);
+                    await this.mediaService.DeleteAssetAsync(input.Name);
                 }
             }
         }

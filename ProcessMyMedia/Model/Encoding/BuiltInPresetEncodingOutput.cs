@@ -22,5 +22,13 @@
         /// The preset.
         /// </value>
         public BuiltInPreset Preset { get; private set; }
+
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
+        public override string Label => this.Preset.ToString();
     }
 }

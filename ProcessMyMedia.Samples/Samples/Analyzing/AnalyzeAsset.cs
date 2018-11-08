@@ -37,7 +37,7 @@
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .Then<Tasks.AnalyzeAssetTask>()
                         .Input(task => task.AssetName, data => data.InputAssetName)
-                        .Output(data => data.OutputAssetName, task => task.Output.Result.OutputAssetID)
+                        .Output(data => data.OutputAssetName, task => task.Output.Result.OutputAssetName)
                     .Then<Tasks.DeleteAssetTask>()
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .If(data => !string.IsNullOrEmpty(data.OutputAssetName))

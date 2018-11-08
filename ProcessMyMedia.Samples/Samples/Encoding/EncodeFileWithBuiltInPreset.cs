@@ -1,7 +1,6 @@
-﻿using System;
-
-namespace ProcessMyMedia.Samples
+﻿namespace ProcessMyMedia.Samples
 {
+    using System;
     using System.IO;
     using System.Linq;
 
@@ -37,12 +36,12 @@ namespace ProcessMyMedia.Samples
                         .StartWith<Tasks.EncodeFileBuiltInPresetTask>()
                         .Input(task => task.FilePath, data => data.FilePath)
                         .Input(task => task.Preset, data => data.Preset)
-                        .Output(data => data.OutputAssetID, task => task.Output.Job.OutputAssetNames.First())
+                        .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
                     .Then<Tasks.DownloadAssetTask>()
-                        .Input(task => task.AssetName, data => data.OutputAssetID)
+                        .Input(task => task.AssetName, data => data.OutputAssetName)
                         .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
                     .Then<Tasks.DeleteAssetTask>()
-                        .Input(task => task.AssetName, data => data.OutputAssetID);
+                        .Input(task => task.AssetName, data => data.OutputAssetName);
             }
         }
 
@@ -54,7 +53,7 @@ namespace ProcessMyMedia.Samples
 
             public string DirectoryToDownload { get; set; } 
 
-            public string OutputAssetID { get; set; }
+            public string OutputAssetName { get; set; }
         }
     }
 }

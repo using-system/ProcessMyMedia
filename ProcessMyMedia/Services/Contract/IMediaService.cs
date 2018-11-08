@@ -78,10 +78,10 @@
         /// <summary>
         /// Starts the encode.
         /// </summary>
-        /// <param name="assetNames">The asset names.</param>
+        /// <param name="inputs">The inputs.</param>
         /// <param name="encodingOutputs">The encoding outputs.</param>
         /// <returns></returns>
-        Task<JobEntity> StartEncodeAsync(IEnumerable<string> assetNames, IEnumerable<EncodingOutputBase> encodingOutputs);
+        Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, IEnumerable<EncodingOutputBase> encodingOutputs);
 
         /// <summary>
         /// Gets the job.

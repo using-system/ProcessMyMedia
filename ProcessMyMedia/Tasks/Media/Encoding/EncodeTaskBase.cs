@@ -24,7 +24,7 @@
         /// <value>
         /// The asset names.
         /// </value>
-        protected List<string> AssetNames { get; set; }
+        protected List<JobInputEntity> Inputs { get; set; }
 
         /// <summary>
         /// Gets or sets the outputs.
@@ -33,8 +33,6 @@
         /// The outputs.
         /// </value>
         protected List<EncodingOutputBase> Outputs { get; set; }
-
-        public bool CleanupResources { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EncodeTaskBase"/> class.
@@ -45,7 +43,7 @@
             loggerFactory)
         {
             this.CleanupResources = true;
-            this.AssetNames = new List<string>();
+            this.Inputs = new List<JobInputEntity>();
             this.Outputs = new List<EncodingOutputBase>();
         }
 
@@ -63,7 +61,7 @@
             {
                 //First call: stat encoding
                 await this.RunMediaEncodingTaskAsync(context);
-                job = await this.mediaService.StartEncodeAsync(this.AssetNames, this.Outputs);
+                job = await this.mediaService.StartEncodeAsync(this.Inputs, this.Outputs);
             }
             else
             {

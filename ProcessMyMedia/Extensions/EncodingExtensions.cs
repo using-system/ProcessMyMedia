@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Extensions
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
 
     using Microsoft.Azure.Management.Media.Models;
@@ -27,6 +28,30 @@
                 }
             }
         }
+
+        /// <summary>
+        /// To the job input.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static JobInput ToJobInput(this IEnumerable<JobAssetEntity> source)
+        {
+            return new JobInputs(source.ToJobInputs().ToList());
+        }
+
+        /// <summary>
+        /// To the job inputs.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<JobInput> ToJobInputs(this IEnumerable<JobAssetEntity> source)
+        {
+            foreach (var input in source)
+            {
+                yield return new JobInputAsset(input.Name, label: input.Label);
+            }
+        }
+
 
         /// <summary>
         /// Converts to transformoutput.
