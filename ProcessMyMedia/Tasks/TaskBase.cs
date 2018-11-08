@@ -48,7 +48,7 @@
             {
                 var result = await this.RunTaskAsync(context);
 
-                if (this.CleanupResources)
+                if (this.CleanupResources && !result.SleepFor.HasValue)
                 {
                     await this.Cleanup(context);
                 }

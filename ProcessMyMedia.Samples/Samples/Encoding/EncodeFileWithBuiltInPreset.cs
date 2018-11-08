@@ -1,4 +1,6 @@
-﻿namespace ProcessMyMedia.Samples
+﻿using System;
+
+namespace ProcessMyMedia.Samples
 {
     using System.IO;
     using System.Linq;
@@ -19,7 +21,7 @@
         {
             Preset = Model.BuiltInPreset.H264SingleBitrateSD.ToString(),
             FilePath = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2\ignite.mp4"),
-            DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output")
+            DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output/", Guid.NewGuid().ToString())
         };
 
         public class EncodeFileWithBuiltInPresetWorkflow : IWorkflow<EncodeFileWithBuiltInPresetWorkflowData>

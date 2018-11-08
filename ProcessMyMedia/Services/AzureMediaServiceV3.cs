@@ -287,7 +287,7 @@
 
             //TODO:analyse result
 
-            Directory.Delete(workingDirectory);
+            Directory.Delete(workingDirectory, true);
 
             return result;
         }

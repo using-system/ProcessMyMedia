@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Samples
 {
+    using System;
     using System.IO;
 
     using Microsoft.Extensions.Configuration;
@@ -18,7 +19,7 @@
         {
             InputAssetName = "AnalyzeAsset",
             MediaDirectory = Path.Combine(Directory.GetCurrentDirectory(), @"Assets\Asset2"),
-            DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output")
+            DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output/", Guid.NewGuid().ToString())
         };
 
         public class AnalyzeAssetWorkflow : IWorkflow<AnalyzeAssetWorkflowData>
@@ -45,7 +46,7 @@
                             .Input(task => task.AssetName, data => data.OutputAssetName)
                             .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
                         .Then< Tasks.DeleteAssetTask>()
-                            .Input(task => task.AssetName, data => data.InputAssetName));
+                            .Input(task => task.AssetName, data => data.OutputAssetName));
             }
         }
 
