@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             await this.mediaService.DeleteAssetAsync(this.AssetName);
 

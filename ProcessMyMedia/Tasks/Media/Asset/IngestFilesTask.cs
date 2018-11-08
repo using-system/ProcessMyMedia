@@ -52,11 +52,11 @@
         /// <param name="context">The context.</param>
         /// <param name="client">The client.</param>
         /// <returns></returns>
-        protected async override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             base.AssetFiles = this.AssetFiles;
 
-            return await base.RunMediaTaskAsync(context);
+            return await base.RunTaskAsync(context);
         }
     }
 }

@@ -71,7 +71,7 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             if (string.IsNullOrEmpty(this.SearchPattern))
             {
@@ -82,7 +82,7 @@
                 this.SearchPattern, 
                 this.TopDirectoryOnly? SearchOption.TopDirectoryOnly : SearchOption.AllDirectories));
 
-            return base.RunMediaTaskAsync(context);
+            return base.RunTaskAsync(context);
         }
     }
 }

@@ -55,7 +55,7 @@
         /// <param name="context">The context.</param>
         /// <returns></returns>
         /// <exception cref="Exception">Encoding Job was canceled</exception>
-        protected override async Task<ExecutionResult> RunMediaTaskAsync(IStepExecutionContext context)
+        protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             JobEntity job = context.PersistenceData as JobEntity;
 
