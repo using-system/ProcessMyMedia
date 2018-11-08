@@ -26,6 +26,11 @@
                 {
                     yield return ((BuiltInPresetEncodingOutput)output).ToTransformOutput();
                 }
+
+                if (output is CustomPresetEncodingOutput)
+                {
+                    yield return ((CustomPresetEncodingOutput)output).ToTransformOutput();
+                }
             }
         }
 
@@ -81,6 +86,17 @@
                 Name = source.Name,
                 Created = source.Created
             };
+        }
+
+        /// <summary>
+        /// To the transform output.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static TransformOutput ToTransformOutput(this CustomPresetEncodingOutput source)
+        {
+            return new TransformOutput(new StandardEncoderPreset(),
+                onError: OnErrorType.StopProcessingJob);
         }
     }
 }
