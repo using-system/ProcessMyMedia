@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks.Media.Encoding
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@
     /// https://docs.microsoft.com/fr-fr/rest/api/media/transforms/createorupdate#standardencoderpreset
     /// https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/media-services/previous/media-services-mes-presets-overview.md
     /// https://docs.microsoft.com/en-us/azure/media-services/previous/media-services-advanced-encoding-with-mes
+    /// https://docs.microsoft.com/en-us/azure/media-services/latest/customize-encoder-presets-how-to
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.EncodeTaskBase" />
     public class EncodeAssetsTask : EncodeTaskBase
@@ -28,12 +30,12 @@
         public new List<JobInputEntity> Inputs { get; set; }
 
         /// <summary>
-        /// Gets or sets the outputs.
+        /// Gets or sets the encoding output.
         /// </summary>
         /// <value>
-        /// The outputs.
+        /// The encoding output.
         /// </value>
-        public new List<CustomPresetEncodingOutput> Outputs { get; set; }
+        public CustomPresetEncodingOutput EncodingOutput { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EncodeAssetsTask"/> class.
@@ -51,7 +53,27 @@
         /// </summary>
         public override void ValidateInput()
         {
-            throw new System.NotImplementedException();
+            if(this.Inputs.Count == 0)
+            {
+                throw new ArgumentException($"{nameof(this.Inputs)} is empty");
+            }
+
+            if (this.Inputs.Count > 1)
+            {
+                throw new ArgumentException($"{nameof(this.Inputs)} does not support actually more than one asset");
+            }
+
+            if (this.EncodingOutput == null)
+            {
+                throw new ArgumentException($"{nameof(this.Output)} is required");
+            }
+
+            foreach(var input in this.Inputs)
+            {
+                input.Validate();
+            }
+
+            this.EncodingOutput.Validate();
         }
 
         /// <summary>
@@ -64,7 +86,7 @@
             await Task.Run(() =>
             {
                 base.Inputs = this.Inputs;
-                base.Outputs.AddRange(this.Outputs);
+                base.Outputs.Add(this.EncodingOutput);
             });
 
         }

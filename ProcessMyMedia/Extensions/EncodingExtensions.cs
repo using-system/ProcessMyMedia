@@ -6,8 +6,6 @@
 
     using Microsoft.Azure.Management.Media.Models;
 
-    using ProcessMyMedia.Model;
-
     /// <summary>
     /// Encoding Extension methods
     /// </summary>
@@ -18,18 +16,18 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IEnumerable<TransformOutput> ToTransformOutputs(this IEnumerable<EncodingOutputBase> source)
+        public static IEnumerable<TransformOutput> ToTransformOutputs(this IEnumerable<Model.EncodingOutputBase> source)
         {
             foreach(var output in source)
             {
-                if(output is BuiltInPresetEncodingOutput)
+                if(output is Model.BuiltInPresetEncodingOutput)
                 {
-                    yield return ((BuiltInPresetEncodingOutput)output).ToTransformOutput();
+                    yield return ((Model.BuiltInPresetEncodingOutput)output).ToTransformOutput();
                 }
 
-                if (output is CustomPresetEncodingOutput)
+                if (output is Model.CustomPresetEncodingOutput)
                 {
-                    yield return ((CustomPresetEncodingOutput)output).ToTransformOutput();
+                    yield return ((Model.CustomPresetEncodingOutput)output).ToTransformOutput();
                 }
             }
         }
@@ -39,7 +37,7 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static JobInput ToJobInput(this IEnumerable<JobAssetEntity> source)
+        public static JobInput ToJobInput(this IEnumerable<Model.JobAssetEntity> source)
         {
             return new JobInputs(source.ToJobInputs().ToList());
         }
@@ -49,7 +47,7 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IEnumerable<JobInput> ToJobInputs(this IEnumerable<JobAssetEntity> source)
+        public static IEnumerable<JobInput> ToJobInputs(this IEnumerable<Model.JobAssetEntity> source)
         {
             foreach (var input in source)
             {
@@ -63,7 +61,7 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static TransformOutput ToTransformOutput(this BuiltInPresetEncodingOutput source)
+        public static TransformOutput ToTransformOutput(this Model.BuiltInPresetEncodingOutput source)
         {
             return new TransformOutput(new BuiltInStandardEncoderPreset(Enum.Parse<EncoderNamedPreset>(source.Preset.ToString())), 
                 onError: OnErrorType.StopProcessingJob);
@@ -74,14 +72,14 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static TemplateEntity ToTemplateEntity(this Transform source)
+        public static Model.TemplateEntity ToTemplateEntity(this Transform source)
         {
             if (source == null)
             {
                 return null;
             }
 
-            return new TemplateEntity()
+            return new Model.TemplateEntity()
             {
                 Name = source.Name,
                 Created = source.Created
@@ -93,10 +91,80 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static TransformOutput ToTransformOutput(this CustomPresetEncodingOutput source)
+        public static TransformOutput ToTransformOutput(this Model.CustomPresetEncodingOutput source)
         {
-            return new TransformOutput(new StandardEncoderPreset(),
+            return new TransformOutput(new StandardEncoderPreset(
+                formats: source.ToFormats().ToList(),
+                codecs: source.ToCodecs().ToList(),
+                filters: null),
                 onError: OnErrorType.StopProcessingJob);
         }
+
+        /// <summary>
+        /// Converts to codecs.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<Codec> ToCodecs(this Model.CustomPresetEncodingOutput source)
+        {
+            foreach (var codec in source.Codecs)
+            {
+                if(codec is Model.H264VideoCodec)
+                {
+                    yield return ((Model.H264VideoCodec)codec).ToH264Video();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Converts to h264video.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static H264Video ToH264Video(this Model.H264VideoCodec source)
+        {
+            return new H264Video()
+            {
+                Layers = source.Layers.Select(layer => layer.ToH264Layer()).ToList()
+            };
+        }
+
+        /// <summary>
+        /// Converts to h264layer.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static H264Layer ToH264Layer(this Model.H264VideoLayer source)
+        {
+            return new H264Layer()
+            {
+                Bitrate = source.Bitrate,
+                Width = source.Width,
+                Height = source.Height
+            };
+        }
+
+        /// <summary>
+        /// Converts to formats.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<Format> ToFormats(this Model.CustomPresetEncodingOutput source)
+        {
+            foreach(var codec in source.Codecs)
+            {
+                if(string.IsNullOrEmpty(codec.FilenamePattern))
+                {
+                    continue;
+                }
+
+                if(codec is Model.H264VideoCodec)
+                {
+                    yield return new Mp4Format(codec.FilenamePattern);
+                }
+            }
+        }
+
+
     }
 }
