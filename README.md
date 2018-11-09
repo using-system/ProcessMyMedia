@@ -7,7 +7,7 @@ Build your Azure Media Services workflow in .NET Core
 
 ## Model documentation
 
-* [Model](ProcessMyMedia/Model)
+* [Asset Model](ProcessMyMedia/Model/Asset)
 
 ## Samples
 
