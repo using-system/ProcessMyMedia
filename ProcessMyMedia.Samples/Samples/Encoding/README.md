@@ -39,43 +39,39 @@ public class EncodeFileWithBuiltInPresetWorkflowData
 The sample encode a file with multiple BuiltInPresets.
 
 ```c#
-        public class EncodeFileWithBuiltInPresetsWorkflow : IWorkflow<EncodeFileWithBuiltInPresetsWorkflowData>
+public class EncodeFileWithBuiltInPresetsWorkflow : IWorkflow<EncodeFileWithBuiltInPresetsWorkflowData>
+{
+        public void Build(IWorkflowBuilder<EncodeFileWithBuiltInPresetsWorkflowData> builder)
         {
-            public string Id => SampleBase.WORKFLOW_NAME;
-
-            public int Version => 1;
-
-            public void Build(IWorkflowBuilder<EncodeFileWithBuiltInPresetsWorkflowData> builder)
-            {
                 builder
-                    .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
-                    .StartWith<Tasks.EncodeFileBuiltInPresetsTask>()
+                .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
+                .StartWith<Tasks.EncodeFileBuiltInPresetsTask>()
                         .Input(task => task.FilePath, data => data.FilePath)
                         .Input(task => task.Presets, data => data.Presets)
                         .Output(data => data.Outputs, task => task.Output.Job.Outputs)
-                    .ForEach(data => data.Outputs)
+                .ForEach(data => data.Outputs)
                         .Do(iteration => iteration
-                            .StartWith<Tasks.DownloadAssetTask>()
+                        .StartWith<Tasks.DownloadAssetTask>()
                                 .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name)
                                 .Input(task => task.DirectoryToDownload, (data, context) => Path.Combine(data.DirectoryToDownload, ((JobOutputEntity)context.Item).Label))
-                            .Then<Tasks.DeleteAssetTask>()
+                        .Then<Tasks.DeleteAssetTask>()
                                 .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name));
-            }
         }
+}
 
-        public class EncodeFileWithBuiltInPresetsWorkflowData
+public class EncodeFileWithBuiltInPresetsWorkflowData
+{
+        public EncodeFileWithBuiltInPresetsWorkflowData()
         {
-            public EncodeFileWithBuiltInPresetsWorkflowData()
-            {
-                this.Presets = new List<string>();
-            }
-
-            public string FilePath { get; set; }
-
-            public List<string> Presets { get; set; }
-
-            public string DirectoryToDownload { get; set; }
-
-            public List<JobOutputEntity> Outputs { get; set; }
+        this.Presets = new List<string>();
         }
+
+        public string FilePath { get; set; }
+
+        public List<string> Presets { get; set; }
+
+        public string DirectoryToDownload { get; set; }
+
+        public List<JobOutputEntity> Outputs { get; set; }
+}
 ```
