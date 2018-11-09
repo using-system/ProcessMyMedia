@@ -2,7 +2,7 @@
 
 ## Encoding a file with a BuiltInPreset
 
-The sample create a new asset and upload files from a directory to the asset, then delete the asset (after doing somes stuffs).
+The sample encode a file with a BuiltInPreset.
 
 ```c#
 public class EncodeFileWithBuiltInPresetWorkflow : IWorkflow<EncodeFileWithBuiltInPresetWorkflowData>
