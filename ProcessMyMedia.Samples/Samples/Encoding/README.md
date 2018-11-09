@@ -132,7 +132,9 @@ public class EncodeAssetWithCustomPresetWorkflowData
 
   public string OutputAssetName { get; set; }
 }
-
+```
+Example of a custom preset : 
+```c#
 var customPreset = new CustomPresetEncodingOutput()
   {
     PresetName = "EncodeAssetWithCustomPreset",
