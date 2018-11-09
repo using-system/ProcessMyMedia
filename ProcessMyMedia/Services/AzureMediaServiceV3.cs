@@ -368,10 +368,10 @@
 
             try
             {
-                TransformOutput[] outputs = encodingOutputs.ToTransformOutputs().ToArray();
+                TransformOutput[] transformOutputs = encodingOutputs.ToTransformOutputs().ToArray();
                 string transformName = $"Encoding-{Guid.NewGuid()}";
                 Transform transform = await client.Transforms.CreateOrUpdateAsync
-                    (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
+                    (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, transformOutputs);
 
                 IList<JobOutput> jobOutputs = new List<JobOutput>();
                 foreach (var jobOuput in encodingOutputs)
