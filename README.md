@@ -12,3 +12,4 @@ Build your Azure Media Services workflow in .NET Core
 ## Samples
 
 * [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
+* [Encoding Samples](ProcessMyMedia.Samples/Samples/Encoding)
