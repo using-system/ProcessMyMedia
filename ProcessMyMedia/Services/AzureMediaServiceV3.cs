@@ -217,7 +217,12 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+            var assetToDelete = await this.client.Assets.GetAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+
+            if (assetToDelete != null)
+            {
+                await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+            }
         }
 
         /// <summary>

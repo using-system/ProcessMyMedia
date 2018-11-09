@@ -16,7 +16,7 @@
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.EncodeFileWithBuiltInPresets(configuration).Execute();
+            new Samples.EncodeAssetWithCustomPreset(configuration).Execute();
         }
     }
 }

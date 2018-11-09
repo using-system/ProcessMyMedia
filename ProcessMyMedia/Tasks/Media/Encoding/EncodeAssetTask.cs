@@ -77,7 +77,7 @@
         {
             await Task.Run(() =>
             {
-                base.Inputs = this.Inputs;
+                base.Inputs.Add(this.Input);
                 base.Outputs.Add(this.EncodingOutput);
             });
 

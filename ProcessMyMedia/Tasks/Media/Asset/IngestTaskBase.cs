@@ -102,11 +102,7 @@
         {
             if (this.onError && !String.IsNullOrEmpty(this.AssetName))
             {
-                var assetToDelete = this.mediaService.GetAssetAsync(this.AssetName);
-                if (assetToDelete != null)
-                {
-                    await this.mediaService.DeleteAssetAsync(this.AssetName);
-                }
+                await this.mediaService.DeleteAssetAsync(this.AssetName);
             }
         }
 

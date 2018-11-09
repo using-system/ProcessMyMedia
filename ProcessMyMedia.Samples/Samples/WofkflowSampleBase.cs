@@ -5,7 +5,6 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
-    using ProcessMyMedia.Model;
     using WorkflowCore.Interface;
 
     public abstract class WofkflowSampleBase<TWorfklow, TWorkflowData> : SampleBase

@@ -34,11 +34,6 @@
             {
                 throw new ArgumentException($"{nameof(this.Name)} for Input definition is required");
             }
-
-            if (string.IsNullOrEmpty(this.Label))
-            {
-                throw new ArgumentException($"{nameof(this.Label)} for Input definition is required");
-            }
         }
     }
 }
