@@ -78,6 +78,10 @@
             {
                 throw new Exception("Encoding Job was canceled");
             }
+            else if (job.OnError)
+            {
+                throw new Exception("Encoding Job is on error");
+            }
 
             return ExecutionResult.Next();
         }

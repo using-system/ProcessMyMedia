@@ -31,7 +31,7 @@
                 {
                     new H264VideoCodec()
                     {
-                        FilenamePattern = "{Basename}_{Width}x{Height}_{VideoBitrate}.mp4",
+                        FilenamePattern = "{Basename}_{Bitrate}.{Extension}",
                         Layers =
                         {
                             new H264VideoLayer()
