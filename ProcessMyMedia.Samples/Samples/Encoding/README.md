@@ -64,7 +64,7 @@ public class EncodeFileWithBuiltInPresetsWorkflowData
 {
         public EncodeFileWithBuiltInPresetsWorkflowData()
         {
-        this.Presets = new List<string>();
+                this.Presets = new List<string>();
         }
 
         public string FilePath { get; set; }
