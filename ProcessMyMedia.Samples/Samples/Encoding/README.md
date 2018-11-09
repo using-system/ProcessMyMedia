@@ -80,6 +80,7 @@ public class EncodeFileWithBuiltInPresetsWorkflowData
 
 The sample encode a file with multiple BuiltInPresets.
 
+```c#
 public class EncodeAssetWithCustomPresetWorkflow : IWorkflow<EncodeAssetWithCustomPresetWorkflowData>
 {
 
@@ -118,3 +119,4 @@ public class EncodeAssetWithCustomPresetWorkflowData
 
   public string OutputAssetName { get; set; }
 }
+```
