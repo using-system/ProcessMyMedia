@@ -1,8 +1,8 @@
 ﻿namespace ProcessMyMedia.Samples
 {
     using System;
+    using System.Linq;
     using System.IO;
-    using System.Collections.Generic;
 
     using Microsoft.Extensions.Configuration;
 
@@ -81,16 +81,12 @@
                         .Then<Tasks.EncodeAssetTask>()
                             .Input(task => task.Input, data => new JobInputEntity() { Name = data.InputAssetName })
                             .Input(task => task.EncodingOutput, data => data.EncodingOutput)
-                            .Output(data => data.Outputs, task => task.Output.Job.Outputs)
-                        .ForEach(data => data.Outputs)
-                            .Do(iteration => iteration
-                                .StartWith<Tasks.DownloadAssetTask>()
-                                    .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name)
-                                    .Input(task => task.DirectoryToDownload, (data, context) => Path.Combine(data.DirectoryToDownload, ((JobOutputEntity)context.Item).Label))
-                                .Then<Tasks.DeleteAssetTask>()
-                                    .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name))
+                            .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
+                        .Then<Tasks.DownloadAssetTask>()
+                            .Input(task => task.AssetName, data => data.OutputAssetName)
+                            .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
                         .Then<Tasks.DeleteAssetTask>()
-                            .Input(task => task.AssetName, (data) => data.InputAssetName))
+                            .Input(task => task.AssetName, data => data.OutputAssetName))
                     .CompensateWith<Tasks.DeleteAssetTask>(compensate => compensate
                         .Input(task => task.AssetName, data => data.InputAssetName));
             }
@@ -106,7 +102,7 @@
 
             public string DirectoryToDownload { get; set; }
 
-            public List<JobOutputEntity> Outputs { get; set; }
+            public string OutputAssetName { get; set; }
         }
     }
 }
