@@ -31,34 +31,33 @@
                 {
                     new H264VideoCodec()
                     {
-                        FilenamePattern = "{Basename}_{Bitrate}.{Extension}",
+                        FilenamePattern = "Video-{Basename}-{Label}-{Bitrate}{Extension}",
                         KeyFrameInterval = "00:00:02",
-                        SceneChangeDetection = true,
+                        SceneChangeDetection = false,
                         Layers =
                         {
-                            //new H264VideoLayer()
-                            //{
-                            //    Bitrate = 4500,
-                            //    Height = "1280",
-                            //    Width = "720"
-                            //},
                             new H264VideoLayer()
                             {
-                                Bitrate = 2200,
-                                MaxBitrate = 2200,
-                                Height = "480",
-                                Width = "848",
-                                BufferWindow = "00:00:05",
-                                AdaptiveBFrame = true,
-                                FrameRate = "0/1",
-                                ReferenceFrames = 3,
-                                Level = "auto",
-                                Slices = 0,
-                                BFrames = 3,
-                                Profile = "Auto",
-                                EntropyMode = "Cabac"
-                            }
+                                Label = "SD",
+                                Bitrate = 600000,
+                                Height = "640",
+                                Width = "360"
+                            },
+                            new H264VideoLayer()
+                            {
+                                Label = "HD",
+                                Bitrate = 1000000,
+                                Height = "1280",
+                                Width = "720"
+                            },
                         }
+                    },
+                    new AacAudioCodec()
+                    {
+                        Bitrate = 128000,
+                        Channels = 2,
+                        Profile = "AACLC",
+                        SamplingRate = 48000
                     }
                 }
             }
@@ -111,83 +110,3 @@
         }
     }
 }
-/*
- * 
- * 
- *
- <Preset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1.0" xmlns="http://www.windowsazure.com/media/encoding/Preset/2014/03">  
-  <Encoding>  
-    <H264Video>  
-      <KeyFrameInterval>00:00:02</KeyFrameInterval>  
-      <SceneChangeDetection>true</SceneChangeDetection>  
-      <H264Layers>  
-        <H264Layer>  
-          <Bitrate>4500</Bitrate>  
-          <Width>1280</Width>  
-          <Height>720</Height>  
-          <FrameRate>0/1</FrameRate>  
-          <Profile>Auto</Profile>  
-          <Level>auto</Level>  
-          <BFrames>3</BFrames>  
-          <ReferenceFrames>3</ReferenceFrames>  
-          <Slices>0</Slices>  
-          <AdaptiveBFrame>true</AdaptiveBFrame>  
-          <EntropyMode>Cabac</EntropyMode>  
-          <BufferWindow>00:00:05</BufferWindow>  
-          <MaxBitrate>4500</MaxBitrate>  
-        </H264Layer>  
-      </H264Layers>  
-      <Chapters />  
-    </H264Video>  
-    <AACAudio>  
-      <Profile>AACLC</Profile>  
-      <Channels>2</Channels>  
-      <SamplingRate>48000</SamplingRate>  
-      <Bitrate>128</Bitrate>  
-    </AACAudio>  
-  </Encoding>  
-  <Outputs>  
-    <Output FileName="{Basename}_{Width}x{Height}_{VideoBitrate}.mp4">  
-      <MP4Format />  
-    </Output>  
-  </Outputs>  
-</Preset>  
-
-<Preset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="1.0" xmlns="http://www.windowsazure.com/media/encoding/Preset/2014/03">  
-  <Encoding>  
-    <H264Video>  
-      <KeyFrameInterval>00:00:02</KeyFrameInterval>  
-      <SceneChangeDetection>true</SceneChangeDetection>  
-      <H264Layers>  
-        <H264Layer>  
-          <Bitrate>2200</Bitrate>  
-          <Width>848</Width>  
-          <Height>480</Height>  
-          <FrameRate>0/1</FrameRate>  
-          <Profile>Auto</Profile>  
-          <Level>auto</Level>  
-          <BFrames>3</BFrames>  
-          <ReferenceFrames>3</ReferenceFrames>  
-          <Slices>0</Slices>  
-          <AdaptiveBFrame>true</AdaptiveBFrame>  
-          <EntropyMode>Cabac</EntropyMode>  
-          <BufferWindow>00:00:05</BufferWindow>  
-          <MaxBitrate>2200</MaxBitrate>  
-        </H264Layer>  
-      </H264Layers>  
-      <Chapters />  
-    </H264Video>  
-    <AACAudio>  
-      <Profile>AACLC</Profile>  
-      <Channels>2</Channels>  
-      <SamplingRate>48000</SamplingRate>  
-      <Bitrate>128</Bitrate>  
-    </AACAudio>  
-  </Encoding>  
-  <Outputs>  
-    <Output FileName="{Basename}_{Width}x{Height}_{VideoBitrate}.mp4">  
-      <MP4Format />  
-    </Output>  
-  </Outputs>  
-</Preset> 
- */

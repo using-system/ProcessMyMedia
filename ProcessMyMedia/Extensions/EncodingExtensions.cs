@@ -113,6 +113,10 @@
                 {
                     yield return ((Model.H264VideoCodec)codec).ToH264Video();
                 }
+                else if (codec is Model.AacAudioCodec)
+                {
+                    yield return ((Model.AacAudioCodec)codec).ToAacAudio();
+                }
             }
         }
 
@@ -152,6 +156,7 @@
         {
             var layer = new H264Layer()
             {
+                Label = source.Label,
                 Bitrate = source.Bitrate,
                 MaxBitrate = source.MaxBitrate,
                 Width = source.Width,
@@ -176,12 +181,35 @@
             }
 
             if (!string.IsNullOrEmpty(source.Profile)
-                && Enum.TryParse<H264VideoProfile>(source.EntropyMode, true, out H264VideoProfile profile))
+                && Enum.TryParse<H264VideoProfile>(source.Profile, true, out H264VideoProfile profile))
             {
                 layer.Profile = profile;
             }
 
             return layer;
+        }
+
+        /// <summary>
+        /// To the aac audio.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static AacAudio ToAacAudio(this Model.AacAudioCodec source)
+        {
+            var audio = new AacAudio()
+            {
+                Bitrate = source.Bitrate,
+                Channels = source.Channels,
+                SamplingRate = source.SamplingRate
+            };
+
+            if (!string.IsNullOrEmpty(source.Profile)
+                && Enum.TryParse<AacAudioProfile>(source.Profile, true, out AacAudioProfile profile))
+            {
+                audio.Profile = profile;
+            }
+
+            return audio;
         }
 
         /// <summary>
