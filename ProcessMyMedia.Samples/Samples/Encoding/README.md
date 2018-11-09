@@ -76,3 +76,45 @@ public class EncodeFileWithBuiltInPresetsWorkflowData
   public List<JobOutputEntity> Outputs { get; set; }
 }
 ```
+## Encoding a asset with a custom preset
+
+The sample encode a file with multiple BuiltInPresets.
+
+public class EncodeAssetWithCustomPresetWorkflow : IWorkflow<EncodeAssetWithCustomPresetWorkflowData>
+{
+
+  public void Build(IWorkflowBuilder<EncodeAssetWithCustomPresetWorkflowData> builder)
+  {
+    builder
+    .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
+    .StartWith(context => ExecutionResult.Next())
+      .Saga(saga => saga
+      .StartWith<Tasks.IngestFileTask>()
+        .Input(task => task.AssetFilePath, data => data.IntputFilePath)
+        .Input(task => task.AssetName, data => data.InputAssetName)
+      .Then<Tasks.EncodeAssetTask>()
+        .Input(task => task.Input, data => new JobInputEntity() { Name = data.InputAssetName })
+        .Input(task => task.EncodingOutput, data => data.EncodingOutput)
+        .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
+      .Then<Tasks.DownloadAssetTask>()
+        .Input(task => task.AssetName, data => data.OutputAssetName)
+        .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
+      .Then<Tasks.DeleteAssetTask>()
+        .Input(task => task.AssetName, data => data.OutputAssetName))
+      .CompensateWith<Tasks.DeleteAssetTask>(compensate => compensate
+        .Input(task => task.AssetName, data => data.InputAssetName));
+  }
+}
+  
+public class EncodeAssetWithCustomPresetWorkflowData
+{
+  public string InputAssetName { get; set; }
+
+  public string IntputFilePath { get; set; }
+
+  public CustomPresetEncodingOutput EncodingOutput { get; set; }
+
+  public string DirectoryToDownload { get; set; }
+
+  public string OutputAssetName { get; set; }
+}
