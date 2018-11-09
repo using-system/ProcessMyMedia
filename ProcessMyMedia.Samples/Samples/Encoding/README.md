@@ -40,7 +40,11 @@ public class EncodeFileWithBuiltInPresetWorkflowData
 ```
 ## Encoding a file with multiple BuiltInPresets
 
-The sample encode a file with multiple BuiltInPresets.
+The sample : 
+
+1. Encode a file with multiple BuiltInPresets.
+2. Download the output assets
+2. Delete the output assets
 
 ```c#
 public class EncodeFileWithBuiltInPresetsWorkflow : IWorkflow<EncodeFileWithBuiltInPresetsWorkflowData>
@@ -82,7 +86,11 @@ public class EncodeFileWithBuiltInPresetsWorkflowData
 ```
 ## Encoding a asset with a custom preset
 
-The sample encode a file with multiple BuiltInPresets.
+The sample : 
+
+1. Encode an asset with a custom Azure Media Encoder Preset.
+2. Download the output asset
+2. Delete the output asset
 
 ```c#
 public class EncodeAssetWithCustomPresetWorkflow : IWorkflow<EncodeAssetWithCustomPresetWorkflowData>
