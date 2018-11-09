@@ -1,30 +1,39 @@
 # Encoding Samples
 
-## Ingest from directory
+## Encoding a file with a BuiltInPreset
 
 The sample create a new asset and upload files from a directory to the asset, then delete the asset (after doing somes stuffs).
 
 ```c#
-public class IngestFromDirectoryWorkflow : IWorkflow<IngestFromDirectoryWorkflowData>
-{
-  public void Build(IWorkflowBuilder<IngestFromDirectoryWorkflowData> builder)
-  {
-    builder
-      .StartWith<Tasks.IngestFromDirectoryTask>()
-        .Input(task => task.AssetDirectoryPath, data => data.Directory)
-        .Input(task => task.AssetName, data => data.AssetName)
-        .Output(data => data.AssetID, task => task.Output.Asset.AssetID)
-      //Do somme media processes (encoding...)
-      .Then<Tasks.DeleteAssetTask>()
-        .Input(task => task.AssetName, data => data.AssetName);
-  }
-}
+public class EncodeFileWithBuiltInPresetWorkflow : IWorkflow<EncodeFileWithBuiltInPresetWorkflowData>
+        {
+            public string Id => SampleBase.WORKFLOW_NAME;
 
-public class IngestFromDirectoryWorkflowData
-{
-  public string Directory { get; set; }
+            public int Version => 1;
 
-  public string AssetName { get; set; }
-  
-  public Guid AssetID { get; set; }
-}
+            public void Build(IWorkflowBuilder<EncodeFileWithBuiltInPresetWorkflowData> builder)
+            {
+                builder
+                    .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
+                        .StartWith<Tasks.EncodeFileBuiltInPresetTask>()
+                        .Input(task => task.FilePath, data => data.FilePath)
+                        .Input(task => task.Preset, data => data.Preset)
+                        .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
+                    .Then<Tasks.DownloadAssetTask>()
+                        .Input(task => task.AssetName, data => data.OutputAssetName)
+                        .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
+                    .Then<Tasks.DeleteAssetTask>()
+                        .Input(task => task.AssetName, data => data.OutputAssetName);
+            }
+        }
+
+        public class EncodeFileWithBuiltInPresetWorkflowData
+        {
+            public string FilePath { get; set; }
+
+            public string Preset { get; set; }
+
+            public string DirectoryToDownload { get; set; } 
+
+            public string OutputAssetName { get; set; }
+        }
