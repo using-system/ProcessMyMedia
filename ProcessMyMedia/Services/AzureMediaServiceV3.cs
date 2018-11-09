@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Services
 {
     using System;
+    using System.Text;
     using System.Security;
     using System.IO;
     using System.Linq;
@@ -14,7 +15,6 @@
     using Microsoft.WindowsAzure.Storage.Blob;
 
     using ProcessMyMedia.Model;
-
     using ProcessMyMedia.Extensions;
 
     /// <summary>
@@ -68,11 +68,19 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var asset = await this.client.Assets.GetAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                name);
+            try
+            {
 
-            return asset.ToEntity();
+                var asset = await this.client.Assets.GetAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    name);
+
+                return asset.ToEntity();
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
         }
 
         /// <summary>
@@ -91,15 +99,22 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            Asset assetParameters = new Asset()
+            try
             {
-                StorageAccountName = storageAccountName,
-                Description = assetDescription
-            };
+                Asset assetParameters = new Asset()
+                {
+                    StorageAccountName = storageAccountName,
+                    Description = assetDescription
+                };
 
-            var asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName, assetParameters);
+                var asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName, assetParameters);
 
-            return asset.ToEntity();
+                return asset.ToEntity();
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
         }
 
         /// <summary>
@@ -119,37 +134,45 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var response = await this.client.Assets.ListContainerSasAsync(
-                this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                assetName,
-                permissions: AssetContainerPermission.ReadWrite,
-                expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime());
-            var sasUri = new Uri(response.AssetContainerSasUrls.First());
-
-            CloudBlobContainer container = new CloudBlobContainer(sasUri);
-            foreach (string assetPath in files)
+            try
             {
-                var blob = container.GetBlockBlobReference(Path.GetFileName(assetPath));
-                await blob.UploadFromFileAsync(assetPath);
-            }
+                var response = await this.client.Assets.ListContainerSasAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    assetName,
+                    permissions: AssetContainerPermission.ReadWrite,
+                    expiryTime: DateTime.UtcNow.AddHours(4).ToUniversalTime());
+                var sasUri = new Uri(response.AssetContainerSasUrls.First());
 
-            if (metadata == null)
-            {
-                return;
-            }
-
-            foreach (var entry in metadata)
-            {
-                if (container.Metadata.ContainsKey(entry.Key))
+                CloudBlobContainer container = new CloudBlobContainer(sasUri);
+                foreach (string assetPath in files)
                 {
-                    container.Metadata[entry.Key] = entry.Value;
+                    var blob = container.GetBlockBlobReference(Path.GetFileName(assetPath));
+                    await blob.UploadFromFileAsync(assetPath);
                 }
-                else
+
+                if (metadata == null)
                 {
-                    container.Metadata.Add(entry.Key, entry.Value);
+                    return;
+                }
+
+                foreach (var entry in metadata)
+                {
+                    if (container.Metadata.ContainsKey(entry.Key))
+                    {
+                        container.Metadata[entry.Key] = entry.Value;
+                    }
+                    else
+                    {
+                        container.Metadata.Add(entry.Key, entry.Value);
+                    }
                 }
             }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+
         }
 
         /// <summary>
@@ -165,44 +188,52 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            if (!Directory.Exists(directoryToDownload))
+            try
             {
-                Directory.CreateDirectory(directoryToDownload);
-            }
-
-            AssetContainerSas assetContainerSas = await client.Assets.ListContainerSasAsync(
-                this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                assetName,
-                permissions: AssetContainerPermission.Read,
-                expiryTime: DateTime.UtcNow.AddHours(1).ToUniversalTime());
-
-            Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
-            CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
-
-            BlobContinuationToken continuationToken = null;
-            IList<Task> downloadTasks = new List<Task>();
-
-            do
-            {
-                BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, null, continuationToken, null, null);
-
-                foreach (IListBlobItem blobItem in segment.Results)
+                if (!Directory.Exists(directoryToDownload))
                 {
-                    CloudBlockBlob blob = blobItem as CloudBlockBlob;
-                    if (blob != null)
-                    {
-                        string path = Path.Combine(directoryToDownload, blob.Name);
-
-                        downloadTasks.Add(blob.DownloadToFileAsync(path, FileMode.Create));
-                    }
+                    Directory.CreateDirectory(directoryToDownload);
                 }
 
-                continuationToken = segment.ContinuationToken;
-            }
-            while (continuationToken != null);
+                AssetContainerSas assetContainerSas = await client.Assets.ListContainerSasAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    assetName,
+                    permissions: AssetContainerPermission.Read,
+                    expiryTime: DateTime.UtcNow.AddHours(1).ToUniversalTime());
 
-            await Task.WhenAll(downloadTasks);
+                Uri containerSasUrl = new Uri(assetContainerSas.AssetContainerSasUrls.FirstOrDefault());
+                CloudBlobContainer container = new CloudBlobContainer(containerSasUrl);
+
+                BlobContinuationToken continuationToken = null;
+                IList<Task> downloadTasks = new List<Task>();
+
+                do
+                {
+                    BlobResultSegment segment = await container.ListBlobsSegmentedAsync(null, true, BlobListingDetails.None, null, continuationToken, null, null);
+
+                    foreach (IListBlobItem blobItem in segment.Results)
+                    {
+                        CloudBlockBlob blob = blobItem as CloudBlockBlob;
+                        if (blob != null)
+                        {
+                            string path = Path.Combine(directoryToDownload, blob.Name);
+
+                            downloadTasks.Add(blob.DownloadToFileAsync(path, FileMode.Create));
+                        }
+                    }
+
+                    continuationToken = segment.ContinuationToken;
+                }
+                while (continuationToken != null);
+
+                await Task.WhenAll(downloadTasks);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+
         }
 
         /// <summary>
@@ -217,12 +248,20 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var assetToDelete = await this.client.Assets.GetAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
-
-            if (assetToDelete != null)
+            try
             {
-                await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+                var assetToDelete = await this.client.Assets.GetAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+
+                if (assetToDelete != null)
+                {
+                    await this.client.Assets.DeleteAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName);
+                }
             }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+
         }
 
         /// <summary>
@@ -239,32 +278,39 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}", 
-                assetDescription: $"Media Analysing for {assetName}");
-
-            TransformOutput[] outputs = new TransformOutput[]
+            try
             {
-                new TransformOutput(parameters.ToAnalyzerPreset(), onError: OnErrorType.StopProcessingJob),
-            };
+                AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}",
+                    assetDescription: $"Media Analysing for {assetName}");
 
-            string transformName = $"MediaAnalysing-{Guid.NewGuid()}";
-            Transform transform = await client.Transforms.CreateOrUpdateAsync
-                (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
-
-            Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                transformName,
-                $"job-{Guid.NewGuid()}",
-                new Job()
+                TransformOutput[] outputs = new TransformOutput[]
                 {
-                    Input = new JobInputAsset(assetName),
-                    Outputs = new List<JobOutput>
-                    {
-                        new JobOutputAsset(outputAsset.Name)
-                    }
-                });
+                    new TransformOutput(parameters.ToAnalyzerPreset(), onError: OnErrorType.StopProcessingJob),
+                };
 
-            return job.ToJobEntity(templateName:transformName);
+                string transformName = $"MediaAnalysing-{Guid.NewGuid()}";
+                Transform transform = await client.Transforms.CreateOrUpdateAsync
+                    (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
+
+                Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    transformName,
+                    $"job-{Guid.NewGuid()}",
+                    new Job()
+                    {
+                        Input = new JobInputAsset(assetName),
+                        Outputs = new List<JobOutput>
+                        {
+                            new JobOutputAsset(outputAsset.Name)
+                        }
+                    });
+
+                return job.ToJobEntity(templateName: transformName);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
         }
 
         /// <summary>
@@ -281,20 +327,29 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
-
-            if (job.Outputs.Count() > 0)
+            try
             {
-                var assetToDownload = job.Outputs.First();
-                await this.DownloadFilesAsync(assetToDownload.Name, workingDirectory);
-                result.OutputAssetName = assetToDownload.Name;
+                string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
+
+                if (job.Outputs.Count() > 0)
+                {
+                    var assetToDownload = job.Outputs.First();
+                    await this.DownloadFilesAsync(assetToDownload.Name, workingDirectory);
+                    result.OutputAssetName = assetToDownload.Name;
+                }
+
+                //TODO:analyse result
+
+                Directory.Delete(workingDirectory, true);
+
+                return result;
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
             }
 
-            //TODO:analyse result
 
-            Directory.Delete(workingDirectory, true);
-
-            return result;
         }
 
         /// <summary>
@@ -311,30 +366,37 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            TransformOutput[] outputs = encodingOutputs.ToTransformOutputs().ToArray();
-            string transformName = $"Encoding-{Guid.NewGuid()}";
-            Transform transform = await client.Transforms.CreateOrUpdateAsync
-                (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
-
-            IList<JobOutput> jobOutputs = new List<JobOutput>();
-            foreach (var jobOuput in encodingOutputs)
+            try
             {
-                string assetName = Guid.NewGuid().ToString();
-                await this.CreateOrUpdateAssetAsync(assetName);
-                jobOutputs.Add(new JobOutputAsset(assetName, label: jobOuput.Label));
-            }
+                TransformOutput[] outputs = encodingOutputs.ToTransformOutputs().ToArray();
+                string transformName = $"Encoding-{Guid.NewGuid()}";
+                Transform transform = await client.Transforms.CreateOrUpdateAsync
+                    (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, outputs);
 
-            Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                transformName,
-                $"job-{Guid.NewGuid()}",
-                new Job()
+                IList<JobOutput> jobOutputs = new List<JobOutput>();
+                foreach (var jobOuput in encodingOutputs)
                 {
-                    Input = inputs.ToJobInput(),
-                    Outputs = jobOutputs
-                });
+                    string assetName = Guid.NewGuid().ToString();
+                    await this.CreateOrUpdateAssetAsync(assetName);
+                    jobOutputs.Add(new JobOutputAsset(assetName, label: jobOuput.Label));
+                }
 
-            return job.ToJobEntity(templateName: transformName);
+                Job job = await this.client.Jobs.CreateAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    transformName,
+                    $"job-{Guid.NewGuid()}",
+                    new Job()
+                    {
+                        Input = inputs.ToJobInput(),
+                        Outputs = jobOutputs
+                    });
+
+                return job.ToJobEntity(templateName: transformName);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
         }
 
         /// <summary>
@@ -350,11 +412,18 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var job = await this.client.Jobs.ListAsync(configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                templateName);
+            try
+            {
+                var job = await this.client.Jobs.ListAsync(configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    templateName);
 
-            return job.FirstOrDefault()?.ToJobEntity(templateName:templateName);
+                return job.FirstOrDefault()?.ToJobEntity(templateName: templateName);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
         }
 
         /// <summary>
@@ -371,10 +440,18 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                templateName,
-                jobName);
+            try
+            {
+                await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    templateName,
+                    jobName);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+
         }
 
         /// <summary>
@@ -390,11 +467,20 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            var transform = await this.client.Transforms.GetAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                name);
+            try
+            {
+                var transform = await this.client.Transforms.GetAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    name);
 
-            return transform.ToTemplateEntity();
+                return transform.ToTemplateEntity();
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+
+
         }
 
         /// <summary>
@@ -410,9 +496,35 @@
                 throw new SecurityException("Not Authenticated");
             }
 
-            await client.Transforms.DeleteAsync(this.configuration.ResourceGroup,
-                this.configuration.MediaAccountName,
-                name);
+            try
+            {
+                await client.Transforms.DeleteAsync(this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    name);
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+        }
+
+        private static Exception GetApiException(ApiErrorException exc)
+        {
+            if (!string.IsNullOrEmpty(exc?.Body?.Error?.Message))
+            {
+                StringBuilder errorMessage = new StringBuilder();
+                errorMessage.AppendLine($"{exc.Body.Error.Code} -{exc.Body.Error.Message}");
+                if (exc.Body.Error.Details != null)
+                {
+                    foreach (var detail in exc.Body.Error.Details)
+                    {
+                        errorMessage.AppendLine($"{detail.Code} -{detail.Message}");
+                    }
+                }
+                return new Exception(errorMessage.ToString());
+            }
+
+            return exc;
         }
 
         /// <summary>
