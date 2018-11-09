@@ -2,7 +2,11 @@
 
 ## Encoding a file with a BuiltInPreset
 
-The sample encode a file with a BuiltInPreset.
+The sample : 
+
+1. Encode a file with a BuiltInPreset
+2. Download the output asset
+2. Delete the output asset
 
 ```c#
 public class EncodeFileWithBuiltInPresetWorkflow : IWorkflow<EncodeFileWithBuiltInPresetWorkflowData>
