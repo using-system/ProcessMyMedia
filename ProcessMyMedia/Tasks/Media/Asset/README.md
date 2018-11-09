@@ -211,3 +211,23 @@ Download asset to a local directory
   <td>Yes</td>
  </tr>
 </table>
+
+## DeleteAssetTask
+
+Delete an asset
+
+<table>
+ <caption>Input</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Is Required ?</th>
+ </tr>
+ <tr>
+  <td>AssetName</td>
+  <td>string</td>
+  <td>The asset name to delete.</td>
+  <td>Yes</td>
+ </tr>
+</table>
