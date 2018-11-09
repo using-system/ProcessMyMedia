@@ -132,4 +132,42 @@ public class EncodeAssetWithCustomPresetWorkflowData
 
   public string OutputAssetName { get; set; }
 }
+
+var customPreset = new CustomPresetEncodingOutput()
+  {
+    PresetName = "EncodeAssetWithCustomPreset",
+    Codecs =
+    {
+      new H264VideoCodec()
+      {
+        FilenamePattern = "Video-{Basename}-{Label}-{Bitrate}{Extension}",
+        KeyFrameInterval = "00:00:02",
+        SceneChangeDetection = false,
+        Layers =
+        {
+          new H264VideoLayer()
+          {
+            Label = "SD",
+            Bitrate = 600000,
+            Height = "640",
+            Width = "360"
+          },
+          new H264VideoLayer()
+          {
+            Label = "HD",
+            Bitrate = 1000000,
+            Height = "1280",
+            Width = "720"
+          },
+        }
+    },
+    new AacAudioCodec()
+      {
+        Bitrate = 128000,
+        Channels = 2,
+        Profile = "AACLC",
+        SamplingRate = 48000
+      }
+    }
+}
 ```
