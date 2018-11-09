@@ -25,6 +25,23 @@
         public string KeyFrameInterval { get; set; }
 
         /// <summary>
+        /// Gets or sets the complexity.
+        /// Possible values : Speed, Balanced, Quality
+        /// </summary>
+        /// <value>
+        /// The complexity.
+        /// </value>
+        public string Complexity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the scene change detection.
+        /// </summary>
+        /// <value>
+        /// The scene change detection.
+        /// </value>
+        public bool? SceneChangeDetection { get; set; }
+
+        /// <summary>
         /// Gets or sets the layers.
         /// </summary>
         /// <value>

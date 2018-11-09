@@ -123,10 +123,24 @@
         /// <returns></returns>
         public static H264Video ToH264Video(this Model.H264VideoCodec source)
         {
-            return new H264Video()
+            var video = new H264Video()
             {
-                Layers = source.Layers.Select(layer => layer.ToH264Layer()).ToList()
+                Layers = source.Layers.Select(layer => layer.ToH264Layer()).ToList(),
+                SceneChangeDetection = source.SceneChangeDetection
             };
+
+            if (!string.IsNullOrEmpty(source.KeyFrameInterval))
+            {
+                video.KeyFrameInterval = TimeSpan.Parse(source.KeyFrameInterval);
+            }
+
+            if (!string.IsNullOrEmpty(source.Complexity)
+                && Enum.TryParse<H264Complexity>(source.Complexity, true, out H264Complexity complexity))
+            {
+                video.Complexity = complexity;
+            }
+
+            return video;
         }
 
         /// <summary>
@@ -136,12 +150,38 @@
         /// <returns></returns>
         public static H264Layer ToH264Layer(this Model.H264VideoLayer source)
         {
-            return new H264Layer()
+            var layer = new H264Layer()
             {
                 Bitrate = source.Bitrate,
+                MaxBitrate = source.MaxBitrate,
                 Width = source.Width,
-                Height = source.Height
+                Height = source.Height,
+                AdaptiveBFrame = source.AdaptiveBFrame,
+                BFrames = source.BFrames,
+                FrameRate = source.FrameRate,
+                Level =  source.Level,
+                ReferenceFrames = source.ReferenceFrames,
+                Slices = source.Slices
             };
+
+            if (!string.IsNullOrEmpty(source.BufferWindow))
+            {
+                layer.BufferWindow = TimeSpan.Parse(source.BufferWindow);
+            }
+
+            if (!string.IsNullOrEmpty(source.EntropyMode)
+                && Enum.TryParse<EntropyMode>(source.EntropyMode, true, out EntropyMode entropyMode))
+            {
+                layer.EntropyMode = entropyMode;
+            }
+
+            if (!string.IsNullOrEmpty(source.Profile)
+                && Enum.TryParse<H264VideoProfile>(source.EntropyMode, true, out H264VideoProfile profile))
+            {
+                layer.Profile = profile;
+            }
+
+            return layer;
         }
 
         /// <summary>
