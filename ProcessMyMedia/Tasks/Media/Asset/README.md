@@ -185,3 +185,29 @@ Create a new asset and upload the files presents in a directory
   <td>The asset created or updated by the task</td>
  </tr>
 </table>
+
+## DownloadAssetTask
+
+Download asset to a local directory
+
+<table>
+ <caption>Input</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Is Required ?</th>
+ </tr>
+ <tr>
+  <td>AssetName</td>
+  <td>string</td>
+  <td>The asset name to download.</td>
+  <td>Yes</td>
+ </tr>
+ <tr>
+  <td>DirectoryToDownload</td>
+  <td>string</td>
+  <td>The directory to download the asset.</td>
+  <td>Yes</td>
+ </tr>
+</table>
