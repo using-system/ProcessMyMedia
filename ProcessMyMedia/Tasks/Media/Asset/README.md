@@ -57,4 +57,3 @@ Create a new asset and upload the file specified
   <td>The asset created or updated by the task</td>
  </tr>
 </table>
-* [Asset Samples](/ProcessMyMedia.Samples/Samples/Asset)
