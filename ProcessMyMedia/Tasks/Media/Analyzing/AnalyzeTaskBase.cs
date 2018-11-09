@@ -106,17 +106,8 @@
                 return;
             }
 
-            var jobToDelete = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
-            if (jobToDelete != null)
-            {
-                await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
-            }
-
-            var templateToDelete = await this.mediaService.GetTemplateAsync(job.TemplateName);
-            if (templateToDelete != null)
-            {
-                await this.mediaService.DeleteTemplateAsync(job.TemplateName);
-            }
+            await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
+            await this.mediaService.DeleteTemplateAsync(job.TemplateName);
         }
     }
 }

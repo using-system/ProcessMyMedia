@@ -442,10 +442,15 @@
 
             try
             {
-                await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
-                    this.configuration.MediaAccountName,
-                    templateName,
-                    jobName);
+                var jobToDelete = await this.GetJobAsync(jobName, templateName);
+
+                if (jobToDelete != null)
+                {
+                    await client.Jobs.DeleteAsync(this.configuration.ResourceGroup,
+                        this.configuration.MediaAccountName,
+                        templateName,
+                        jobName);
+                }
             }
             catch (ApiErrorException exc)
             {
@@ -498,9 +503,14 @@
 
             try
             {
-                await client.Transforms.DeleteAsync(this.configuration.ResourceGroup,
-                    this.configuration.MediaAccountName,
-                    name);
+                var templateToDelete = await this.GetTemplateAsync(name);
+
+                if (templateToDelete != null)
+                {
+                    await client.Transforms.DeleteAsync(this.configuration.ResourceGroup,
+                        this.configuration.MediaAccountName,
+                        name);
+                }
             }
             catch (ApiErrorException exc)
             {
