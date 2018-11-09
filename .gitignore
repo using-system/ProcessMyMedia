@@ -334,3 +334,4 @@ ASALocalRun/
 .localhistory/
 
 appsettings.override.json
+coverage.json
