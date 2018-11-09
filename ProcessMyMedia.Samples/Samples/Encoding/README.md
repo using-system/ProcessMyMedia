@@ -53,7 +53,8 @@ public class EncodeFileWithBuiltInPresetsWorkflow : IWorkflow<EncodeFileWithBuil
                         .Do(iteration => iteration
                         .StartWith<Tasks.DownloadAssetTask>()
                                 .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name)
-                                .Input(task => task.DirectoryToDownload, (data, context) => Path.Combine(data.DirectoryToDownload, ((JobOutputEntity)context.Item).Label))
+                                .Input(task => task.DirectoryToDownload, (data, context) => 
+                                        Path.Combine(data.DirectoryToDownload, ((JobOutputEntity)context.Item).Label))
                         .Then<Tasks.DeleteAssetTask>()
                                 .Input(task => task.AssetName, (data, context) => ((JobOutputEntity)context.Item).Name));
         }
