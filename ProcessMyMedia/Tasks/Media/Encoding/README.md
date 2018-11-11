@@ -119,7 +119,7 @@ Encode an asset with a custom Azure media encoder preset
  <tr>
   <td>CleanupResources</td>
   <td>bool</td>
-  <td>Clean all azure media services resources (job, transform, file ingested) used by the task to encode the file</td>
+  <td>Clean all azure media services resources (job, transform) used by the task to encode the file</td>
   <td>No</td>
  </tr>
 </table>
