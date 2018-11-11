@@ -29,4 +29,16 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <td>H264MultipleBitrateSD</td>
   <td>Produces a set of 5 GOP-aligned MP4 files, ranging from 1600kbps to 400 kbps, and stereo AAC audio. Resolution starts at 480p and goes down to 360p.</td>
  </tr>
+  <tr>
+  <td>H264SingleBitrate1080p</td>
+  <td>Produces an MP4 file where the video is encoded with H.264 codec at 6750 kbps and a picture height of 1080 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.</td>
+ </tr>
+   <tr>
+  <td>H264SingleBitrate720p</td>
+  <td>Produces an MP4 file where the video is encoded with H.264 codec at 4500 kbps and a picture height of 720 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.</td>
+ </tr>
+    <tr>
+  <td>H264SingleBitrateSD</td>
+  <td>Produces an MP4 file where the video is encoded with H.264 codec at 2200 kbps and a picture height of 480 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.</td>
+ </tr>
 </table>
