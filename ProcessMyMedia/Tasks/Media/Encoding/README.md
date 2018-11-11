@@ -40,8 +40,8 @@ Encode a file with a BuiltInPreset
   <th>Description</th>
  </tr>
  <tr>
-  <td>Output</td>
-  <td>EncodeTaskOutput</td>
+  <td>Job</td>
+  <td>JobEntity</td>
   <td>Get the encoding job informations.</td>
  </tr>
 </table>
@@ -86,8 +86,8 @@ Encode a file with a a list of BuiltInPreset
   <th>Description</th>
  </tr>
  <tr>
-  <td>Output</td>
-  <td>EncodeTaskOutput</td>
+  <td>Job</td>
+  <td>JobEntity</td>
   <td>Get the encoding job informations.</td>
  </tr>
 </table>
