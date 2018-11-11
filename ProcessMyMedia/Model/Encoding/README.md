@@ -42,3 +42,39 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <td>Produces an MP4 file where the video is encoded with H.264 codec at 2200 kbps and a picture height of 480 pixels, and the stereo audio is encoded with AAC-LC codec at 64 kbps.</td>
  </tr>
 </table>
+
+# H264VideoCodec
+
+<table>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>KeyFrameInterval</td>
+  <td>string</td>
+  <td>Key frame interval</td>
+ </tr>
+ <tr>
+  <td>Complexity</td>
+  <td>string</td>
+  <td>Possible values : Speed, Balanced, Quality</td>
+ </tr>
+ <tr>
+  <td>SceneChangeDetection</td>
+  <td>bool?</td>
+  <td>Enable schene changhe detection</td>
+ </tr>
+ <tr>
+  <td>CreationDate</td>
+  <td>DateTime</td>
+  <td>Creation date of the asset</td>
+ </tr>
+ <tr>
+  <td>Layers</td>
+  <td>ListOfH264VideoLayer</td>
+  <td>Video codec layers</td>
+ </tr>
+</table>
+
