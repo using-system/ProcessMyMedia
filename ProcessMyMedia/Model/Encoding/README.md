@@ -78,3 +78,82 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
  </tr>
 </table>
 
+# H264VideoLayer
+
+<table>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Bitrate</td>
+  <td>int?</td>
+  <td>Video bitrate</td>
+ </tr>
+ <tr>
+  <td>Width</td>
+  <td>string</td>
+  <td>Set the Width of the video</td>
+ </tr>
+ <tr>
+  <td>Height</td>
+  <td>string</td>
+  <td>Set the Height of the video</td>
+ </tr>
+ <tr>
+  <td>MaxBitrate</td>
+  <td>int?</td>
+  <td>The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified, defaults to the same value as bitrate.</td>
+ </tr>
+ <tr>
+  <td>BFrames</td>
+  <td>int?</td>
+  <td>the number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate number based on the video profile and level.</td>
+ </tr>
+ <tr>
+  <td>FrameRate</td>
+  <td>string</td>
+  <td>The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M and N are integers (For example, 30000/1001), or in the form of a number (For example, 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified, the encoder will use the same frame rate as the input video.</td>
+ </tr>
+  <tr>
+  <td>Slices</td>
+  <td>int?</td>
+  <td>the number of slices to be used when encoding this layer. If not specified, default is zero, which means that encoder will use a single slice for each frame.</td>
+ </tr>
+  <tr>
+  <td>AdaptiveBFrame</td>
+  <td>bool?</td>
+  <td>whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder will turn it on whenever the video profile permits its use.</td>
+ </tr>
+ <tr>
+  <td>Profile</td>
+  <td>string</td>
+  <td>Specify which profile of the H.264 standard should be used when encoding this layer. Default is Auto. Possible values include: 'Auto', 'Baseline', 'Main', 'High', 'High422', 'High444'</td>
+ </tr>
+ <tr>
+  <td>Level</td>
+  <td>string</td>
+  <td>Specify which level of the H.264 standard should be used when encoding this layer. The value can be Auto, or a number that matches the H.264 profile. If not specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.</td>
+ </tr>
+  <tr>
+  <td>BufferWindow</td>
+  <td>string</td>
+  <td>The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100] seconds. The default is 5 seconds (for example, PT5S).</td>
+ </tr>
+  <tr>
+  <td>ReferenceFrames</td>
+  <td>int?</td>
+  <td>The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an appropriate number based on the encoder complexity setting.</td>
+ </tr>
+   <tr>
+  <td>EntropyMode</td>
+  <td>string</td>
+  <td>Specify the entropy mode to be used for this layer. If not specified, the encoder chooses the mode that is appropriate for the profile and level. Possible values include: 'Cabac', 'Cavlc'</td>
+ </tr>
+  <tr>
+  <td>Label</td>
+  <td>string</td>
+  <td>Layer label.</td>
+ </tr>
+</table>
