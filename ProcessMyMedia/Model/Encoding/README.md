@@ -157,3 +157,33 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <td>Layer label.</td>
  </tr>
 </table>
+
+# AacAudioCodec
+
+<table>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Profile</td>
+  <td>string</td>
+  <td>Specify the encoding profile to be used when encoding audio with AAC. Possible values include: 'AacLc', 'HeAacV1', 'HeAacV2'</td>
+ </tr>
+ <tr>
+  <td>Channels</td>
+  <td>int?</td>
+  <td>Specify the number of channels in the audio.</td>
+ </tr>
+ <tr>
+  <td>SamplingRate</td>
+  <td>int?</td>
+  <td>Specify the sampling rate to use for encoding in hertz.</td>
+ </tr>
+ <tr>
+  <td>Bitrate</td>
+  <td>int?</td>
+  <td>The bitrate, in bits per second, of the output encoded audio.</td>
+ </tr>
+</table>
