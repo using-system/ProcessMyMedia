@@ -29,7 +29,21 @@
         /// </value>
         public List<CodecEntityBase> Codecs { get; set; }
 
+        /// <summary>
+        /// Gets or sets the thumbnails options.
+        /// </summary>
+        /// <value>
+        /// The thumbnails options.
+        /// </value>
+        public ThumbnailsOptions ThumbnailsOptions { get; set; }
 
+
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <value>
+        /// The label.
+        /// </value>
         public override string Label => this.PresetName;
 
         /// <summary>
