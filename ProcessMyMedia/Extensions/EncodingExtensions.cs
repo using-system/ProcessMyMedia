@@ -118,6 +118,45 @@
                     yield return ((Model.AacAudioCodec)codec).ToAacAudio();
                 }
             }
+
+            if(source.ThumbnailsOptions != null)
+            {
+                if (source.ThumbnailsOptions.GeneratePng == true)
+                {
+                    yield return new PngImage()
+                    {
+                        Start = source.ThumbnailsOptions.Start,
+                        Step = source.ThumbnailsOptions.Step,
+                        Range = source.ThumbnailsOptions.Range,
+                        Layers = new PngLayer[]
+                        {
+                            new PngLayer()
+                            {
+                                Width = source.ThumbnailsOptions.Width,
+                                Height = source.ThumbnailsOptions.Height
+                            }
+                        }
+                    };
+
+                    if (source.ThumbnailsOptions.GenerateJpg == true)
+                    {
+                        yield return new JpgImage()
+                        {
+                            Start = source.ThumbnailsOptions.Start,
+                            Step = source.ThumbnailsOptions.Step,
+                            Range = source.ThumbnailsOptions.Range,
+                            Layers = new JpgLayer[]
+                            {
+                            new JpgLayer()
+                            {
+                                Width = source.ThumbnailsOptions.Width,
+                                Height = source.ThumbnailsOptions.Height
+                            }
+                            }
+                        };
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -229,6 +268,19 @@
                 if(codec is Model.H264VideoCodec)
                 {
                     yield return new Mp4Format(codec.FilenamePattern);
+                }
+
+                if(!string.IsNullOrEmpty(source?.ThumbnailsOptions?.FilenamePattern))
+                {
+                    if (source?.ThumbnailsOptions?.GenerateJpg == true)
+                    {
+                        yield return new JpgFormat(source.ThumbnailsOptions.FilenamePattern);
+                    }
+
+                    if (source?.ThumbnailsOptions?.GeneratePng == true)
+                    {
+                        yield return new PngFormat(source.ThumbnailsOptions.FilenamePattern);
+                    }
                 }
             }
         }

@@ -22,14 +22,6 @@
         public bool? GeneratePng { get; set; }
 
         /// <summary>
-        /// Gets or sets the generate GIF.
-        /// </summary>
-        /// <value>
-        /// The generate GIF.
-        /// </value>
-        public bool? GenerateGif { get; set; }
-
-        /// <summary>
         /// Gets or sets the generate JPG.
         /// </summary>
         /// <value>
