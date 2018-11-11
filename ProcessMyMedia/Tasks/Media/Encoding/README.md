@@ -91,3 +91,49 @@ Encode a file with a a list of BuiltInPreset
   <td>Get the encoding job informations.</td>
  </tr>
 </table>
+
+## EncodeAssetTask
+
+Encode an asset with a custom Azure media encoder preset
+
+<table>
+ <caption>Input</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Is Required ?</th>
+ </tr>
+ <tr>
+  <td>Input</td>
+  <td>JobInputEntity</td>
+  <td>Asset input to encode</td>
+  <td>Yes</td>
+ </tr>
+ <tr>
+  <td>EncodingOutput</td>
+  <td>CustomPresetEncodingOutput</td>
+  <td>Azure media encoder preset</td>
+  <td>Yes</td>
+ </tr>
+ <tr>
+  <td>CleanupResources</td>
+  <td>bool</td>
+  <td>Clean all azure media services resources (job, transform, file ingested) used by the task to encode the file</td>
+  <td>No</td>
+ </tr>
+</table>
+
+<table>
+ <caption>Output</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Job</td>
+  <td>JobEntity</td>
+  <td>Get the encoding job informations.</td>
+ </tr>
+</table>
