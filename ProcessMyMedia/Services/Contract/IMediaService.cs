@@ -80,8 +80,11 @@
         /// </summary>
         /// <param name="inputs">The inputs.</param>
         /// <param name="encodingOutputs">The encoding outputs.</param>
+        /// <param name="priority">The priority.</param>
         /// <returns></returns>
-        Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, IEnumerable<EncodingOutputBase> encodingOutputs);
+        Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, 
+            IEnumerable<EncodingOutputBase> encodingOutputs,
+            JobPriority priority);
 
         /// <summary>
         /// Gets the job.

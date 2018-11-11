@@ -357,9 +357,12 @@
         /// </summary>
         /// <param name="inputs">The inputs.</param>
         /// <param name="encodingOutputs">The encoding outputs.</param>
+        /// <param name="priority">The priority.</param>
         /// <returns></returns>
         /// <exception cref="SecurityException">Not Authenticated</exception>
-        public async Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, IEnumerable<EncodingOutputBase> encodingOutputs)
+        public async Task<JobEntity> StartEncodeAsync(IEnumerable<JobAssetEntity> inputs, 
+            IEnumerable<EncodingOutputBase> encodingOutputs,
+            JobPriority priority)
         {
             if (this.client == null)
             {
@@ -368,7 +371,7 @@
 
             try
             {
-                TransformOutput[] transformOutputs = encodingOutputs.ToTransformOutputs().ToArray();
+                TransformOutput[] transformOutputs = encodingOutputs.ToTransformOutputs(priority).ToArray();
                 string transformName = $"Encoding-{Guid.NewGuid()}";
                 Transform transform = await client.Transforms.CreateOrUpdateAsync
                     (this.configuration.ResourceGroup, this.configuration.MediaAccountName, transformName, transformOutputs);
@@ -388,7 +391,8 @@
                     new Job()
                     {
                         Input = inputs.ToJobInput(),
-                        Outputs = jobOutputs
+                        Outputs = jobOutputs,
+                        Priority = priority.ToPrority()
                     });
 
                 return job.ToJobEntity(templateName: transformName);

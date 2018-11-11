@@ -15,19 +15,20 @@
         /// Converts to tradnsformoutputs.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="priority">The priority.</param>
         /// <returns></returns>
-        public static IEnumerable<TransformOutput> ToTransformOutputs(this IEnumerable<Model.EncodingOutputBase> source)
+        public static IEnumerable<TransformOutput> ToTransformOutputs(this IEnumerable<Model.EncodingOutputBase> source, Model.JobPriority priority)
         {
             foreach(var output in source)
             {
                 if(output is Model.BuiltInPresetEncodingOutput)
                 {
-                    yield return ((Model.BuiltInPresetEncodingOutput)output).ToTransformOutput();
+                    yield return ((Model.BuiltInPresetEncodingOutput)output).ToTransformOutput(priority);
                 }
 
                 if (output is Model.CustomPresetEncodingOutput)
                 {
-                    yield return ((Model.CustomPresetEncodingOutput)output).ToTransformOutput();
+                    yield return ((Model.CustomPresetEncodingOutput)output).ToTransformOutput(priority);
                 }
             }
         }
@@ -60,11 +61,12 @@
         /// Converts to transformoutput.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="priority">The priority.</param>
         /// <returns></returns>
-        public static TransformOutput ToTransformOutput(this Model.BuiltInPresetEncodingOutput source)
+        public static TransformOutput ToTransformOutput(this Model.BuiltInPresetEncodingOutput source, Model.JobPriority priority)
         {
             return new TransformOutput(new BuiltInStandardEncoderPreset(Enum.Parse<EncoderNamedPreset>(source.Preset.ToString())), 
-                onError: OnErrorType.StopProcessingJob);
+                onError: OnErrorType.StopProcessingJob, relativePriority: priority.ToPrority());
         }
 
         /// <summary>
@@ -90,14 +92,16 @@
         /// To the transform output.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="priority">The priority.</param>
         /// <returns></returns>
-        public static TransformOutput ToTransformOutput(this Model.CustomPresetEncodingOutput source)
+        public static TransformOutput ToTransformOutput(this Model.CustomPresetEncodingOutput source, Model.JobPriority priority)
         {
             return new TransformOutput(new StandardEncoderPreset(
                 formats: source.ToFormats().ToList(),
                 codecs: source.ToCodecs().ToList(),
                 filters: null),
-                onError: OnErrorType.StopProcessingJob);
+                onError: OnErrorType.StopProcessingJob,
+                relativePriority: priority.ToPrority());
         }
 
         /// <summary>
@@ -283,6 +287,16 @@
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Converts to prority.
+        /// </summary>
+        /// <param name="priority">The priority.</param>
+        /// <returns></returns>
+        public static Priority ToPrority(this Model.JobPriority priority)
+        {
+            return Enum.Parse<Priority>(priority.ToString(), true);
         }
 
 

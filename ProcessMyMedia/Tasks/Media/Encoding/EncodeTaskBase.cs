@@ -35,6 +35,14 @@
         protected List<EncodingOutputBase> Outputs { get; set; }
 
         /// <summary>
+        /// Gets or sets the priority.
+        /// </summary>
+        /// <value>
+        /// The priority.
+        /// </value>
+        public JobPriority Priority { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EncodeTaskBase"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
@@ -45,6 +53,7 @@
             this.CleanupResources = true;
             this.Inputs = new List<JobInputEntity>();
             this.Outputs = new List<EncodingOutputBase>();
+            this.Priority = JobPriority.Normal;
         }
 
         /// <summary>
@@ -61,7 +70,7 @@
             {
                 //First call: stat encoding
                 await this.RunMediaEncodingTaskAsync(context);
-                job = await this.mediaService.StartEncodeAsync(this.Inputs, this.Outputs);
+                job = await this.mediaService.StartEncodeAsync(this.Inputs, this.Outputs, this.Priority);
             }
             else
             {
