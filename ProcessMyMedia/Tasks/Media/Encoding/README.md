@@ -25,12 +25,6 @@ Encode a file with a BuiltInPreset
   <td>Yes</td>
  </tr>
  <tr>
-  <td>AssetFilePath</td>
-  <td>string</td>
-  <td>The full path of the file to upload</td>
-  <td>Yes</td>
- </tr>
- <tr>
   <td>CleanupResources</td>
   <td>bool</td>
   <td>Clean all azure media services resources (job, transform, file ingested) used by the task to encode the file</td>
@@ -74,12 +68,6 @@ Encode a file with a a list of BuiltInPreset
   <td>FilePath</td>
   <td>string</td>
   <td>Full path of the file to encode.</td>
-  <td>Yes</td>
- </tr>
- <tr>
-  <td>AssetFilePath</td>
-  <td>string</td>
-  <td>The full path of the file to upload</td>
   <td>Yes</td>
  </tr>
  <tr>
