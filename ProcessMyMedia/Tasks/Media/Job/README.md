@@ -1,5 +1,0 @@
-﻿# Job tasks
-## DeleteJobTask
-
-```c#
-```
