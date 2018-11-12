@@ -40,12 +40,7 @@
         /// The start.
         /// </value>
         public string Start { get; set; }
-        //
-        // Résumé :
-        //     Gets or sets the intervals at which thumbnails are generated. The value can be
-        //     in absolute timestamp (ISO 8601, e.g: PT05S for one image every 5 seconds), or
-        //     a frame count (For example, 30 for every 30 frames), or a relative value (For
-        //     example, 1%).
+        
         /// <summary>
         /// Gets or sets the intervals at which thumbnails are generated. The value can be
         //     in absolute timestamp (ISO 8601, e.g: PT05S for one image every 5 seconds), or
