@@ -37,6 +37,7 @@
             Assert.AreEqual(null, this.GetData(workflowId).AssetID);
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.IngestFileTask.AssetName)));
 
         }
 
@@ -101,6 +102,7 @@
             Assert.AreEqual(null, this.GetData(workflowId).AssetID);
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.IngestFilesTask.AssetName)));
 
         }
 
@@ -166,6 +168,7 @@
             Assert.AreEqual(null, this.GetData(workflowId).AssetID);
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.IngestFromDirectoryTask.AssetName)));
 
         }
 

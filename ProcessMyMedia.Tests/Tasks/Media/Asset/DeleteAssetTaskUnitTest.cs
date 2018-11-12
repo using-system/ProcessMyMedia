@@ -31,6 +31,7 @@
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.DeleteAssetTask.AssetName)));
         }
 
         [TestMethod]
