@@ -107,6 +107,7 @@ public class EncodeAssetWithCustomPresetWorkflow : IWorkflow<EncodeAssetWithCust
         .Input(task => task.AssetFilePath, data => data.IntputFilePath)
         .Input(task => task.AssetName, data => data.InputAssetName)
       .Then<Tasks.EncodeAssetTask>()
+        .Input(task => task.Priority, data => JobPriority.High)
         .Input(task => task.Input, data => new JobInputEntity() { Name = data.InputAssetName })
         .Input(task => task.EncodingOutput, data => data.EncodingOutput)
         .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
@@ -181,6 +182,6 @@ var customPreset = new CustomPresetEncodingOutput()
       Start = "10%",
       Step = "10%",
       Range = "90%"
-      }
+    }
 }
 ```
