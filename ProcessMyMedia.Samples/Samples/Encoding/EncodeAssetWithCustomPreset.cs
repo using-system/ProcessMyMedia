@@ -62,6 +62,7 @@
                 },
                 ThumbnailsOptions = new ThumbnailsOptions()
                 {
+                    FilenamePattern = "Thumbnail-{Basename}-{Index}{Extension}",
                     GeneratePng = true,
                     GenerateJpg = true,
                     Height = "50%",
