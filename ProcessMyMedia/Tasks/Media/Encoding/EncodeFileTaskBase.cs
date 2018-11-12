@@ -63,9 +63,9 @@
         {
             string assetName = $"input-{Guid.NewGuid()}";
 
-            var asset = await mediaService.CreateOrUpdateAssetAsync(assetName);
+            var asset = await service.CreateOrUpdateAssetAsync(assetName);
 
-            await mediaService.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
+            await service.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 
             this.Inputs.Add (new JobInputEntity(){ Name = assetName});
         }
@@ -88,7 +88,7 @@
 
             foreach (var input in job.Inputs)
             {
-                await this.mediaService.DeleteAssetAsync(input.Name);
+                await this.service.DeleteAssetAsync(input.Name);
             }
         }
     }

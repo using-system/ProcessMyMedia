@@ -61,11 +61,11 @@
             {
                 //First call: stat analyse
                 await this.RunMediaAnalyseTaskAsync(context);
-                job = await this.mediaService.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
+                job = await this.service.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
             }
             else
             {
-                job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
+                job = await this.service.GetJobAsync(job.Name, job.TemplateName);
             }
 
             this.Output.Job = job;
@@ -79,7 +79,7 @@
                 throw new Exception("Analysing Job was canceled");
             }
 
-            this.Output.Result = await this.mediaService.EndAnalyseAsync(job);
+            this.Output.Result = await this.service.EndAnalyseAsync(job);
 
 
             return ExecutionResult.Next();
@@ -106,8 +106,8 @@
                 return;
             }
 
-            await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
-            await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+            await this.service.DeleteJobAsync(job.Name, job.TemplateName);
+            await this.service.DeleteTemplateAsync(job.TemplateName);
         }
     }
 }

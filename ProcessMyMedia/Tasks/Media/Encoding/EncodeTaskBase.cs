@@ -70,11 +70,11 @@
             {
                 //First call: stat encoding
                 await this.RunMediaEncodingTaskAsync(context);
-                job = await this.mediaService.StartEncodeAsync(this.Inputs, this.Outputs, this.Priority);
+                job = await this.service.StartEncodeAsync(this.Inputs, this.Outputs, this.Priority);
             }
             else
             {
-                job = await this.mediaService.GetJobAsync(job.Name, job.TemplateName);
+                job = await this.service.GetJobAsync(job.Name, job.TemplateName);
             }
 
             this.Output.Job = job;
@@ -116,8 +116,8 @@
                 return;
             }
 
-            await this.mediaService.DeleteJobAsync(job.Name, job.TemplateName);
-            await this.mediaService.DeleteTemplateAsync(job.TemplateName);
+            await this.service.DeleteJobAsync(job.Name, job.TemplateName);
+            await this.service.DeleteTemplateAsync(job.TemplateName);
         }
 
     }

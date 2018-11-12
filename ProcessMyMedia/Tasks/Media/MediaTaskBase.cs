@@ -1,9 +1,5 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
-    using System.Threading.Tasks;
-
-    using WorkflowCore.Interface;
-
     using Microsoft.Extensions.Logging;
 
     using ProcessMyMedia.Services.Contract;
@@ -27,11 +23,11 @@
 
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaTaskBase{T}"/> class.
+        /// Initializes a new instance of the <see cref="MediaTaskBase{T}" /> class.
         /// </summary>
-        /// <param name="mediaService">The media service.</param>
+        /// <param name="service"></param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory)  :base(mediaService, loggerFactory)
+        public MediaTaskBase(IMediaService service, ILoggerFactory loggerFactory)  :base(service, loggerFactory)
         {
             this.Output = new T();
         }
@@ -42,31 +38,16 @@
     /// Media Task Base
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class MediaTaskBase : TaskBase, ITask
+    public abstract class MediaTaskBase : TaskBase<IMediaService>, ITask
     {
-        protected IMediaService mediaService;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public MediaTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public MediaTaskBase(IMediaService service, ILoggerFactory loggerFactory) : base(service, loggerFactory)
         {
-            this.mediaService = mediaService;
-        }
 
-        protected async override Task Initialize(IStepExecutionContext context)
-        {
-            await this.mediaService.AuthAsync();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            this.mediaService.Dispose();
         }
     }
 }
