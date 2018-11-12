@@ -1,6 +1,6 @@
 ﻿namespace ProcessMyMedia.Services.Contract
 {
-    public interface IDataService : IService
+    public interface IDataFactoryService : IService
     {
     }
 }

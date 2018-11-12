@@ -26,7 +26,7 @@
             //setup dependency injection
             IServiceCollection services = new ServiceCollection();
 
-            services.AddMediaServices(configuration: new WamsConfiguration()
+            services.AddMediaServices(configuration: new AmsConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
                 SubscriptionId = this.configuration["MediaServices:SubscriptionId"],

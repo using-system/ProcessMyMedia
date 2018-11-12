@@ -13,12 +13,6 @@
     public interface IMediaService : IService
     {
         /// <summary>
-        /// Authenticate.
-        /// </summary>
-        /// <returns></returns>
-        Task AuthAsync();
-
-        /// <summary>
         /// Creates the or update asset.
         /// </summary>
         /// <param name="assetName">Name of the asset.</param>

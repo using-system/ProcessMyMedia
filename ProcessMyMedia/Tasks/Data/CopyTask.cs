@@ -16,7 +16,7 @@
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
     public class CopyTask : TaskBase
     {
-        protected IDataService dataService;
+        protected IDataFactoryService dataService;
 
         public Dataset InputDataset { get; set; }
 
@@ -27,7 +27,7 @@
         /// </summary>
         /// <param name="dataService">The data service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public CopyTask(IDataService dataService, ILoggerFactory loggerFactory) : base(loggerFactory)
+        public CopyTask(IDataFactoryService dataService, ILoggerFactory loggerFactory) : base(loggerFactory)
         {
             this.dataService = dataService;
         }
