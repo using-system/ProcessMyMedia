@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
     <CollectCoverage>true</CollectCoverage>
+    <Configurations>Debug;Release;CodeCoverage</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
