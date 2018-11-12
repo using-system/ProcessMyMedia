@@ -89,7 +89,7 @@ public class EncodeFileWithBuiltInPresetsWorkflowData
 The sample : 
 
 1. Ingest a new asset with the task IngestFileTask.
-1. Encode an asset with a custom Azure Media Encoder Preset.
+1. Encode an asset with a custom Azure Media Encoder Preset and specify thumbnails to generate.
 2. Download the output asset
 2. Delete the output and input asset
 
