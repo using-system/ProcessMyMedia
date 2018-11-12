@@ -13,6 +13,12 @@ Encode a file with a BuiltInPreset
   <th>Is Required ?</th>
  </tr>
  <tr>
+  <td>Priority</td>
+  <td>JobPriority</td>
+  <td>Sets the encoding job priority. Possible values : Low, Normal, High. Default value is : Normal.</td>
+  <td>No</td>
+ </tr>
+ <tr>
   <td>Preset</td>
   <td>string</td>
   <td>BuiltInPreset name</td>
@@ -57,6 +63,12 @@ Encode a file with a a list of BuiltInPreset
   <th>Type</th>
   <th>Description</th>
   <th>Is Required ?</th>
+ </tr>
+  <tr>
+  <td>Priority</td>
+  <td>JobPriority</td>
+  <td>Sets the encoding job priority. Possible values : Low, Normal, High. Default value is : Normal.</td>
+  <td>No</td>
  </tr>
  <tr>
   <td>Presets</td>
@@ -103,6 +115,12 @@ Encode an asset with a custom Azure media encoder preset
   <th>Type</th>
   <th>Description</th>
   <th>Is Required ?</th>
+ </tr>
+  <tr>
+  <td>Priority</td>
+  <td>JobPriority</td>
+  <td>Sets the encoding job priority. Possible values : Low, Normal, High. Default value is : Normal.</td>
+  <td>No</td>
  </tr>
  <tr>
   <td>Input</td>
