@@ -170,6 +170,17 @@ var customPreset = new CustomPresetEncodingOutput()
         Profile = "AACLC",
         SamplingRate = 48000
       }
-    }
+    },
+    ThumbnailsOptions = new ThumbnailsOptions()
+    {
+      FilenamePattern = "Thumbnail-{Basename}-{Index}{Extension}",
+      GeneratePng = true,
+      GenerateJpg = true,
+      Height = "50%",
+      Width = "50%",
+      Start = "10%",
+      Step = "10%",
+      Range = "90%"
+      }
 }
 ```
