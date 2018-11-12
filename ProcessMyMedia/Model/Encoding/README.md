@@ -52,6 +52,11 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <th>Description</th>
  </tr>
  <tr>
+  <td>FilenamePattern</td>
+  <td>string</td>
+  <td>Specify the file pattern to use for generate the video</td>
+ </tr>
+ <tr>
   <td>KeyFrameInterval</td>
   <td>string</td>
   <td>Key frame interval</td>
@@ -167,6 +172,11 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <th>Description</th>
  </tr>
  <tr>
+ <tr>
+  <td>FilenamePattern</td>
+  <td>string</td>
+  <td>Specify the file pattern to use for generate the audio</td>
+ </tr>
   <td>Profile</td>
   <td>string</td>
   <td>Specify the encoding profile to be used when encoding audio with AAC. Possible values include: 'AacLc', 'HeAacV1', 'HeAacV2'</td>
@@ -185,5 +195,55 @@ BuiltInPreset enumeration to use with the tasks EncodeFileBuiltInPresetTask or E
   <td>Bitrate</td>
   <td>int?</td>
   <td>The bitrate, in bits per second, of the output encoded audio.</td>
+ </tr>
+</table>
+
+# ThumbnailsOptions
+
+<table>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>FilenamePattern</td>
+  <td>string</td>
+  <td>Specify the file pattern to use for generate the thumbnails</td>
+ </tr>
+ <tr>
+  <td>GeneratePng</td>
+  <td>bool?</td>
+  <td>Define if the preset generate png thumbnails.</td>
+ </tr>
+ <tr>
+  <td>GenerateJpg</td>
+  <td>bool?</td>
+  <td>Define if the preset generate jpg thumbnails.</td>
+ </tr>
+ <tr>
+  <td>Start</td>
+  <td>string</td>
+  <td>The position in the input video from where to start generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT05S), or a frame count (For example, 10 for the 10th frame), or a relative value (For example, 1%). Also supports a macro {Best}, which tells the encoder to select the best thumbnail from the first few seconds of the video. </td>
+ </tr>
+ <tr>
+  <td>Step</td>
+  <td>string</td>
+  <td>The intervals at which thumbnails are generated. The value can be in absolute timestamp (ISO 8601, e.g: PT05S for one image every 5 seconds), or a frame count (For example, 30 for every 30 frames), or a relative value (For example, 1%).</td>
+ </tr>
+ <tr>
+  <td>Range</td>
+  <td>string</td>
+  <td>The position in the input video at which to stop generating thumbnails. The value can be in absolute timestamp (ISO 8601, e.g: PT5M30S to stop at 5 minutes and 30 seconds), or a frame count (For example, 300 to stop at the 300th frame), or a relative value (For example, 100%).</td>
+ </tr>
+  <tr>
+  <td>Width</td>
+  <td>string</td>
+  <td>the width of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in width as the input.</td>
+ </tr>
+  <tr>
+  <td>Height</td>
+  <td>string</td>
+  <td>The height of the output video for this layer. The value can be absolute (in pixels) or relative (in percentage). For example 50% means the output video has half as many pixels in height as the input.</td>
  </tr>
 </table>
