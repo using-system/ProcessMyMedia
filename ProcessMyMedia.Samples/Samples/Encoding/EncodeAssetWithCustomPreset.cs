@@ -59,6 +59,16 @@
                         Profile = "AACLC",
                         SamplingRate = 48000
                     }
+                },
+                ThumbnailsOptions = new ThumbnailsOptions()
+                {
+                    GeneratePng = true,
+                    GenerateJpg = true,
+                    Height = "50%",
+                    Width = "50%",
+                    Start = "10%",
+                    Step = "10%",
+                    Range = "90%"
                 }
             }
         };
@@ -79,6 +89,7 @@
                             .Input(task => task.AssetFilePath, data => data.IntputFilePath)
                             .Input(task => task.AssetName, data => data.InputAssetName)
                         .Then<Tasks.EncodeAssetTask>()
+                            .Input(task => task.Priority, data => JobPriority.High)
                             .Input(task => task.Input, data => new JobInputEntity() { Name = data.InputAssetName })
                             .Input(task => task.EncodingOutput, data => data.EncodingOutput)
                             .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
