@@ -1,5 +1,5 @@
 # ProcessMyMedia
-Build your Azure Media Services workflow (V3 API version) in .NET Core. ProcessMyMedia lib is based on [Workflow Core](https://github.com/danielgerlag/workflow-core) . Workflow Core is a light weight workflow engine targeting .NET Standard.  
+Build your Azure Media Services workflow (V3 API version) in .NET Core. ProcessMyMedia lib is based on [Workflow Core](https://github.com/danielgerlag/workflow-core) . Workflow Core is a light weight workflow engine targeting .NET Standard. It supports pluggable persistence and concurrency providers to allow for multi-node clusters. 
 
 ## Tasks documentation
 
