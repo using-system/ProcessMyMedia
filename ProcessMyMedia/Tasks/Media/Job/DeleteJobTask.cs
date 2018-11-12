@@ -45,7 +45,7 @@
         /// <summary>
         /// Validates the input.
         /// </summary>
-        public override void ValidateInput()
+        protected override void ValidateInput()
         {
             if (string.IsNullOrEmpty(this.TransformName))
             {

@@ -75,7 +75,7 @@
         /// <summary>
         /// Validates the input.
         /// </summary>
-        public abstract void ValidateInput();
+        protected abstract void ValidateInput();
 
         /// <summary>
         /// Initializes the specified context.

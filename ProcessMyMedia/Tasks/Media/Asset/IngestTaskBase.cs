@@ -72,6 +72,14 @@
             this.Metadata = new Dictionary<string, string>();
         }
 
+        protected override void ValidateInput()
+        {
+            if (string.IsNullOrEmpty(this.AssetName))
+            {
+                throw new ArgumentException($"{nameof(this.AssetName)} is required");
+            }
+        }
+
         /// <summary>
         /// Runs the media task asynchronous.
         /// </summary>

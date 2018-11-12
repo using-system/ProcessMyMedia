@@ -22,13 +22,15 @@
         [TestMethod]
         public void  DeleteAssetWithoutAssetNameTest()
         {
-            this.mediaService.Setup(mock => mock.AuthAsync()).Throws<Exception>();
-            this.mediaService.Setup(mock => mock.Dispose()).Throws<Exception>();
+            this.mediaService.Setup(mock => mock.AuthAsync()).Throws<NotSupportedException>();
+            this.mediaService.Setup(mock => mock.Dispose()).Throws<NotSupportedException>();
 
             var workflowId = this.StartWorkflow(new DeleteAssetWorkflowData());
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
         }
 
         [TestMethod]

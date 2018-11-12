@@ -42,8 +42,11 @@
         /// Validates the input.
         /// </summary>
         /// <exception cref="ArgumentException">AssetName</exception>
-        public override void ValidateInput()
+        protected override void ValidateInput()
         {
+
+            base.ValidateInput();
+
             if (string.IsNullOrEmpty(this.Preset))
             {
                 throw new ArgumentException($"{nameof(this.Preset)} is required");

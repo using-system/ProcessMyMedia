@@ -58,8 +58,10 @@
         /// Validates the input.
         /// </summary>
         /// <exception cref="ArgumentException">AssetDirectoryPath</exception>
-        public override void ValidateInput()
+        protected override void ValidateInput()
         {
+            base.ValidateInput();
+
             if (string.IsNullOrEmpty(this.AssetDirectoryPath))
             {
                 throw new ArgumentException($"{nameof(this.AssetDirectoryPath)} is required");

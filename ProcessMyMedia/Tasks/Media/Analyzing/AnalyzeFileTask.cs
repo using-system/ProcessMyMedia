@@ -39,7 +39,7 @@
         /// Validates the input.
         /// </summary>
         /// <exception cref="ArgumentException">AssetName</exception>
-        public override void ValidateInput()
+        protected override void ValidateInput()
         {
             if (string.IsNullOrEmpty(this.FilePath))
             {
