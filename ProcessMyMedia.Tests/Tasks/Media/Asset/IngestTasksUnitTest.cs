@@ -56,11 +56,11 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns( () => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"), 
+                    It.Is<string>(s => s == workflowDatas.AssetName), 
                     It.Is<IEnumerable<string>>(files => files.Count() == 1 && files.Contains(workflowDatas.FilePath)), 
                     It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
                 .Returns(Task.CompletedTask)
@@ -80,6 +80,51 @@
 
             mediaService.Verify();
         }
+
+        [TestMethod]
+        public void IngestFileWithExceptionTest()
+        {
+            AssetEntity expected = new AssetEntity()
+            {
+                AssetID = Guid.NewGuid().ToString()
+            };
+
+            var workflowDatas = new IngestWorkflowData()
+            {
+                AssetName = "MyAsset",
+                FilePath = "c:\test.mpg"
+            };
+
+            this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(() => Task.FromResult(expected))
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
+                    It.Is<string>(s => s == workflowDatas.AssetName),
+                    It.Is<IEnumerable<string>>(files => files.Count() == 1 && files.Contains(workflowDatas.FilePath)),
+                    It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
+                .Throws<NotSupportedException>();
+            this.mediaService.Setup(mock => mock.DeleteAssetAsync(
+                    It.Is<string>(s => s == workflowDatas.AssetName)))
+                .Returns(() => Task.FromResult(expected))
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.AuthAsync())
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+            this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
+
+            var workflowId = this.StartWorkflow(workflowDatas);
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(NotSupportedException));
+
+            mediaService.Verify();
+        }
+
 
         [TestMethod]
         public void IngestFilesWithoutInputTest()
@@ -127,11 +172,11 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"),
+                    It.Is<string>(s => s == workflowDatas.AssetName),
                     It.Is<IEnumerable<string>>(files => files.Count() == 3),
                     It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
                 .Returns(Task.CompletedTask)
@@ -187,11 +232,11 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
-                    It.Is<string>(s => s == "MyAsset"),
+                    It.Is<string>(s => s == workflowDatas.AssetName),
                     It.Is<IEnumerable<string>>(files => files.Count() > 0),
                     It.Is<IDictionary<string, string>>(metadata => metadata.Count() == 0)))
                 .Returns(Task.CompletedTask)
