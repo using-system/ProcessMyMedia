@@ -68,7 +68,7 @@
 
             if (job == null)
             {
-                //First call: stat encoding
+                //First call: start encoding
                 await this.RunMediaEncodingTaskAsync(context);
                 job = await this.mediaService.StartEncodeAsync(this.Inputs, this.Outputs, this.Priority);
             }
