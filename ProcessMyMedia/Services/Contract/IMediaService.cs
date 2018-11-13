@@ -7,10 +7,10 @@
     using System.Threading.Tasks;
 
     /// <summary>
-    /// media service contract
+    /// Media service contract
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Services.Contract.IService" />
-    public interface IMediaService : IService
+    /// <seealso cref="ProcessMyMedia.Services.Contract.IAzureService" />
+    public interface IMediaService : IAzureService
     {
         /// <summary>
         /// Creates the or update asset.

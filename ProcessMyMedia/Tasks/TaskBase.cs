@@ -8,7 +8,7 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    public abstract class TaskBase<TService> : StepBodyAsync, ITask where TService : Services.Contract.IService
+    public abstract class TaskBase<TService> : StepBodyAsync, ITask where TService : Services.Contract.IAzureService
     {
         protected ILogger logger;
 

@@ -1,6 +1,10 @@
 ﻿namespace ProcessMyMedia.Services.Contract
 {
-    public interface IDataFactoryService : IService
+    /// <summary>
+    /// Data Factory Service Contract
+    /// </summary>
+    /// <seealso cref="ProcessMyMedia.Services.Contract.IAzureService" />
+    public interface IDataFactoryService : IAzureService
     {
     }
 }
