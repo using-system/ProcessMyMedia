@@ -70,6 +70,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+            Assert.IsFalse(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
 
             mediaService.Verify();
         }
@@ -83,7 +84,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.IsTrue(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
 
@@ -99,7 +100,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.IsTrue(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
 
@@ -114,12 +115,11 @@
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
-            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
-            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
-            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
+            Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+            Assert.IsFalse(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
 
             mediaService.Verify();
+
         }
 
 
@@ -134,11 +134,10 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.IsTrue(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
             Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.EncodeFileBuiltInPresetTask.FilePath)));
-
         }
 
         [TestMethod]
@@ -155,7 +154,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
-            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.IsTrue(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
             Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.EncodeFileBuiltInPresetTask.Preset)));
@@ -173,6 +172,7 @@
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
             Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+            Assert.IsFalse(string.IsNullOrEmpty(this.GetData(workflowId).OutputAssetName));
 
             mediaService.Verify();
         }
@@ -184,6 +184,7 @@
         {
             var datas = new EncodeFileBuiltInPresetsWorkflowData()
             {
+                CleanUp = cleanUp,
                 FilePath = Directory.GetFiles(Directory.GetCurrentDirectory()).First(),
                 Presets = presets
             };
