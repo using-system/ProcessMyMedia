@@ -24,6 +24,7 @@
             services.AddWorkflow();
             services.AddMediaTasks();
 
+            services.AddSingleton<IDelayService, DelayService>();
             services.AddTransient<IMediaService, AzureMediaServiceV3>();
 
             if (configuration != null)

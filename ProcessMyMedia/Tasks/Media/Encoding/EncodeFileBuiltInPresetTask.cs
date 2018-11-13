@@ -6,7 +6,6 @@
     using Microsoft.Extensions.Logging;
 
     using WorkflowCore.Interface;
-    using WorkflowCore.Models;
 
     using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
@@ -28,12 +27,13 @@
         public string Preset { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetTask"/> class.
+        /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeFileBuiltInPresetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
-         loggerFactory)
+        public EncodeFileBuiltInPresetTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) 
+            : base(mediaService, delayService, loggerFactory)
         {
 
         }

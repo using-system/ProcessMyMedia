@@ -30,12 +30,13 @@
         public List<string> Presets { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetsTask"/> class.
+        /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetsTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeFileBuiltInPresetsTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
-         loggerFactory)
+        public EncodeFileBuiltInPresetsTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) 
+            : base(mediaService, delayService,loggerFactory)
         {
             this.Presets = new List<string>();
             this.buildInPresets = new List<BuiltInPreset>();

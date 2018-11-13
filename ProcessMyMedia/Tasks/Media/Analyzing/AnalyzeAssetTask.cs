@@ -25,11 +25,13 @@
         public new string AssetName { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AnalyzeAssetTask"/> class.
+        /// Initializes a new instance of the <see cref="AnalyzeAssetTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public AnalyzeAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeAssetTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory)
+            : base(mediaService, delayService, loggerFactory)
         {
 
         }

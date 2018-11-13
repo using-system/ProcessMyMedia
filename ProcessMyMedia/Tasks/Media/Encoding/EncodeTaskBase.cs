@@ -19,6 +19,11 @@
     public abstract class EncodeTaskBase : MediaTaskBase<EncodeTaskOutput>
     {
         /// <summary>
+        /// The delay service
+        /// </summary>
+        private IDelayService delayService;
+
+        /// <summary>
         /// Gets or sets the asset names.
         /// </summary>
         /// <value>
@@ -43,13 +48,15 @@
         public JobPriority Priority { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="EncodeTaskBase" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
+        public EncodeTaskBase(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) : base(mediaService,
             loggerFactory)
         {
+            this.delayService = delayService;
             this.CleanupResources = true;
             this.Inputs = new List<JobInputEntity>();
             this.Outputs = new List<EncodingOutputBase>();
@@ -81,7 +88,7 @@
 
             if (!job.IsFinished)
             {
-                return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
+                return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)
             {

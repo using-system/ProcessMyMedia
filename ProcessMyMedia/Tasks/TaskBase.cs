@@ -98,34 +98,6 @@
         /// <returns></returns>
         protected abstract Task Cleanup(IStepExecutionContext context);
 
-
-        /// <summary>
-        /// Gets the time to sleep.
-        /// </summary>
-        /// <param name="startDate">The start date.</param>
-        /// <returns></returns>
-        protected TimeSpan GetTimeToSleep(DateTime startDate)
-        {
-            double totalSeconds = (DateTime.Now - startDate.ToLocalTime()).TotalSeconds;
-
-            if (totalSeconds < 60)
-            {
-                return TimeSpan.FromSeconds(5);
-            }
-            else if (totalSeconds < 60 * 5)
-            {
-                return TimeSpan.FromSeconds(30);
-            }
-            else if (totalSeconds < 60 * 30)
-            {
-                return TimeSpan.FromSeconds(60);
-            }
-            else
-            {
-                return TimeSpan.FromMinutes(3);
-            }
-        }
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>

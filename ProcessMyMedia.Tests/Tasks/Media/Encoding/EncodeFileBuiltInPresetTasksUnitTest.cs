@@ -74,6 +74,36 @@
             mediaService.Verify();
         }
 
+        [TestMethod]
+        public void EncodeFileBuiltInPresetCancelledTest()
+        {
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(cancelled:true));
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
+
+            mediaService.Verify();
+        }
+
+        [TestMethod]
+        public void EncodeFileBuiltInPresetOnErrorTest()
+        {
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(onError: true));
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
+
+            mediaService.Verify();
+        }
+
 
 
         [TestMethod]
