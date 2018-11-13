@@ -65,7 +65,7 @@
         [TestMethod]
         public void EncodeFileBuiltInPresetTest()
         {
-            var workflowId = this.StartWorkflow(this.MockEncodingTask());
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(new List<string>(){BuiltInPreset.H264MultipleBitrateSD.ToString()}));
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
@@ -77,7 +77,8 @@
         [TestMethod]
         public void EncodeFileBuiltInPresetCancelledTest()
         {
-            var workflowId = this.StartWorkflow(this.MockEncodingTask(cancelled:true));
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(new List<string>() { BuiltInPreset.H264MultipleBitrateSD.ToString() },
+                cancelled:true));
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
@@ -92,7 +93,24 @@
         [TestMethod]
         public void EncodeFileBuiltInPresetOnErrorTest()
         {
-            var workflowId = this.StartWorkflow(this.MockEncodingTask(onError: true));
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(new List<string>() { BuiltInPreset.H264MultipleBitrateSD.ToString() },
+                onError: true));
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.IsNull(this.GetData(workflowId).OutputAssetName);
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(Exception));
+
+            mediaService.Verify();
+        }
+
+        [TestMethod]
+        public void EncodeFileBuiltInPresetWithoutCleanupTest()
+        {
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(new List<string>() { BuiltInPreset.H264MultipleBitrateSD.ToString() },
+                cleanUp: false));
 
             WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
 
@@ -143,12 +161,31 @@
             Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.EncodeFileBuiltInPresetTask.Preset)));
         }
 
-        private EncodeFileBuiltInPresetsWorkflowData MockEncodingTask(bool cancelled = false, bool onError = false)
+        [TestMethod]
+        public void EncodeFileBuiltInPresetsTest()
+        {
+            var workflowId = this.StartWorkflow(this.MockEncodingTask(new List<string>()
+            {
+                BuiltInPreset.H264MultipleBitrateSD.ToString(),
+                BuiltInPreset.H264SingleBitrate720p.ToString()
+            }));
+
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Complete, this.GetStatus((workflowId)));
+
+            mediaService.Verify();
+        }
+
+        private EncodeFileBuiltInPresetsWorkflowData MockEncodingTask(List<string> presets,
+            bool cancelled = false, 
+            bool onError = false,
+            bool cleanUp = true)
         {
             var datas = new EncodeFileBuiltInPresetsWorkflowData()
             {
                 FilePath = Directory.GetFiles(Directory.GetCurrentDirectory()).First(),
-                Presets = { BuiltInPreset.H264MultipleBitrate720p.ToString() }
+                Presets = presets
             };
 
             var expected = new JobEntity()
@@ -181,7 +218,7 @@
 
             this.mediaService.Setup(mock => mock.StartEncodeAsync(
                     It.Is<IEnumerable<JobInputEntity>>(s => s.Count() == 1 && s.First().Name == inputAssetName),
-                    It.Is<IEnumerable<EncodingOutputBase>>(s => s.Count() == 1
+                    It.Is<IEnumerable<EncodingOutputBase>>(s => s.Count() == datas.Presets.Count
                         && s.First() is BuiltInPresetEncodingOutput
                         && ((BuiltInPresetEncodingOutput)s.First()).Preset.ToString() == datas.Presets.First()),
                     It.Is<JobPriority>(s => s == JobPriority.Normal)))
@@ -200,24 +237,41 @@
                 })
                 .Verifiable();
 
-            this.mediaService.Setup(mock => mock.DeleteJobAsync(
-                    It.Is<string>(s => s == expected.Name),
-                    It.Is<string>(s => s == expected.TemplateName)))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-            this.mediaService.Setup(mock => mock.DeleteTemplateAsync(
-                 It.Is<string>(s => s == expected.TemplateName)))
-             .Returns(Task.CompletedTask)
-             .Verifiable();
-            this.mediaService.Setup(mock => mock.DeleteAssetAsync(
-                It.Is<string>(s => s == inputAssetName)))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            if (cleanUp)
+            {
+                this.mediaService.Setup(mock => mock.DeleteJobAsync(
+                        It.Is<string>(s => s == expected.Name),
+                        It.Is<string>(s => s == expected.TemplateName)))
+                    .Returns(Task.CompletedTask)
+                    .Verifiable();
+                this.mediaService.Setup(mock => mock.DeleteTemplateAsync(
+                        It.Is<string>(s => s == expected.TemplateName)))
+                    .Returns(Task.CompletedTask)
+                    .Verifiable();
+                this.mediaService.Setup(mock => mock.DeleteAssetAsync(
+                        It.Is<string>(s => s == inputAssetName)))
+                    .Returns(Task.CompletedTask)
+                    .Verifiable();
+            }
+            else
+            {
+                this.mediaService.Setup(mock => mock.DeleteJobAsync(
+                        It.Is<string>(s => s == expected.Name),
+                        It.Is<string>(s => s == expected.TemplateName)))
+                    .Throws<Exception>();
+                this.mediaService.Setup(mock => mock.DeleteTemplateAsync(
+                        It.Is<string>(s => s == expected.TemplateName)))
+                    .Throws<Exception>();
+                this.mediaService.Setup(mock => mock.DeleteAssetAsync(
+                        It.Is<string>(s => s == inputAssetName)))
+                    .Throws<Exception>();
+            }
 
             this.mediaService.Setup(mock => mock.AuthAsync())
                 .Returns(Task.CompletedTask)
                 .Verifiable();
             this.mediaService.Setup(mock => mock.Dispose()).Verifiable();
+
 
             return datas;
         }
@@ -236,6 +290,7 @@
                     .If(data => data.Presets.Count == 1)
                     .Do(then =>
                         then.StartWith<ProcessMyMedia.Tasks.EncodeFileBuiltInPresetTask>()
+                            .Input(task => task.CleanupResources, data => data.CleanUp)
                             .Input(task => task.FilePath, data => data.FilePath)
                             .Input(task => task.Preset, data => data.Presets.Single())
                             .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name))
@@ -253,7 +308,10 @@
             public EncodeFileBuiltInPresetsWorkflowData()
             {
                 this.Presets = new List<string>();
+                this.CleanUp = true;
             }
+
+            public bool CleanUp { get; set; }
 
             public List<string> Presets { get; set; }
 
