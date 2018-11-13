@@ -39,12 +39,13 @@
         public CustomPresetEncodingOutput EncodingOutput { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeAssetTask"/> class.
+        /// Initializes a new instance of the <see cref="EncodeAssetTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeAssetTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
-            loggerFactory)
+        public EncodeAssetTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) 
+            : base(mediaService, delayService, loggerFactory)
         {
             this.Inputs = new List<JobInputEntity>();
         }
@@ -61,7 +62,7 @@
 
             if (this.EncodingOutput == null)
             {
-                throw new ArgumentException($"{nameof(this.Output)} is required");
+                throw new ArgumentException($"{nameof(this.EncodingOutput)} is required");
             }
 
             this.Input.Validate();

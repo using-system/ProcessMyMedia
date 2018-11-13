@@ -27,12 +27,13 @@
         public string FilePath { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="EncodeFileTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="EncodeFileTaskBase" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public EncodeFileTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService,
-          loggerFactory)
+        public EncodeFileTaskBase(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) 
+            : base(mediaService, delayService, loggerFactory)
         {
 
         }

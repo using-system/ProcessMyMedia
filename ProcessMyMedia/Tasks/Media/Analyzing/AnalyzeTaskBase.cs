@@ -13,15 +13,15 @@
 
     /// <summary>
     /// Analyse task base class
+    /// https://docs.microsoft.com/en-us/azure/media-services/latest/analyze-videos-tutorial-with-api
+    /// https://github.com/Azure-Samples/media-services-v3-dotnet-tutorials/tree/master/AMSV3Tutorials/AnalyzeVideos
+    /// https://docs.microsoft.com/en-us/azure/media-services/latest/analyzing-video-audio-files-concept
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.AnalyzeTaskOutput}" />
     public abstract class AnalyzeTaskBase : MediaTaskBase<AnalyzeTaskOutput>
     {
-        /***
-         * https://docs.microsoft.com/en-us/azure/media-services/latest/analyze-videos-tutorial-with-api
-         * https://github.com/Azure-Samples/media-services-v3-dotnet-tutorials/tree/master/AMSV3Tutorials/AnalyzeVideos
-         * https://docs.microsoft.com/en-us/azure/media-services/latest/analyzing-video-audio-files-concept
-         */
+        private IDelayService delayService;
+
         /// <summary>
         /// Gets or sets the name of the asset.
         /// </summary>
@@ -39,12 +39,14 @@
         public AnalyzingParameters AnalyzingParameters { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MediaAnalyzerTask"/> class.
+        /// Initializes a new instance of the <see cref="MediaAnalyzerTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public AnalyzeTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public AnalyzeTaskBase(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
+            this.delayService = delayService;
             this.AnalyzingParameters = new AnalyzingParameters();
         }
 
@@ -72,7 +74,7 @@
 
             if (!job.IsFinished)
             {
-                return ExecutionResult.Sleep(this.GetTimeToSleep(job.Created), job);
+                return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)
             {
