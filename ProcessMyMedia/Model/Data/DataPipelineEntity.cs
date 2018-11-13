@@ -3,9 +3,9 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Dataset
+    /// Data Pipeline Entity
     /// </summary>
-    public class Dataset
+    public class DataPipelineEntity
     {
         /// <summary>
         /// Gets or sets the name.
@@ -16,11 +16,20 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        /// <value>
+        /// The description.
+        /// </value>
+        public string Description { get; set; }
+
+        /// <summary>
         /// Gets or sets the properties.
         /// </summary>
         /// <value>
         /// The properties.
         /// </value>
-        public Dictionary<string, string> Properties { get; set; }
+        public Dictionary<string, object> Properties { get; set; }
+    
     }
 }

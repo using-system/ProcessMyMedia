@@ -7,7 +7,6 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
 
     /// <summary>
@@ -16,10 +15,6 @@
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
     public class CopyTask : DataFactoryTaskBase
     {
-        public Dataset InputDataset { get; set; }
-
-        public Dataset OutputDataset { get; set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyTask" /> class.
         /// </summary>

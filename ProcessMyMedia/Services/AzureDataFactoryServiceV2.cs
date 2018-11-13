@@ -9,16 +9,16 @@
     using Microsoft.Rest.Azure.Authentication;
     using Microsoft.Azure.Management.DataFactory.Models;
 
-    using ProcessMyMedia.Model;
-
     /// <summary>
     /// Azure Data Factory client for V2 API
     /// https://docs.microsoft.com/en-us/azure/data-factory/connector-ftp
+    /// https://docs.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities
+    /// https://docs.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Services.Contract.IDataFactoryService" />
     public class AzureDataFactoryServiceV2 : Contract.IDataFactoryService
     {
-        private AdfConfiguration configuration;
+        private Model.AdfConfiguration configuration;
 
         private DataFactoryManagementClient client;
 
@@ -26,7 +26,7 @@
         /// Initializes a new instance of the <see cref="AzureDataFactoryServiceV2" /> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public AzureDataFactoryServiceV2(AdfConfiguration configuration)
+        public AzureDataFactoryServiceV2(Model.AdfConfiguration configuration)
         {
             this.configuration = configuration;
         }
@@ -56,7 +56,7 @@
         /// <param name="type">The type.</param>
         /// <param name="properties">The properties.</param>
         /// <returns></returns>
-        public async Task AddLinkedServiceAsync(string name, string type, Dictionary<string, object> properties)
+        public async Task CreateOrUpdateLinkedServiceAsync(string name, string type, Dictionary<string, object> properties)
         {
             await this.client.LinkedServices.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
@@ -64,6 +64,39 @@
                 name,
                 new LinkedServiceResource(new LinkedService(additionalProperties:properties),
                     type:type));
+        }
+
+        /// <summary>
+        /// Creates the or update dataset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="linkedServiceName">Name of the linked service.</param>
+        /// <param name="properties">The properties.</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateDatasetAsync(string name, string linkedServiceName, Dictionary<string, object> properties)
+        {
+            await this.client.Datasets.CreateOrUpdateAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name,
+                new DatasetResource(new Dataset(new LinkedServiceReference(linkedServiceName, properties))));
+        }
+
+        /// <summary>
+        /// Creates the or update pipeliney.
+        /// </summary>
+        /// <param name="pipeline">The pipeline.</param>
+        /// <returns></returns>
+        public async Task CreateOrUpdatePipelineyAsync(Model.DataPipelineEntity pipeline)
+        {
+            await this.client.Pipelines.CreateOrUpdateAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                pipeline.Name,
+                new PipelineResource(activities: new List<Activity>()
+                {
+
+                }, description: pipeline.Description, additionalProperties: pipeline.Properties));
         }
 
         /// <summary>
