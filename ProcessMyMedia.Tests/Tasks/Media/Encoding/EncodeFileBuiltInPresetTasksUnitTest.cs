@@ -294,7 +294,8 @@
                             .Input(task => task.CleanupResources, data => data.CleanUp)
                             .Input(task => task.FilePath, data => data.FilePath)
                             .Input(task => task.Preset, data => data.Presets.Single())
-                            .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name))
+                            .Output(data => data.OutputAssetName, task => task.Output.Job.Outputs.First().Name)
+                            .Output(data => data.OutputAssetLabel, task => task.Output.Job.Outputs.First().Label))
                     .If(data => data.Presets.Count > 1)
                     .Do(then =>
                         then.StartWith<ProcessMyMedia.Tasks.EncodeFileBuiltInPresetsTask>()
@@ -319,6 +320,8 @@
             public string FilePath { get; set; }
 
             public string OutputAssetName {get; set; }
+
+            public string OutputAssetLabel { get; set; }
 
         }
     }

@@ -62,7 +62,7 @@
 
             if (this.EncodingOutput == null)
             {
-                throw new ArgumentException($"{nameof(this.Output)} is required");
+                throw new ArgumentException($"{nameof(this.EncodingOutput)} is required");
             }
 
             this.Input.Validate();
