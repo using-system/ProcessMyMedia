@@ -2,10 +2,12 @@
 {
     using System;
     using System.Threading.Tasks;
+    using System.Collections.Generic;
 
     using Microsoft.Azure.Management.DataFactory;
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.Rest.Azure.Authentication;
+    using Microsoft.Azure.Management.DataFactory.Models;
 
     using ProcessMyMedia.Model;
 
@@ -45,6 +47,23 @@
             {
                 SubscriptionId = this.configuration.SubscriptionId,
             };
+        }
+
+        /// <summary>
+        /// Adds the linked service.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="properties">The properties.</param>
+        /// <returns></returns>
+        public async Task AddLinkedServiceAsync(string name, string type, Dictionary<string, object> properties)
+        {
+            await this.client.LinkedServices.CreateOrUpdateAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name,
+                new LinkedServiceResource(new LinkedService(additionalProperties:properties),
+                    type:type));
         }
 
         /// <summary>
