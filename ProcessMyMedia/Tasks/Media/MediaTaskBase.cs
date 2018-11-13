@@ -5,7 +5,7 @@
     using ProcessMyMedia.Services.Contract;
 
     /// <summary>
-    /// Media Task Base
+    /// Media Generic Task Base class
     /// </summary>
     /// <typeparam name="T">Output class</typeparam>
     /// <seealso cref="System.IDisposable" />
@@ -35,10 +35,10 @@
 
 
     /// <summary>
-    /// Media Task Base
+    /// Media Task Base class
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class MediaTaskBase : TaskBase<IMediaService>, ITask
+    public abstract class MediaTaskBase : TaskBase<IMediaService>, IMediaTask
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase"/> class.

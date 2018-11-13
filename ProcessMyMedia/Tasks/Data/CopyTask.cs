@@ -14,10 +14,8 @@
     /// Copy Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
-    public class CopyTask : TaskBase<IDataFactoryService>
+    public class CopyTask : DataFactoryTaskBase
     {
-        protected IDataFactoryService dataService;
-
         public Dataset InputDataset { get; set; }
 
         public Dataset OutputDataset { get; set; }
