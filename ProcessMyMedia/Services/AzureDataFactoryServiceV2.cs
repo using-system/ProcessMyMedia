@@ -69,17 +69,16 @@
         /// <summary>
         /// Creates the or update dataset.
         /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="linkedServiceName">Name of the linked service.</param>
-        /// <param name="properties">The properties.</param>
+        /// <param name="dataset">The dataset.</param>
         /// <returns></returns>
-        public async Task CreateOrUpdateDatasetAsync(string name, string linkedServiceName, Dictionary<string, object> properties)
+        public async Task CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset)
         {
             await this.client.Datasets.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
-                name,
-                new DatasetResource(new Dataset(new LinkedServiceReference(linkedServiceName, properties))));
+                dataset.Name,
+                new DatasetResource(
+                    new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, dataset.Properties), description: dataset.Description)));
         }
 
         /// <summary>

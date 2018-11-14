@@ -43,7 +43,7 @@
 
         }
 
-        protected override Task Cleanup(IStepExecutionContext context)
+        protected override void ValidateInput()
         {
             throw new System.NotImplementedException();
         }
@@ -51,10 +51,26 @@
 
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
+            await this.service.CreateOrUpdateDatasetAsync(this.Input);
+            await this.service.CreateOrUpdateDatasetAsync(this.Output);
+
             DataPipelineEntity pipeline = new DataPipelineEntity()
             {
                 Name = Guid.NewGuid().ToString(),
-                Description = "Generic Copy pipeline"
+                Description = "Generic Copy pipeline",
+                Activities =
+                {
+                    new DataActivityEntity()
+                    {
+                        Name = nameof(GenericCopyTask),
+                        Type = "Copy",
+                        Properties =
+                        {
+                            { "inputs" , new { name = this.Input.LinkedServiceName } },
+                            { "outputs" , new { name = this.Output.LinkedServiceName } }
+                        }
+                    }
+                }
             };
 
             await this.service.CreateOrUpdatePipelineyAsync(pipeline);
@@ -63,9 +79,11 @@
 
         }
 
-        protected override void ValidateInput()
+        protected override Task Cleanup(IStepExecutionContext context)
         {
             throw new System.NotImplementedException();
         }
+
+
     }
 }
