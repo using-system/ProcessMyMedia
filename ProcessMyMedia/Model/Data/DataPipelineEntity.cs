@@ -5,31 +5,24 @@
     /// <summary>
     /// Data Pipeline Entity
     /// </summary>
-    public class DataPipelineEntity
+    /// <seealso cref="ProcessMyMedia.Model.DataEntityBase" />
+    public class DataPipelineEntity : DataEntityBase
     {
         /// <summary>
-        /// Gets or sets the name.
+        /// Initializes a new instance of the <see cref="DataPipelineEntity"/> class.
         /// </summary>
-        /// <value>
-        /// The name.
-        /// </value>
-        public string Name { get; set; }
+        public DataPipelineEntity()
+        {
+            this.Activities = new List<DataActivityEntity>();
+        }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Gets or sets the activities.
         /// </summary>
         /// <value>
-        /// The description.
+        /// The activities.
         /// </value>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the properties.
-        /// </summary>
-        /// <value>
-        /// The properties.
-        /// </value>
-        public Dictionary<string, object> Properties { get; set; }
+        public List<DataActivityEntity> Activities { get; set; }
     
     }
 }
