@@ -32,5 +32,20 @@
         /// <param name="pipeline">The pipeline.</param>
         /// <returns></returns>
         Task CreateOrUpdatePipelineyAsync(Model.DataPipelineEntity pipeline);
+
+        /// <summary>
+        /// Runs the pipeline.
+        /// </summary>
+        /// <param name="pipelineName">Name of the pipeline.</param>
+        /// <param name="properties">The properties.</param>
+        /// <returns></returns>
+        Task<string> RunPipelineAsync(string pipelineName, Dictionary<string, object> properties = null);
+
+        /// <summary>
+        /// Getpipelines the run.
+        /// </summary>
+        /// <param name="runID">The run identifier.</param>
+        /// <returns></returns>
+        Task<Model.DataPipelineRunEntity> GetPipelineRunAsync(string runID);
     }
 }

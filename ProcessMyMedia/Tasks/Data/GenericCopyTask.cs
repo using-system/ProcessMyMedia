@@ -63,9 +63,9 @@
                     new DataActivityEntity()
                     {
                         Name = nameof(GenericCopyTask),
-                        Type = "Copy",
                         Properties =
                         {
+                            { "type", "Copy" },
                             { "inputs" , new { name = this.Input.LinkedServiceName } },
                             { "outputs" , new { name = this.Output.LinkedServiceName } }
                         }

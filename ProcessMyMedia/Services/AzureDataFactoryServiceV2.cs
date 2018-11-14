@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Services
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
 
@@ -8,6 +9,8 @@
     using Microsoft.IdentityModel.Clients.ActiveDirectory;
     using Microsoft.Rest.Azure.Authentication;
     using Microsoft.Azure.Management.DataFactory.Models;
+
+    using ProcessMyMedia.Extensions;
 
     /// <summary>
     /// Azure Data Factory client for V2 API
@@ -92,10 +95,40 @@
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
                 pipeline.Name,
-                new PipelineResource(activities: new List<Activity>()
-                {
+                new PipelineResource(activities: pipeline.ToActivities().ToList(), 
+                    description: pipeline.Description, additionalProperties: pipeline.Properties));
+        }
 
-                }, description: pipeline.Description, additionalProperties: pipeline.Properties));
+        /// <summary>
+        /// Runs the pipeline.
+        /// </summary>
+        /// <param name="pipelineName">Name of the pipeline.</param>
+        /// <param name="properties">The properties.</param>
+        /// <returns></returns>
+        public async Task<string> RunPipelineAsync(string pipelineName, Dictionary<string, object> properties = null)
+        {
+            var response = await this.client.Pipelines.CreateRunAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                pipelineName,
+                parameters: properties);
+
+            return response.RunId;
+        }
+
+        /// <summary>
+        /// Getpipelines the run.
+        /// </summary>
+        /// <param name="runID">The run identifier.</param>
+        /// <returns></returns>
+        public async Task<Model.DataPipelineRunEntity> GetPipelineRunAsync(string runID)
+        {
+            var run = await this.client.PipelineRuns.GetAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                runID);
+
+            return run.ToPipelineRunEntity();
         }
 
         /// <summary>
@@ -105,5 +138,7 @@
         {
            this.client?.Dispose();
         }
+
+
     }
 }
