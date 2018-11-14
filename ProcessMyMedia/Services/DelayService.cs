@@ -14,9 +14,14 @@
         /// </summary>
         /// <param name="startDate">The start date.</param>
         /// <returns></returns>
-        public TimeSpan GetTimeToSleep(DateTime startDate)
+        public TimeSpan GetTimeToSleep(DateTime? startDate)
         {
-            double totalSeconds = (DateTime.Now - startDate.ToLocalTime()).TotalSeconds;
+            if (!startDate.HasValue)
+            {
+                return TimeSpan.FromSeconds(30);
+            }
+
+            double totalSeconds = (DateTime.Now - startDate.Value.ToLocalTime()).TotalSeconds;
 
             if (totalSeconds < 60)
             {

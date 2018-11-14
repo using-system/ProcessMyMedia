@@ -39,18 +39,35 @@
         /// To the pipeline run entity.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="activities">The activities.</param>
         /// <returns></returns>
-        public static Model.DataPipelineRunEntity ToPipelineRunEntity(this PipelineRun source)
+        public static Model.DataPipelineRunEntity ToPipelineRunEntity(this PipelineRun source, IEnumerable<ActivityRun> activities)
         {
             if (source == null)
             {
                 return null;
             }
 
-            return new Model.DataPipelineRunEntity()
+            var run = new Model.DataPipelineRunEntity()
             {
-                RunID = source.RunId
+                ID = source.RunId,
+                PipelineName = source.PipelineName,
+                StartDate = source.RunStart,
+                EndDate = source.RunEnd
             };
+
+            //https://docs.microsoft.com/en-us/azure/data-factory/monitor-programmatically
+            if (source.Status == "Succeeded")
+            {
+                run.IsFinished = true;
+            }
+            else if(source.RunEnd.HasValue)
+            {
+                run.OnError = true;
+                run.ErrorMessage = activities.FirstOrDefault()?.Error?.ToString();
+            }
+
+            return run;
         }
     }
 }

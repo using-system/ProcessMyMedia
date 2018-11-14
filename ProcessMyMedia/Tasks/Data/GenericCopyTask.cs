@@ -15,15 +15,17 @@
     /// Generic Copy Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
-    public class GenericCopyTask : DataFactoryTaskBase
+    public class GenericCopyTask : DataFactoryTaskBase<GenericCopyTaskOutput>
     {
+        private IDelayService delayService;
+
         /// <summary>
         /// Gets or sets the input.
         /// </summary>
         /// <value>
         /// The input.
         /// </value>
-        public DatasetEntity Input { get; set; }
+        public DatasetEntity DatasetInput { get; set; }
 
         /// <summary>
         /// Gets or sets the output.
@@ -31,16 +33,17 @@
         /// <value>
         /// The output.
         /// </value>
-        public DatasetEntity Output { get; set; }
+        public DatasetEntity DatasetOutput { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCopyTask" /> class.
         /// </summary>
         /// <param name="service">The service.</param>
+        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public GenericCopyTask(IDataFactoryService service, ILoggerFactory loggerFactory) : base(service, loggerFactory)
+        public GenericCopyTask(IDataFactoryService service, IDelayService delayService, ILoggerFactory loggerFactory) : base(service, loggerFactory)
         {
-
+            this.delayService = delayService;
         }
 
         protected override void ValidateInput()
@@ -51,29 +54,57 @@
 
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            await this.service.CreateOrUpdateDatasetAsync(this.Input);
-            await this.service.CreateOrUpdateDatasetAsync(this.Output);
+            DataPipelineRunEntity run = context.PersistenceData as DataPipelineRunEntity;
 
-            DataPipelineEntity pipeline = new DataPipelineEntity()
+            string runID;
+            if (run == null)
             {
-                Name = Guid.NewGuid().ToString(),
-                Description = "Generic Copy pipeline",
-                Activities =
+                //First call : Create and run the pipeline
+
+                await this.service.CreateOrUpdateDatasetAsync(this.DatasetInput);
+                await this.service.CreateOrUpdateDatasetAsync(this.DatasetOutput);
+
+                DataPipelineEntity pipeline = new DataPipelineEntity()
                 {
-                    new DataActivityEntity()
+                    Name = Guid.NewGuid().ToString(),
+                    Description = "Generic Copy pipeline",
+                    Activities =
                     {
-                        Name = nameof(GenericCopyTask),
-                        Properties =
+                        new DataActivityEntity()
                         {
-                            { "type", "Copy" },
-                            { "inputs" , new { name = this.Input.LinkedServiceName } },
-                            { "outputs" , new { name = this.Output.LinkedServiceName } }
+                            Name = nameof(GenericCopyTask),
+                            Properties =
+                            {
+                                { "type", "Copy" },
+                                { "inputs" , new { name = this.DatasetInput.LinkedServiceName } },
+                                { "outputs" , new { name = this.DatasetOutput.LinkedServiceName } }
+                            }
                         }
                     }
-                }
-            };
+                };
 
-            await this.service.CreateOrUpdatePipelineyAsync(pipeline);
+                await this.service.CreateOrUpdatePipelineyAsync(pipeline);
+
+                runID = await this.service.RunPipelineAsync(pipeline.Name);
+            }
+            else
+            {
+                runID = run.ID;
+            }
+
+            run = await this.service.GetPipelineRunAsync(runID);
+
+            this.Output.Run = run;
+
+            if (!run.IsFinished)
+            {
+                return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(run.StartDate), run);
+            }
+            else if (run.OnError)
+            {
+                throw new Exception($"Data Copy is on error : {run.ErrorMessage}");
+            }
+
 
             return ExecutionResult.Next();
 

@@ -128,7 +128,13 @@
                 this.configuration.FactoryName,
                 runID);
 
-            return run.ToPipelineRunEntity();
+            var activities = await this.client.ActivityRuns.QueryByPipelineRunAsync(
+                configuration.ResourceGroup, 
+                configuration.FactoryName, 
+                runID, 
+                new RunFilterParameters(DateTime.UtcNow.AddMinutes(-10), DateTime.UtcNow.AddMinutes(10)));
+
+            return run.ToPipelineRunEntity(activities.Value);
         }
 
         /// <summary>
