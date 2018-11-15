@@ -70,6 +70,21 @@
         }
 
         /// <summary>
+        /// Gets the dataset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task<Model.DatasetEntity> GetDatasetAsync(string name)
+        {
+            var dataset = await this.client.Datasets.GetAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name);
+
+            return dataset.ToDatasetEntity();
+        }
+
+        /// <summary>
         /// Creates the or update dataset.
         /// </summary>
         /// <param name="dataset">The dataset.</param>
@@ -82,6 +97,23 @@
                 dataset.Name,
                 new DatasetResource(
                     new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, dataset.Properties), description: dataset.Description)));
+        }
+
+        /// <summary>
+        /// Deletes the dataset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task DeleteDatasetAsync(string name)
+        {
+            var datasetToDelete = await this.GetDatasetAsync(name);
+            if (datasetToDelete != null)
+            {
+                await this.client.Datasets.DeleteAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.FactoryName,
+                    name);
+            }
         }
 
         /// <summary>
@@ -144,7 +176,5 @@
         {
            this.client?.Dispose();
         }
-
-
     }
 }

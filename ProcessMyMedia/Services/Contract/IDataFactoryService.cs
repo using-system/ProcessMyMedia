@@ -18,6 +18,12 @@
         /// <returns></returns>
         Task CreateOrUpdateLinkedServiceAsync(string name, string type, Dictionary<string, object> properties);
 
+        /// <summary>
+        /// Gets the dataset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<Model.DatasetEntity> GetDatasetAsync(string name);
 
         /// <summary>
         /// Creates the or update dataset.
@@ -25,6 +31,13 @@
         /// <param name="dataset">The dataset.</param>
         /// <returns></returns>
         Task CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset);
+
+        /// <summary>
+        /// Deletes the dataset.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task DeleteDatasetAsync(string name);
 
         /// <summary>
         /// Creates the or update pipeliney.

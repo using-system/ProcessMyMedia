@@ -11,11 +11,27 @@
     public static class PipelineExtensions
     {
         /// <summary>
-        /// To the activities.
+        /// To the dataset entity.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IEnumerable<Activity> ToActivities(this Model.DataPipelineEntity source)
+        public static Model.DatasetEntity ToDatasetEntity(this DatasetResource source)
+        {
+            return new Model.DatasetEntity()
+            {
+                Name = source.Name,
+                Description = source?.Properties?.Description,
+                LinkedServiceName = source?.Properties?.LinkedServiceName?.ReferenceName,
+                Properties = source?.Properties?.AdditionalProperties.ToDictionary(kv => kv.Key, kv => kv.Value)
+            };
+        }
+
+        /// <summary>
+    /// To the activities.
+    /// </summary>
+    /// <param name="source">The source.</param>
+    /// <returns></returns>
+    public static IEnumerable<Activity> ToActivities(this Model.DataPipelineEntity source)
         {
             return source.Activities.Select(activity => activity.ToActivity());
         }

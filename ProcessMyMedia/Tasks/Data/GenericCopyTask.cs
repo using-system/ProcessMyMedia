@@ -46,12 +46,62 @@
             this.delayService = delayService;
         }
 
+        /// <summary>
+        /// Validates the input.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// DatasetInput
+        /// or
+        /// Name
+        /// or
+        /// LinkedServiceName
+        /// or
+        /// DatasetOutput
+        /// or
+        /// Name
+        /// or
+        /// LinkedServiceName
+        /// </exception>
         protected override void ValidateInput()
         {
-            throw new System.NotImplementedException();
+            if (this.DatasetInput == null)
+            {
+                throw new ArgumentException($"{nameof(this.DatasetInput)} is required");
+            }
+
+            if (string.IsNullOrEmpty(this.DatasetInput.Name))
+            {
+                throw new ArgumentException($"{nameof(this.DatasetInput.Name)} is required for the property {this.DatasetInput}");
+            }
+
+            if (string.IsNullOrEmpty(this.DatasetInput.LinkedServiceName))
+            {
+                throw new ArgumentException($"{nameof(this.DatasetInput.LinkedServiceName)} is required for the property {this.DatasetInput}");
+            }
+
+            if (this.DatasetOutput == null)
+            {
+                throw new ArgumentException($"{nameof(this.DatasetOutput)} is required");
+            }
+
+            if (string.IsNullOrEmpty(this.DatasetOutput.Name))
+            {
+                throw new ArgumentException($"{nameof(this.DatasetOutput.Name)} is required for the property {this.DatasetOutput}");
+            }
+
+            if (string.IsNullOrEmpty(this.DatasetOutput.LinkedServiceName))
+            {
+                throw new ArgumentException($"{nameof(this.DatasetOutput.LinkedServiceName)} is required for the property {this.DatasetOutput}");
+            }
         }
 
 
+        /// <summary>
+        /// Runs the media task asynchronous.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             DataPipelineRunEntity run = context.PersistenceData as DataPipelineRunEntity;
@@ -110,9 +160,15 @@
 
         }
 
-        protected override Task Cleanup(IStepExecutionContext context)
+        /// <summary>
+        /// Cleanups the specified context.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected async override Task Cleanup(IStepExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            await this.service.DeleteDatasetAsync(this.DatasetInput.Name);
+            await this.service.DeleteDatasetAsync(this.DatasetOutput.Name);
         }
 
 
