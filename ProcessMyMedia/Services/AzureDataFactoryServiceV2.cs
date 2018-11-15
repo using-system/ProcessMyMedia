@@ -89,14 +89,16 @@
         /// </summary>
         /// <param name="dataset">The dataset.</param>
         /// <returns></returns>
-        public async Task CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset)
+        public async Task<Model.DatasetEntity> CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset)
         {
-            await this.client.Datasets.CreateOrUpdateAsync(
+            var response = await this.client.Datasets.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
                 dataset.Name,
                 new DatasetResource(
                     new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, dataset.Properties), description: dataset.Description)));
+
+            return response.ToDatasetEntity();
         }
 
         /// <summary>

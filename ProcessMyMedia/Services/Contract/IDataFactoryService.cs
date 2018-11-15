@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="dataset">The dataset.</param>
         /// <returns></returns>
-        Task CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset);
+        Task<Model.DatasetEntity> CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset);
 
         /// <summary>
         /// Deletes the dataset.
