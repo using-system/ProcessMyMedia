@@ -37,6 +37,17 @@
                 AadSecret = this.configuration["MediaServices:AadSecret"]
             });
 
+            services.AddDataFactoryServices(configuration: new AdfConfiguration()
+            {
+                ArmEndpoint = "https://management.azure.com/",
+                SubscriptionId = this.configuration["DataFactory:SubscriptionId"],
+                FactoryName = this.configuration["DataFactory:FactoryName"],
+                ResourceGroup = this.configuration["DataFactory:ResourceGroup"],
+                AadTenantId = this.configuration["DataFactory:AadTenantId"],
+                AadClientId = this.configuration["DataFactory:AadClientId"],
+                AadSecret = this.configuration["DataFactory:AadSecret"]
+            });
+
             services.AddLogging(builder =>
             {
                 builder.SetMinimumLevel(LogLevel.Debug);
