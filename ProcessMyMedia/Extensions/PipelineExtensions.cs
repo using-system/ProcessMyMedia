@@ -4,6 +4,7 @@
     using System.Linq;
 
     using Microsoft.Azure.Management.DataFactory.Models;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Pipeline extension methods
@@ -17,21 +18,27 @@
         /// <returns></returns>
         public static Model.DatasetEntity ToDatasetEntity(this DatasetResource source)
         {
-            return new Model.DatasetEntity()
+            var dataset = new Model.DatasetEntity()
             {
                 Name = source.Name,
                 Description = source?.Properties?.Description,
                 LinkedServiceName = source?.Properties?.LinkedServiceName?.ReferenceName,
-                Properties = source?.Properties?.AdditionalProperties.ToDictionary(kv => kv.Key, kv => kv.Value)
             };
+
+            if (source?.Properties?.AdditionalProperties.ContainsKey("typeProperties") == true)
+            {
+                dataset.TypeProperties = source.Properties.AdditionalProperties["typeProperties"];
+            }
+
+            return dataset;
         }
 
         /// <summary>
-    /// To the activities.
-    /// </summary>
-    /// <param name="source">The source.</param>
-    /// <returns></returns>
-    public static IEnumerable<Activity> ToActivities(this Model.DataPipelineEntity source)
+        /// To the activities.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<Activity> ToActivities(this Model.DataPipelineEntity source)
         {
             return source.Activities.Select(activity => activity.ToActivity());
         }
@@ -47,7 +54,21 @@
             {
                 Name = source.Name,
                 Description = source.Description,
-                AdditionalProperties = source.Properties
+                AdditionalProperties = new Dictionary<string, object>()
+                {
+                    {"type", source.Type},
+                    {
+                        "inputs",
+                        JObject.FromObject(new[]
+                            {new {referenceName = source.InputDatasetName, type = "DatasetReference"}})
+                    },
+                    {
+                        "outputs",
+                        JObject.FromObject(new[]
+                            {new {referenceName = source.OutputDatasetName, type = "DatasetReference"}})
+                    },
+                    {"typeProperties", JObject.FromObject(source.TypeProperties)}
+                }
             };
         }
 
@@ -57,7 +78,8 @@
         /// <param name="source">The source.</param>
         /// <param name="activities">The activities.</param>
         /// <returns></returns>
-        public static Model.DataPipelineRunEntity ToPipelineRunEntity(this PipelineRun source, IEnumerable<ActivityRun> activities)
+        public static Model.DataPipelineRunEntity ToPipelineRunEntity(this PipelineRun source,
+            IEnumerable<ActivityRun> activities)
         {
             if (source == null)
             {
@@ -77,7 +99,7 @@
             {
                 run.IsFinished = true;
             }
-            else if(source.RunEnd.HasValue)
+            else if (source.RunEnd.HasValue)
             {
                 run.OnError = true;
                 run.ErrorMessage = activities.FirstOrDefault()?.Error?.ToString();

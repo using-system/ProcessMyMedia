@@ -123,11 +123,11 @@
                         new DataActivityEntity()
                         {
                             Name = nameof(GenericCopyTask),
-                            Properties =
+                            InputDatasetName = this.DatasetInput.Name,
+                            OutputDatasetName = this.DatasetOutput.Name,
+                            TypeProperties = new
                             {
-                                { "type", "Copy" },
-                                { "inputs" , new { name = this.DatasetInput.LinkedServiceName } },
-                                { "outputs" , new { name = this.DatasetOutput.LinkedServiceName } }
+  
                             }
                         }
                     }

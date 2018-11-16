@@ -105,7 +105,11 @@
                 this.configuration.FactoryName,
                 dataset.Name,
                 new DatasetResource(
-                    new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, dataset.Properties), description: dataset.Description)));
+                    new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, new Dictionary<string, object>()
+                    {
+                        {"type", dataset.Type},
+                        {"typeProperties", JObject.FromObject(dataset.TypeProperties)}
+                    }), description: dataset.Description)));
 
             return response.ToDatasetEntity();
         }
@@ -139,7 +143,7 @@
                 this.configuration.FactoryName,
                 pipeline.Name,
                 new PipelineResource(activities: pipeline.ToActivities().ToList(), 
-                    description: pipeline.Description, additionalProperties: pipeline.Properties));
+                    description: pipeline.Description));
         }
 
         /// <summary>

@@ -1,18 +1,13 @@
 ﻿namespace ProcessMyMedia.Model
 {
-    using System.Collections.Generic;
-
-    /// <summary>
-    /// Data Entity Base class
-    /// </summary>
-    public abstract class DataEntityBase
+    public class DataEntityBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataEntityBase"/> class.
         /// </summary>
         public DataEntityBase()
         {
-            this.Properties = new Dictionary<string, object>();
+
         }
 
         /// <summary>
@@ -24,6 +19,14 @@
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public string Type { get; set; }
+
+        /// <summary>
         /// Gets or sets the description.
         /// </summary>
         /// <value>
@@ -32,11 +35,11 @@
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the properties.
+        /// Gets or sets the type properties.
         /// </summary>
         /// <value>
-        /// The properties.
+        /// The type properties.
         /// </value>
-        public Dictionary<string, object> Properties { get; set; }
+        public object TypeProperties { get; set; }
     }
 }
