@@ -40,11 +40,25 @@
         Task DeleteDatasetAsync(string name);
 
         /// <summary>
+        /// Ges the pipeline.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<Model.DataPipelineEntity> GePipelineAsync(string name);
+
+        /// <summary>
         /// Creates the or update pipeliney.
         /// </summary>
         /// <param name="pipeline">The pipeline.</param>
         /// <returns></returns>
         Task CreateOrUpdatePipelineyAsync(Model.DataPipelineEntity pipeline);
+
+        /// <summary>
+        /// Deletes the pipeline.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task DeletePipelineAsync(string name);
 
         /// <summary>
         /// Runs the pipeline.

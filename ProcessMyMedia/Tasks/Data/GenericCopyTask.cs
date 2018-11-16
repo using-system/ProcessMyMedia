@@ -123,6 +123,7 @@
                         new DataActivityEntity()
                         {
                             Name = nameof(GenericCopyTask),
+                            Type = "Copy",
                             InputDatasetName = this.DatasetInput.Name,
                             OutputDatasetName = this.DatasetOutput.Name,
                             TypeProperties = new
@@ -167,8 +168,14 @@
         /// <returns></returns>
         protected async override Task Cleanup(IStepExecutionContext context)
         {
-            await this.service.DeleteDatasetAsync(this.DatasetInput.Name);
-            await this.service.DeleteDatasetAsync(this.DatasetOutput.Name);
+            DataPipelineRunEntity run = context.PersistenceData as DataPipelineRunEntity;
+
+            if (run != null)
+            {
+                await this.service.DeletePipelineAsync(run.PipelineName);
+                await this.service.DeleteDatasetAsync(this.DatasetInput.Name);
+                await this.service.DeleteDatasetAsync(this.DatasetOutput.Name);
+            }
         }
 
 

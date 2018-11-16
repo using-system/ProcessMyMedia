@@ -132,6 +132,21 @@
         }
 
         /// <summary>
+        /// Ges the pipeline.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task<Model.DataPipelineEntity> GePipelineAsync(string name)
+        {
+            var pipeline = await this.client.Pipelines.GetAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name);
+
+            return pipeline.ToPipelineEntity();
+        }
+
+        /// <summary>
         /// Creates the or update pipeliney.
         /// </summary>
         /// <param name="pipeline">The pipeline.</param>
@@ -144,6 +159,23 @@
                 pipeline.Name,
                 new PipelineResource(activities: pipeline.ToActivities().ToList(), 
                     description: pipeline.Description));
+        }
+
+        /// <summary>
+        /// Deletes the pipeline.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task DeletePipelineAsync(string name)
+        {
+            var pipelineToDelete = await this.GetPipelineRunAsync(name);
+            if (pipelineToDelete != null)
+            {
+                await this.client.Pipelines.DeleteAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.FactoryName,
+                    name);
+            }
         }
 
         /// <summary>
@@ -191,5 +223,7 @@
         {
            this.client?.Dispose();
         }
+
+
     }
 }

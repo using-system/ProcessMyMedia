@@ -59,17 +59,43 @@
                     {"type", source.Type},
                     {
                         "inputs",
-                        JObject.FromObject(new[]
+                        JArray.FromObject(new[]
                             {new {referenceName = source.InputDatasetName, type = "DatasetReference"}})
                     },
                     {
                         "outputs",
-                        JObject.FromObject(new[]
+                        JArray.FromObject(new[]
                             {new {referenceName = source.OutputDatasetName, type = "DatasetReference"}})
                     },
                     {"typeProperties", JObject.FromObject(source.TypeProperties)}
                 }
             };
+        }
+
+        /// <summary>
+        /// To the pipeline entity.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static Model.DataPipelineEntity ToPipelineEntity(this PipelineResource source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            var target = new Model.DataPipelineEntity()
+            {
+                Name = source.Name,
+                Description = source.Description,
+            };
+
+            if (source?.AdditionalProperties.ContainsKey("typeProperties") == true)
+            {
+                target.TypeProperties = source.AdditionalProperties["typeProperties"];
+            }
+
+            return target;
         }
 
         /// <summary>
