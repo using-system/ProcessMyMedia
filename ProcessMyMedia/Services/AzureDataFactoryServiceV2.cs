@@ -10,6 +10,8 @@
     using Microsoft.Rest.Azure.Authentication;
     using Microsoft.Azure.Management.DataFactory.Models;
 
+    using Newtonsoft.Json.Linq;
+
     using ProcessMyMedia.Extensions;
 
     /// <summary>
@@ -54,18 +56,23 @@
 
         /// <summary>
         /// Adds the linked service.
+        /// https://docs.microsoft.com/en-us/rest/api/datafactory/linkedservices/createorupdate
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
-        /// <param name="properties">The properties.</param>
+        /// <param name="typeProperties">The properties.</param>
         /// <returns></returns>
-        public async Task CreateOrUpdateLinkedServiceAsync(string name, string type, Dictionary<string, object> properties)
+        public async Task CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties)
         {
             await this.client.LinkedServices.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
                 name,
-                new LinkedServiceResource(new LinkedService(additionalProperties:properties),
+                new LinkedServiceResource(new LinkedService(additionalProperties:new Dictionary<string, object>()
+                    {
+                        {"type", type},
+                        {"typeProperties", JObject.FromObject(typeProperties)}
+                    }),
                     type:type));
         }
 

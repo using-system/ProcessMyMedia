@@ -20,17 +20,18 @@
             {
                 Name = "LocalFtp",
                 Type = "FtpServer",
-                Properties =
+                TypeProperties = new
                 {
-                    {"host", "localhost"},
-                    {"port", 21 },
-                    {"enableSsl", false },
-                    {"authenticationType", "Basic" },
-                    {"username", "user" },
-                    {"password", new {
+                    host = "localhost",
+                    port = 21,
+                    enableSsl = false,
+                    authenticationType = "Basic",
+                    username = "user",
+                    password = new
+                    {
                         type = "SecureString",
                         value = "password"
-                    } }
+                    }
                 }
             }
         };

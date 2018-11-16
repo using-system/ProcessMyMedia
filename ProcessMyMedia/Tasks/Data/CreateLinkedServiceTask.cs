@@ -70,7 +70,7 @@
             await this.service.CreateOrUpdateLinkedServiceAsync(
                 this.LinkedServiceToCreate.Name,
                 this.LinkedServiceToCreate.Type,
-                this.LinkedServiceToCreate.Properties);
+                this.LinkedServiceToCreate.TypeProperties);
 
             return ExecutionResult.Next();
         }

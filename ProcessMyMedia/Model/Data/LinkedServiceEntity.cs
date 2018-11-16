@@ -4,7 +4,7 @@
     /// Linked Service Entity
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Model.DataEntityBase" />
-    public class LinkedServiceEntity : DataEntityBase
+    public class LinkedServiceEntity : DataEntityBaseV2
     {
         /// <summary>
         /// Gets or sets the type.

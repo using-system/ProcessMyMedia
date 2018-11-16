@@ -14,9 +14,9 @@
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="type">The type.</param>
-        /// <param name="properties">The properties.</param>
+        /// <param name="typeProperties">The type properties.</param>
         /// <returns></returns>
-        Task CreateOrUpdateLinkedServiceAsync(string name, string type, Dictionary<string, object> properties);
+        Task CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties);
 
         /// <summary>
         /// Gets the dataset.
