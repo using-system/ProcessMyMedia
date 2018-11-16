@@ -33,6 +33,15 @@
                         value = "password"
                     }
                 }
+            },
+            Destination = new LinkedServiceEntity()
+            {
+                Name = "LocalShare",
+                Type = "FileServer",
+                TypeProperties = new
+                {
+                    host = "\\localhost"
+                }
             }
         };
 
@@ -48,7 +57,9 @@
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.CreateLinkedServiceTask>()
-                    .Input(task => task.LinkedServiceToCreate, data => data.Source);
+                        .Input(task => task.LinkedServiceToCreate, data => data.Source)
+                    .Then<Tasks.CreateLinkedServiceTask>()
+                        .Input(task => task.LinkedServiceToCreate, data => data.Destination);
             }
         }
 
