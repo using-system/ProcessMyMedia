@@ -132,11 +132,11 @@
         }
 
         /// <summary>
-        /// Ges the pipeline.
+        /// Gets the pipeline.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public async Task<Model.DataPipelineEntity> GePipelineAsync(string name)
+        public async Task<Model.DataPipelineEntity> GetPipelineAsync(string name)
         {
             var pipeline = await this.client.Pipelines.GetAsync(
                 this.configuration.ResourceGroup,
@@ -168,7 +168,7 @@
         /// <returns></returns>
         public async Task DeletePipelineAsync(string name)
         {
-            var pipelineToDelete = await this.GetPipelineRunAsync(name);
+            var pipelineToDelete = await this.GetPipelineAsync(name);
             if (pipelineToDelete != null)
             {
                 await this.client.Pipelines.DeleteAsync(

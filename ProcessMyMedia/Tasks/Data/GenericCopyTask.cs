@@ -69,11 +69,6 @@
                 throw new ArgumentException($"{nameof(this.DatasetInput)} is required");
             }
 
-            if (string.IsNullOrEmpty(this.DatasetInput.Name))
-            {
-                throw new ArgumentException($"{nameof(this.DatasetInput.Name)} is required for the property {this.DatasetInput}");
-            }
-
             if (string.IsNullOrEmpty(this.DatasetInput.LinkedServiceName))
             {
                 throw new ArgumentException($"{nameof(this.DatasetInput.LinkedServiceName)} is required for the property {this.DatasetInput}");
@@ -82,11 +77,6 @@
             if (this.DatasetOutput == null)
             {
                 throw new ArgumentException($"{nameof(this.DatasetOutput)} is required");
-            }
-
-            if (string.IsNullOrEmpty(this.DatasetOutput.Name))
-            {
-                throw new ArgumentException($"{nameof(this.DatasetOutput.Name)} is required for the property {this.DatasetOutput}");
             }
 
             if (string.IsNullOrEmpty(this.DatasetOutput.LinkedServiceName))
@@ -110,6 +100,8 @@
             if (run == null)
             {
                 //First call : Create and run the pipeline
+                this.DatasetInput.Name = Guid.NewGuid().ToString();
+                this.DatasetOutput.Name = Guid.NewGuid().ToString();
 
                 await this.service.CreateOrUpdateDatasetAsync(this.DatasetInput);
                 await this.service.CreateOrUpdateDatasetAsync(this.DatasetOutput);

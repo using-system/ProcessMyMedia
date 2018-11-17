@@ -25,7 +25,7 @@
                 LinkedServiceName = source?.Properties?.LinkedServiceName?.ReferenceName,
             };
 
-            if (source?.Properties?.AdditionalProperties.ContainsKey("typeProperties") == true)
+            if (source?.Properties?.AdditionalProperties?.ContainsKey("typeProperties") == true)
             {
                 dataset.TypeProperties = source.Properties.AdditionalProperties["typeProperties"];
             }
@@ -90,7 +90,7 @@
                 Description = source.Description,
             };
 
-            if (source?.AdditionalProperties.ContainsKey("typeProperties") == true)
+            if (source?.AdditionalProperties?.ContainsKey("typeProperties") == true)
             {
                 target.TypeProperties = source.AdditionalProperties["typeProperties"];
             }
@@ -127,6 +127,7 @@
             }
             else if (source.RunEnd.HasValue)
             {
+                run.IsFinished = true;
                 run.OnError = true;
                 run.ErrorMessage = activities.FirstOrDefault()?.Error?.ToString();
             }
