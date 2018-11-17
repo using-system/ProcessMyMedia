@@ -16,9 +16,9 @@
 
         protected override FtpCopyWorkflowData WorflowDatas => new FtpCopyWorkflowData()
         {
-            SourceServer = new LinkedServiceEntity()
+            FtpServer = new LinkedServiceEntity()
             {
-                Name = "LocalFtp",
+                Name = "MyFtpServer",
                 Type = "FtpServer",
                 TypeProperties = new
                 {
@@ -36,32 +36,21 @@
             },
             SourcePath = new DatasetEntity()
             {
-                Name = "LocalFtpPath",
                 Type = "FileShare",
-                LinkedServiceName = "LocalFtp",
+                LinkedServiceName = "MyFtpServer",
                 TypeProperties = new
                 {
-                    folderPath = "myfolder/subfolder",
-                    fileName = "test.mpg"
-                }
-            },
-            DestinationServer = new LinkedServiceEntity()
-            {
-                Name = "LocalShare",
-                Type = "FileServer",
-                TypeProperties = new
-                {
-                    host = "\\localhost\\share"
+                    folderPath = "in",
+                    fileName = "*.mpg"
                 }
             },
             DestinationPath = new DatasetEntity()
             {
-                Name = "LocalSharePath",
                 Type = "FileShare",
-                LinkedServiceName = "LocalShare",
+                LinkedServiceName = "MyFtpServer",
                 TypeProperties = new
                 {
-                    folderPath = "folder1"
+                    folderPath = "out"
                 }
             }
         };
@@ -78,9 +67,7 @@
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.CreateLinkedServiceTask>()
-                        .Input(task => task.LinkedServiceToCreate, data => data.SourceServer)
-                    .Then<Tasks.CreateLinkedServiceTask>()
-                        .Input(task => task.LinkedServiceToCreate, data => data.DestinationServer)
+                        .Input(task => task.LinkedServiceToCreate, data => data.FtpServer)
                     .Then<Tasks.GenericCopyTask>()
                         .Input(task => task.DatasetInput, data => data.SourcePath)
                         .Input(task => task.DatasetOutput, data => data.DestinationPath);
@@ -89,9 +76,7 @@
 
         public class FtpCopyWorkflowData
         {
-            public LinkedServiceEntity SourceServer { get; set; }
-
-            public LinkedServiceEntity DestinationServer { get; set; }
+            public LinkedServiceEntity FtpServer { get; set; }
 
             public DatasetEntity SourcePath { get; set; }
 

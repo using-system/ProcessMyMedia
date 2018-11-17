@@ -120,7 +120,8 @@
                             OutputDatasetName = this.DatasetOutput.Name,
                             TypeProperties = new
                             {
-  
+                                source = new { type = "FileSystemSource", recursive = false},
+                                sink = new { type ="FileSystemSource" , recursive = false}
                             }
                         }
                     }
