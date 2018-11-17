@@ -16,7 +16,7 @@
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.FtpCopy(configuration).Execute();
+            new Samples.AzureBlobCopy(configuration).Execute();
         }
     }
 }

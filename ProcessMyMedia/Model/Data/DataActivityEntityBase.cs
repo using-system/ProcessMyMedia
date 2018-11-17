@@ -1,6 +1,10 @@
 ﻿namespace ProcessMyMedia.Model
 {
-    public class DataActivityEntity : DataEntityBase
+    /// <summary>
+    /// Data Activity Entity Base class
+    /// </summary>
+    /// <seealso cref="ProcessMyMedia.Model.DataEntityBase" />
+    public abstract class DataActivityEntityBase : DataEntityBase
     {
         /// <summary>
         /// Gets or sets the name of the input dataset.

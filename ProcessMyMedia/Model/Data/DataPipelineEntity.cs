@@ -13,7 +13,7 @@
         /// </summary>
         public DataPipelineEntity()
         {
-            this.Activities = new List<DataActivityEntity>();
+            this.Activities = new List<DataActivityEntityBase>();
         }
 
         /// <summary>
@@ -22,7 +22,7 @@
         /// <value>
         /// The activities.
         /// </value>
-        public List<DataActivityEntity> Activities { get; set; }
+        public List<DataActivityEntityBase> Activities { get; set; }
     
     }
 }

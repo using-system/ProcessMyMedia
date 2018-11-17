@@ -9,6 +9,7 @@
     using WorkflowCore.Models;
 
     using ProcessMyMedia.Model;
+    using ProcessMyMedia.Extensions;
     using ProcessMyMedia.Services.Contract;
 
     /// <summary>
@@ -20,20 +21,20 @@
         private IDelayService delayService;
 
         /// <summary>
-        /// Gets or sets the input.
+        /// Gets or sets the source path.
         /// </summary>
         /// <value>
-        /// The input.
+        /// The source path.
         /// </value>
-        public DatasetEntity DatasetInput { get; set; }
+        public DataPath SourcePath { get; set; }
 
         /// <summary>
-        /// Gets or sets the output.
+        /// Gets or sets the destination path.
         /// </summary>
         /// <value>
-        /// The output.
+        /// The destination path.
         /// </value>
-        public DatasetEntity DatasetOutput { get; set; }
+        public DataPath DestinationPath { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCopyTask" /> class.
@@ -64,24 +65,24 @@
         /// </exception>
         protected override void ValidateInput()
         {
-            if (this.DatasetInput == null)
+            if (this.SourcePath == null)
             {
-                throw new ArgumentException($"{nameof(this.DatasetInput)} is required");
+                throw new ArgumentException($"{nameof(this.SourcePath)} is required");
             }
 
-            if (string.IsNullOrEmpty(this.DatasetInput.LinkedServiceName))
+            if (string.IsNullOrEmpty(this.SourcePath.LinkedServiceName))
             {
-                throw new ArgumentException($"{nameof(this.DatasetInput.LinkedServiceName)} is required for the property {this.DatasetInput}");
+                throw new ArgumentException($"{nameof(this.SourcePath.LinkedServiceName)} is required for the property {this.SourcePath}");
             }
 
-            if (this.DatasetOutput == null)
+            if (this.DestinationPath == null)
             {
-                throw new ArgumentException($"{nameof(this.DatasetOutput)} is required");
+                throw new ArgumentException($"{nameof(this.DestinationPath)} is required");
             }
 
-            if (string.IsNullOrEmpty(this.DatasetOutput.LinkedServiceName))
+            if (string.IsNullOrEmpty(this.DestinationPath.LinkedServiceName))
             {
-                throw new ArgumentException($"{nameof(this.DatasetOutput.LinkedServiceName)} is required for the property {this.DatasetOutput}");
+                throw new ArgumentException($"{nameof(this.DestinationPath.LinkedServiceName)} is required for the property {this.DestinationPath}");
             }
         }
 
@@ -100,11 +101,11 @@
             if (run == null)
             {
                 //First call : Create and run the pipeline
-                this.DatasetInput.Name = Guid.NewGuid().ToString();
-                this.DatasetOutput.Name = Guid.NewGuid().ToString();
+                var inputDataset = this.SourcePath.ToDatasetEntity();
+                var outputDataset = this.DestinationPath.ToDatasetEntity();
 
-                await this.service.CreateOrUpdateDatasetAsync(this.DatasetInput);
-                await this.service.CreateOrUpdateDatasetAsync(this.DatasetOutput);
+                await this.service.CreateOrUpdateDatasetAsync(inputDataset);
+                await this.service.CreateOrUpdateDatasetAsync(outputDataset);
 
                 DataPipelineEntity pipeline = new DataPipelineEntity()
                 {
@@ -112,17 +113,14 @@
                     Description = "Generic Copy pipeline",
                     Activities =
                     {
-                        new DataActivityEntity()
+                        new CopyActivityEntity()
                         {
                             Name = nameof(GenericCopyTask),
                             Type = "Copy",
-                            InputDatasetName = this.DatasetInput.Name,
-                            OutputDatasetName = this.DatasetOutput.Name,
-                            TypeProperties = new
-                            {
-                                source = new { type = "FileSystemSource", recursive = false},
-                                sink = new { type ="FileSystemSource" , recursive = false}
-                            }
+                            Source = this.SourcePath,
+                            Destination = this.DestinationPath,
+                            InputDatasetName = inputDataset.Name,
+                            OutputDatasetName = outputDataset.Name
                         }
                     }
                 };
@@ -166,11 +164,16 @@
             if (run != null)
             {
                 await this.service.DeletePipelineAsync(run.PipelineName);
-                await this.service.DeleteDatasetAsync(this.DatasetInput.Name);
-                await this.service.DeleteDatasetAsync(this.DatasetOutput.Name);
+                if(!string.IsNullOrEmpty(run.InputDatasetName))
+                {
+                    await this.service.DeleteDatasetAsync(run.InputDatasetName);
+                }
+                if(!string.IsNullOrEmpty(run.OutputDatasetName))
+                {
+                    await this.service.DeleteDatasetAsync(run.OutputDatasetName);
+                }            
             }
         }
-
 
     }
 }

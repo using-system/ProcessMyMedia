@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -34,6 +35,42 @@
         }
 
         /// <summary>
+        /// Converts to datasetentity.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static Model.DatasetEntity ToDatasetEntity(this Model.DataPath source)
+        {
+            return new Model.DatasetEntity()
+            {
+                Name = Guid.NewGuid().ToString(),
+                LinkedServiceName = source.LinkedServiceName,
+                Type = source.Type.ToDatasetType(),
+                TypeProperties = source.PathProperties
+            };
+        }
+
+        /// <summary>
+        /// Converts to datasettype.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">DataPathType {source}</exception>
+        public static string ToDatasetType(this Model.DataPathType source)
+        {
+            switch(source)
+            {
+                case Model.DataPathType.AzureBlobStorage:
+                    return "AzureBlob";
+                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.Ftp:
+                    return "FileShare";
+                default:
+                    throw new NotImplementedException($"DataPathType {source} is not supported as an Data Factory Dataset");
+            }
+        }
+
+        /// <summary>
         /// To the activities.
         /// </summary>
         /// <param name="source">The source.</param>
@@ -48,8 +85,9 @@
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static Activity ToActivity(this Model.DataActivityEntity source)
+        public static Activity ToActivity(this Model.DataActivityEntityBase source)
         {
+            //TODO : Implement copy activity logic
             return new Activity()
             {
                 Name = source.Name,
@@ -70,6 +108,47 @@
                     {"typeProperties", JObject.FromObject(source.TypeProperties)}
                 }
             };
+        }
+
+        /// <summary>
+        /// Converts to copyactivitycopysourcetype.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">DataPathType {source}</exception>
+        public static string ToCopyActivityCopySourceType(this Model.DataPathType source)
+        {
+            switch (source)
+            {
+                case Model.DataPathType.AzureBlobStorage:
+                    return "BlobSource";
+                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.Ftp:
+                    return "FileSystemSource";
+                default:
+                    throw new NotImplementedException($"DataPathType {source} is not supported as source");
+            }
+        }
+
+
+        /// <summary>
+        /// Converts to copyactivitycopysinktype.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException">DataPathType {source}</exception>
+        public static string ToCopyActivityCopySinkType(this Model.DataPathType source)
+        {
+            switch (source)
+            {
+                case Model.DataPathType.AzureBlobStorage:
+                    return "BlobSink";
+                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.Ftp:
+                    return "FileSystemSink";
+                default:
+                    throw new NotImplementedException($"DataPathType {source} is not supported as source");
+            }
         }
 
         /// <summary>
@@ -107,6 +186,8 @@
         public static Model.DataPipelineRunEntity ToPipelineRunEntity(this PipelineRun source,
             IEnumerable<ActivityRun> activities)
         {
+            var firstActivity = activities.FirstOrDefault();
+
             if (source == null)
             {
                 return null;
@@ -129,7 +210,17 @@
             {
                 run.IsFinished = true;
                 run.OnError = true;
-                run.ErrorMessage = activities.FirstOrDefault()?.Error?.ToString();
+                run.ErrorMessage = firstActivity?.Error?.ToString();
+            }
+
+            if(firstActivity?.Input is DatasetResource)
+            {
+                run.InputDatasetName = ((DatasetResource)firstActivity.Input).Name;
+            }
+
+            if (firstActivity?.Output is DatasetResource)
+            {
+                run.InputDatasetName = ((DatasetResource)firstActivity.Output).Name;
             }
 
             return run;

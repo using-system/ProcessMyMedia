@@ -18,6 +18,7 @@
     /// Azure Data Factory client for V2 API
     /// https://docs.microsoft.com/en-us/azure/data-factory/connector-ftp
     /// https://docs.microsoft.com/en-us/azure/data-factory/connector-file-system
+    /// https://docs.microsoft.com/en-us/azure/data-factory/connector-azure-blob-storage
     /// https://docs.microsoft.com/en-us/azure/data-factory/concepts-pipelines-activities
     /// https://docs.microsoft.com/en-us/azure/data-factory/concepts-pipeline-execution-triggers
     /// </summary>

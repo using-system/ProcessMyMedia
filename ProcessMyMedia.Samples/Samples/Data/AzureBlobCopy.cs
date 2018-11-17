@@ -7,41 +7,32 @@
 
     using ProcessMyMedia.Model;
 
-    public class FtpCopy : WofkflowSampleBase<FtpCopy.FtpCopyWorkflow, FtpCopy.FtpCopyWorkflowData>
+    public class AzureBlobCopy : WofkflowSampleBase<AzureBlobCopy.AzureBlobCopyWorkflow, AzureBlobCopy.AzureBlobCopyWorkflowData>
     {
-        public FtpCopy(IConfigurationRoot configuration) : base(configuration)
+        public AzureBlobCopy(IConfigurationRoot configuration) : base(configuration)
         {
 
         }
 
-        protected override FtpCopyWorkflowData WorflowDatas => new FtpCopyWorkflowData()
+        protected override AzureBlobCopyWorkflowData WorflowDatas => new AzureBlobCopyWorkflowData()
         {
-            FtpServer = new LinkedServiceEntity()
+            AzureStorageResource = new LinkedServiceEntity()
             {
-                Name = "MyFtpServer",
-                Type = "FtpServer",
+                Name = "MyAzureStorage",
+                Type = "AzureBlobStorage",
                 TypeProperties = new
                 {
-                    host = "localhost",
-                    port = 21,
-                    enableSsl = false,
-                    authenticationType = "Basic",
-                    username = "user",
-                    password = new
-                    {
-                        type = "SecureString",
-                        value = "password"
-                    }
+                    serviceEndpoint = "https://mnuadf.blob.core.windows.net/" //the azure blob storage must be associated with the data factory
                 }
             },
             SourcePath = new DataPath()
             {
-                Type = DataPathType.Ftp,
-                LinkedServiceName = "MyFtpServer",
+                Type = DataPathType.AzureBlobStorage,
+                LinkedServiceName = "MyAzureStorage",
                 PathProperties = new
                 {
-                    folderPath = "in",
-                    fileName = "*.mpg"
+                    folderPath = "infolder",
+                    fileName = "*.*"
                 },
                 CopyProperties = new
                 {
@@ -50,11 +41,11 @@
             },
             DestinationPath = new DataPath()
             {
-                Type = DataPathType.Ftp,
-                LinkedServiceName = "MyFtpServer",
+                Type = DataPathType.AzureBlobStorage,
+                LinkedServiceName = "MyAzureStorage",
                 PathProperties = new
                 {
-                    folderPath = "out"
+                    folderPath = "outfolder"
                 },
                 CopyProperties = new
                 {
@@ -63,28 +54,28 @@
             }
         };
 
-        public class FtpCopyWorkflow : IWorkflow<FtpCopyWorkflowData>
+        public class AzureBlobCopyWorkflow : IWorkflow<AzureBlobCopyWorkflowData>
         {
             public string Id => SampleBase.WORKFLOW_NAME;
 
             public int Version => 1;
 
 
-            public void Build(IWorkflowBuilder<FtpCopyWorkflowData> builder)
+            public void Build(IWorkflowBuilder<AzureBlobCopyWorkflowData> builder)
             {
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.CreateLinkedServiceTask>()
-                        .Input(task => task.LinkedServiceToCreate, data => data.FtpServer)
+                        .Input(task => task.LinkedServiceToCreate, data => data.AzureStorageResource)
                     .Then<Tasks.GenericCopyTask>()
                         .Input(task => task.SourcePath, data => data.SourcePath)
                         .Input(task => task.DestinationPath, data => data.DestinationPath);
             }
         }
 
-        public class FtpCopyWorkflowData
+        public class AzureBlobCopyWorkflowData
         {
-            public LinkedServiceEntity FtpServer { get; set; }
+            public LinkedServiceEntity AzureStorageResource { get; set; }
 
             public DataPath SourcePath { get; set; }
 
