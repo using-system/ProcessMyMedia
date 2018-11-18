@@ -1,5 +1,7 @@
 ﻿namespace ProcessMyMedia.Model
 {
+    using Newtonsoft.Json.Linq;
+
     /// <summary>
     /// Data Activity Entity Base class
     /// </summary>
@@ -21,5 +23,11 @@
         /// The name of the output dataset.
         /// </value>
         public string OutputDatasetName { get; set; }
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <returns></returns>
+        public abstract JObject GetProperties();
     }
 }

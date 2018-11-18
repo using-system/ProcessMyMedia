@@ -1,5 +1,7 @@
 ﻿namespace ProcessMyMedia.Model
 {
+    using Newtonsoft.Json.Linq;
+
     /// <summary>
     /// Data Path entity
     /// </summary>
@@ -36,5 +38,23 @@
         /// The copy properties.
         /// </value>
         public object CopyProperties { get; set; }
+
+        /// <summary>
+        /// Gets the path properties.
+        /// </summary>
+        /// <returns></returns>
+        public virtual JObject GetPathProperties()
+        {
+            return new JObject();
+        }
+
+        /// <summary>
+        /// Gets the copy properties.
+        /// </summary>
+        /// <returns></returns>
+        public virtual JObject GetCopyProperties()
+        {
+            return new JObject();
+        }
     }
 }

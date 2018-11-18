@@ -46,7 +46,7 @@
                 Name = Guid.NewGuid().ToString(),
                 LinkedServiceName = source.LinkedServiceName,
                 Type = source.Type.ToDatasetType(),
-                TypeProperties = source.PathProperties
+                TypeProperties = source.GetPathProperties()
             };
         }
 
@@ -105,7 +105,7 @@
                         JArray.FromObject(new[]
                             {new {referenceName = source.OutputDatasetName, type = "DatasetReference"}})
                     },
-                    {"typeProperties", JObject.FromObject(source.TypeProperties)}
+                    {"typeProperties", source.GetProperties()}
                 }
             };
         }
