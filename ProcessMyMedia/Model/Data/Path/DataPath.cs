@@ -6,12 +6,10 @@
     public abstract class DataPath
     {
         /// <summary>
-        /// Gets or sets the type.
+        /// Gets the type of the data.
         /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public abstract DataPathType Type { get; }
+        /// <returns></returns>
+        public abstract DataPathType GetDataType();
 
         /// <summary>
         /// Gets or sets the name of the linked service.

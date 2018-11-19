@@ -7,11 +7,12 @@
     public class FtpDataPath : FileSystemDataPath
     {
         /// <summary>
-        /// Gets or sets the type.
+        /// Gets the type of the data.
         /// </summary>
-        /// <value>
-        /// The type.
-        /// </value>
-        public override DataPathType Type => DataPathType.Ftp;
+        /// <returns></returns>
+        public override DataPathType GetDataType()
+        {
+            return DataPathType.Ftp;
+        }
     }
 }

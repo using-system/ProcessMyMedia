@@ -3,7 +3,7 @@
     /// <summary>
     /// GenericCopyTask DatasetOutput
     /// </summary>
-    public class GenericCopyTaskOutput
+    public class CopyTaskOutput
     {
 
         /// <summary>

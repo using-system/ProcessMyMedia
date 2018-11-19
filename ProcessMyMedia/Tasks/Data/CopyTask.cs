@@ -16,7 +16,7 @@
     /// Generic Copy Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
-    public class CopyTask : DataFactoryTaskBase<GenericCopyTaskOutput>
+    public class CopyTask : DataFactoryTaskBase<CopyTaskOutput>
     {
         private IDelayService delayService;
 
@@ -95,13 +95,13 @@
         /// <exception cref="Exception"></exception>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            this.Output = context.PersistenceData as GenericCopyTaskOutput;
+            this.Output = context.PersistenceData as CopyTaskOutput;
 
             string runID;
             if (this.Output == null)
             {
                 //First call : Create and run the pipeline
-                this.Output = new GenericCopyTaskOutput();
+                this.Output = new CopyTaskOutput();
 
                 this.Output.InputDataset = this.SourcePath.ToDatasetEntity();
                 this.Output.OutputDataset = this.DestinationPath.ToDatasetEntity();
@@ -159,7 +159,7 @@
         /// <returns></returns>
         protected async override Task Cleanup(IStepExecutionContext context)
         {
-            GenericCopyTaskOutput taskOutput = context.PersistenceData as GenericCopyTaskOutput;
+            CopyTaskOutput taskOutput = context.PersistenceData as CopyTaskOutput;
 
             if (taskOutput != null)
             {

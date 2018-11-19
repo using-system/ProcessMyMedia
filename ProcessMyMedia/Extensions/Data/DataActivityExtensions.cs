@@ -127,15 +127,15 @@
 
 
             JObject sourceProperties = new JObject();
-            sourceProperties.Add(new JProperty("type", source.Source.Type.ToSourceType()));
-            foreach (var property in source.Source.GetCopyProperties())
+            sourceProperties.Add(new JProperty("type", source.Source.GetDataType().ToSourceType()));
+            foreach (var property in source.Source.GetActivityProperties())
             {
                 sourceProperties.Add(property);
             }
 
             JObject destinationProperties = new JObject();
-            destinationProperties.Add(new JProperty("type", source.Destination.Type.ToSinkType()));
-            foreach (var property in source.Destination.GetCopyProperties())
+            destinationProperties.Add(new JProperty("type", source.Destination.GetDataType().ToSinkType()));
+            foreach (var property in source.Destination.GetActivityProperties())
             {
                 destinationProperties.Add(property);
             }

@@ -42,7 +42,7 @@
             {
                 Name = Guid.NewGuid().ToString(),
                 LinkedServiceName = source.LinkedServiceName,
-                Type = source.Type.ToDatasetType(),
+                Type = source.GetDataType().ToDatasetType(),
                 TypeProperties = source.GetPathProperties()
             };
         }

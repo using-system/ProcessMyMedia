@@ -25,7 +25,9 @@
             switch (source.GetType())
             {
                 case Type fileSystemType when typeof(Model.FileSystemDataPath).IsAssignableFrom(fileSystemType):
-                    return ((Model.FileSystemDataPath) source).GetPathProperties();
+                    return ((Model.FileSystemDataPath)source).GetPathProperties();
+                case Type genericType when genericType == typeof(Model.GenericDataPath):
+                    return ((Model.GenericDataPath)source).GetPathProperties();
                 default:
                     throw new NotImplementedException($"{source.GetType()} is not supported");
             }
@@ -38,7 +40,7 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public static IEnumerable<JProperty> GetCopyProperties(this Model.DataPath source)
+        public static IEnumerable<JProperty> GetActivityProperties(this Model.DataPath source)
         {
             if (source == null)
             {
@@ -48,7 +50,9 @@
             switch (source.GetType())
             {
                 case Type fileSystemType when typeof(Model.FileSystemDataPath).IsAssignableFrom(fileSystemType):
-                    return ((Model.FileSystemDataPath)source).GetCopyProperties();
+                    return ((Model.FileSystemDataPath)source).GetActivityProperties();
+                case Type genericType when genericType == typeof(Model.GenericDataPath):
+                    return ((Model.GenericDataPath)source).GetActivityProperties();
                 default:
                     throw new NotImplementedException($"{source.GetType()} is not supported");
             }
@@ -68,7 +72,7 @@
 
             JObject properties = new JObject();
 
-            if(!string.IsNullOrEmpty(source.FileName))
+            if (!string.IsNullOrEmpty(source.FileName))
             {
                 properties.Add("fileName", source.FileName);
             }
@@ -82,11 +86,26 @@
         }
 
         /// <summary>
+        /// Gets the path properties.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static JObject GetPathProperties(this Model.GenericDataPath source)
+        {
+            if(source == null)
+            {
+                return null;
+            }
+
+            return JObject.FromObject(source.PathProperties);
+        }
+
+        /// <summary>
         /// Gets the copy properties.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <returns></returns>
-        public static IEnumerable<JProperty> GetCopyProperties(this Model.FileSystemDataPath source)
+        public static IEnumerable<JProperty> GetActivityProperties(this Model.FileSystemDataPath source)
         {
             if (source.Recursive.HasValue)
             {
@@ -104,6 +123,21 @@
                     yield return new JProperty("copyBehavior", "FlattenHierarchy");
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the activity properties.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<JProperty> GetActivityProperties(this Model.GenericDataPath source)
+        {
+            if(source == null)
+            {
+                return null;
+            }
+
+            return new JObject(source.ActivityProperties).Properties();
         }
     }
 }
