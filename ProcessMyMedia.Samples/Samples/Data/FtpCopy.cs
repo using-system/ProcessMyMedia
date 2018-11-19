@@ -36,35 +36,15 @@
             },
             SourcePath = new FtpDataPath()
             {
-                Type = DataPathType.Ftp,
                 LinkedServiceName = "MyFtpServer",
                 FolderPath = "in",
                 FileName = "*.mpg",
                 Recursive = false,
-                PathProperties = new
-                {
-                    folderPath = "in",
-                    fileName = "*.mpg"
-                },
-                CopyProperties = new
-                {
-                    recursive = false
-                }
             },
             DestinationPath = new FtpDataPath()
             {
-                Type = DataPathType.Ftp,
                 LinkedServiceName = "MyFtpServer",
-                FolderPath = "out",
-                Recursive = false,
-                PathProperties = new
-                {
-                    folderPath = "out"
-                },
-                CopyProperties = new
-                {
-                    recursive = false
-                }
+                FolderPath = "out"
             }
         };
 

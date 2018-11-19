@@ -28,6 +28,6 @@
         /// <value>
         ///   <c>true</c> if recursive; otherwise, <c>false</c>.
         /// </value>
-        public bool Recursive { get; set; }
+        public bool? Recursive { get; set; }
     }
 }

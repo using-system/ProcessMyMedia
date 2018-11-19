@@ -25,32 +25,17 @@
                     serviceEndpoint = "https://mnuadf.blob.core.windows.net/" //the azure blob storage must be associated with the data factory
                 }
             },
-            SourcePath = new DataPath()
+            SourcePath = new AzureBlobDataPath()
             {
-                Type = DataPathType.AzureBlobStorage,
                 LinkedServiceName = "MyAzureStorage",
-                PathProperties = new
-                {
-                    folderPath = "infolder",
-                    fileName = "*.*"
-                },
-                CopyProperties = new
-                {
-                    recursive = false
-                }
+                FolderPath = "infolder",
+                FileName = "*.*",
+                Recursive = false
             },
-            DestinationPath = new DataPath()
+            DestinationPath = new AzureBlobDataPath()
             {
-                Type = DataPathType.AzureBlobStorage,
                 LinkedServiceName = "MyAzureStorage",
-                PathProperties = new
-                {
-                    folderPath = "outfolder"
-                },
-                CopyProperties = new
-                {
-                    recursive = false
-                }
+                FolderPath = "outfolder"
             }
         };
 

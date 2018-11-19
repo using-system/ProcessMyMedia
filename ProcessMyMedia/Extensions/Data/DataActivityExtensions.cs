@@ -59,7 +59,7 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException">DataPathType {source}</exception>
-        public static string ToCopyActivityCopySourceType(this Model.DataPathType source)
+        public static string ToSourceType(this Model.DataPathType source)
         {
             switch (source)
             {
@@ -80,7 +80,7 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException">DataPathType {source}</exception>
-        public static string ToCopyActivityCopySinkType(this Model.DataPathType source)
+        public static string ToSinkType(this Model.DataPathType source)
         {
             switch (source)
             {
@@ -127,14 +127,14 @@
 
 
             JObject sourceProperties = new JObject();
-            sourceProperties.Add(new JProperty("type", source.Source.Type.ToCopyActivityCopySourceType()));
+            sourceProperties.Add(new JProperty("type", source.Source.Type.ToSourceType()));
             foreach (var property in source.Source.GetCopyProperties())
             {
                 sourceProperties.Add(property);
             }
 
             JObject destinationProperties = new JObject();
-            destinationProperties.Add(new JProperty("type", source.Destination.Type.ToCopyActivityCopySinkType()));
+            destinationProperties.Add(new JProperty("type", source.Destination.Type.ToSinkType()));
             foreach (var property in source.Destination.GetCopyProperties())
             {
                 destinationProperties.Add(property);
