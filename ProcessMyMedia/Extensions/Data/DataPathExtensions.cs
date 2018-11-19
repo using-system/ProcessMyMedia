@@ -24,7 +24,7 @@
 
             switch (source.GetType())
             {
-                case Type fileSystemType when fileSystemType == typeof(Model.FileSystemDataPath):
+                case Type fileSystemType when typeof(Model.FileSystemDataPath).IsAssignableFrom(fileSystemType):
                     return ((Model.FileSystemDataPath) source).GetPathProperties();
                 default:
                     throw new NotImplementedException($"{source.GetType()} is not supported");
@@ -47,7 +47,7 @@
 
             switch (source.GetType())
             {
-                case Type fileSystemType when fileSystemType == typeof(Model.FileSystemDataPath):
+                case Type fileSystemType when typeof(Model.FileSystemDataPath).IsAssignableFrom(fileSystemType):
                     return ((Model.FileSystemDataPath)source).GetCopyProperties();
                 default:
                     throw new NotImplementedException($"{source.GetType()} is not supported");
