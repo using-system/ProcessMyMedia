@@ -92,6 +92,18 @@
             {
                 yield return new JProperty("recursive", source.Recursive.Value);
             }
+
+            if (source.PreserveHierarchy.HasValue)
+            {
+                if (source.PreserveHierarchy.Value)
+                {
+                    yield return new JProperty("copyBehavior", "PreserveHierarchy");
+                }
+                else
+                {
+                    yield return new JProperty("copyBehavior", "FlattenHierarchy");
+                }
+            }
         }
     }
 }

@@ -7,6 +7,7 @@
     {
         /// <summary>
         /// The FTP
+        /// https://docs.microsoft.com/en-us/azure/data-factory/connector-ftp
         /// </summary>
         Ftp,
         /// <summary>
@@ -15,6 +16,7 @@
         FileSystem,
         /// <summary>
         /// The azure BLOB storage
+        /// https://docs.microsoft.com/en-us/azure/data-factory/connector-azure-blob-storage
         /// </summary>
         AzureBlobStorage
     }

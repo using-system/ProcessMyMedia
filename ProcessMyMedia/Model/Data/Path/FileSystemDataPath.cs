@@ -29,5 +29,13 @@
         ///   <c>true</c> if recursive; otherwise, <c>false</c>.
         /// </value>
         public bool? Recursive { get; set; }
+
+        /// <summary>
+        /// Gets or sets the preserve hierarchy.
+        /// </summary>
+        /// <value>
+        /// The preserve hierarchy.
+        /// </value>
+        public bool? PreserveHierarchy { get; set; }
     }
 }
