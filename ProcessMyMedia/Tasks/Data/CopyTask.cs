@@ -16,7 +16,7 @@
     /// Generic Copy Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.TaskBase" />
-    public class GenericCopyTask : DataFactoryTaskBase<GenericCopyTaskOutput>
+    public class CopyTask : DataFactoryTaskBase<GenericCopyTaskOutput>
     {
         private IDelayService delayService;
 
@@ -37,12 +37,12 @@
         public DataPath DestinationPath { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GenericCopyTask" /> class.
+        /// Initializes a new instance of the <see cref="CopyTask" /> class.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public GenericCopyTask(IDataFactoryService service, IDelayService delayService, ILoggerFactory loggerFactory) : base(service, loggerFactory)
+        public CopyTask(IDataFactoryService service, IDelayService delayService, ILoggerFactory loggerFactory) : base(service, loggerFactory)
         {
             this.delayService = delayService;
         }
@@ -117,7 +117,7 @@
                     {
                         new CopyActivityEntity()
                         {
-                            Name = nameof(GenericCopyTask),
+                            Name = nameof(CopyTask),
                             Type = "Copy",
                             Source = this.SourcePath,
                             Destination = this.DestinationPath,
