@@ -1,7 +1,5 @@
 ﻿namespace ProcessMyMedia.Model
 {
-    using Newtonsoft.Json.Linq;
-
     /// <summary>
     /// Copy Activity Entity
     /// </summary>
@@ -23,10 +21,5 @@
         /// The destination.
         /// </value>
         public DataPath Destination { get; set; }
-
-        public override JObject GetProperties()
-        {
-            return Source.GetCopyProperties();
-        }
     }
 }

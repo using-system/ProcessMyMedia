@@ -48,7 +48,7 @@
                         JArray.FromObject(new[]
                             {new {referenceName = source.OutputDatasetName, type = "DatasetReference"}})
                     },
-                    {"typeProperties", source.GetProperties()}
+                    {"typeProperties", source.GetTypedProperties()}
                 }
             };
         }
@@ -92,6 +92,26 @@
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as source");
             }
+        }
+
+        /// <summary>
+        /// Gets the typed properties.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static JObject GetTypedProperties(this Model.DataActivityEntityBase source)
+        {
+            if (source == null)
+            {
+                return null;
+            }
+
+            if (source is Model.CopyActivityEntity)
+            {
+                return ((Model.CopyActivityEntity) source).Source.GetCopyProperties();
+            }
+
+            return null;
         }
     }
 }
