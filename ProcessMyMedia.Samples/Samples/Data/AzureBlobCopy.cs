@@ -22,7 +22,11 @@
                 Type = "AzureBlobStorage",
                 TypeProperties = new
                 {
-                    serviceEndpoint = "https://mnuadf.blob.core.windows.net/" //the azure blob storage must be associated with the data factory
+                    connectionString = new
+                    {
+                        type = "SecureString",
+                        value = this.configuration["SamplesConfig:StorageConnectionString"]
+                    }
                 }
             },
             SourcePath = new AzureBlobDataPath()

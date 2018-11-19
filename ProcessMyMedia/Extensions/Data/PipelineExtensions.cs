@@ -72,16 +72,6 @@
                 run.ErrorMessage = firstActivity?.Error?.ToString();
             }
 
-            if(firstActivity?.Input is DatasetResource)
-            {
-                run.InputDatasetName = ((DatasetResource)firstActivity.Input).Name;
-            }
-
-            if (firstActivity?.Output is DatasetResource)
-            {
-                run.InputDatasetName = ((DatasetResource)firstActivity.Output).Name;
-            }
-
             return run;
         }
     }

@@ -106,11 +106,11 @@
                 this.configuration.FactoryName,
                 dataset.Name,
                 new DatasetResource(
-                    new Dataset(new LinkedServiceReference(dataset.LinkedServiceName, new Dictionary<string, object>()
+                    new Dataset(new LinkedServiceReference(dataset.LinkedServiceName), additionalProperties: new Dictionary<string, object>()
                     {
                         {"type", dataset.Type},
                         {"typeProperties", JObject.FromObject(dataset.TypeProperties)}
-                    }), description: dataset.Description)));
+                    }, description: dataset.Description)));
 
             return response.ToDatasetEntity();
         }

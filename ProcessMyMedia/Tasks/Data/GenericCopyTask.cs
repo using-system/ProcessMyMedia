@@ -95,17 +95,19 @@
         /// <exception cref="Exception"></exception>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            DataPipelineRunEntity run = context.PersistenceData as DataPipelineRunEntity;
+            this.Output = context.PersistenceData as GenericCopyTaskOutput;
 
             string runID;
-            if (run == null)
+            if (this.Output == null)
             {
                 //First call : Create and run the pipeline
-                var inputDataset = this.SourcePath.ToDatasetEntity();
-                var outputDataset = this.DestinationPath.ToDatasetEntity();
+                this.Output = new GenericCopyTaskOutput();
 
-                await this.service.CreateOrUpdateDatasetAsync(inputDataset);
-                await this.service.CreateOrUpdateDatasetAsync(outputDataset);
+                this.Output.InputDataset = this.SourcePath.ToDatasetEntity();
+                this.Output.OutputDataset = this.DestinationPath.ToDatasetEntity();
+
+                await this.service.CreateOrUpdateDatasetAsync(this.Output.InputDataset);
+                await this.service.CreateOrUpdateDatasetAsync(this.Output.OutputDataset);
 
                 DataPipelineEntity pipeline = new DataPipelineEntity()
                 {
@@ -119,8 +121,8 @@
                             Type = "Copy",
                             Source = this.SourcePath,
                             Destination = this.DestinationPath,
-                            InputDatasetName = inputDataset.Name,
-                            OutputDatasetName = outputDataset.Name
+                            InputDatasetName =  this.Output.InputDataset.Name,
+                            OutputDatasetName =  this.Output.OutputDataset.Name
                         }
                     }
                 };
@@ -131,20 +133,18 @@
             }
             else
             {
-                runID = run.ID;
+                runID = this.Output.Run.ID;
             }
 
-            run = await this.service.GetPipelineRunAsync(runID);
+            this.Output.Run = await this.service.GetPipelineRunAsync(runID);
 
-            this.Output.Run = run;
-
-            if (!run.IsFinished)
+            if (!this.Output.Run.IsFinished)
             {
-                return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(run.StartDate), run);
+                return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(this.Output.Run.StartDate), this.Output);
             }
-            else if (run.OnError)
+            else if (this.Output.Run.OnError)
             {
-                throw new Exception($"Data Copy is on error : {run.ErrorMessage}");
+                throw new Exception($"Data Copy is on error : { this.Output.Run.ErrorMessage}");
             }
 
 
@@ -159,18 +159,18 @@
         /// <returns></returns>
         protected async override Task Cleanup(IStepExecutionContext context)
         {
-            DataPipelineRunEntity run = context.PersistenceData as DataPipelineRunEntity;
+            GenericCopyTaskOutput taskOutput = context.PersistenceData as GenericCopyTaskOutput;
 
-            if (run != null)
+            if (taskOutput != null)
             {
-                await this.service.DeletePipelineAsync(run.PipelineName);
-                if(!string.IsNullOrEmpty(run.InputDatasetName))
+                await this.service.DeletePipelineAsync(taskOutput.Run.PipelineName);
+                if(!string.IsNullOrEmpty(taskOutput.InputDataset?.Name))
                 {
-                    await this.service.DeleteDatasetAsync(run.InputDatasetName);
+                    await this.service.DeleteDatasetAsync(taskOutput.InputDataset.Name);
                 }
-                if(!string.IsNullOrEmpty(run.OutputDatasetName))
+                if(!string.IsNullOrEmpty(taskOutput.OutputDataset?.Name))
                 {
-                    await this.service.DeleteDatasetAsync(run.OutputDatasetName);
+                    await this.service.DeleteDatasetAsync(taskOutput.OutputDataset.Name);
                 }            
             }
         }
