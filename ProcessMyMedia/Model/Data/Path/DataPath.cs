@@ -43,18 +43,18 @@
         /// Gets the path properties.
         /// </summary>
         /// <returns></returns>
-        public virtual JObject GetPathProperties()
+        public virtual IJEnumerable<JProperty> GetPathProperties()
         {
-            return new JObject();
+            return null;
         }
 
         /// <summary>
         /// Gets the copy properties.
         /// </summary>
         /// <returns></returns>
-        public virtual JObject GetCopyProperties()
+        public virtual IJEnumerable<JProperty> GetCopyProperties()
         {
-            return new JObject();
+            return null;
         }
     }
 }

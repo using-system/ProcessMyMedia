@@ -101,6 +101,8 @@
         /// <returns></returns>
         public static JObject GetTypedProperties(this Model.DataActivityEntityBase source)
         {
+            JObject typedProperties = new JObject();
+
             if (source == null)
             {
                 return null;
@@ -108,10 +110,41 @@
 
             if (source is Model.CopyActivityEntity)
             {
-                return ((Model.CopyActivityEntity) source).Source.GetCopyProperties();
+                return ((Model.CopyActivityEntity) source).GetTypedProperties();
             }
 
-            return null;
+            return typedProperties;
+        }
+
+        /// <summary>
+        /// Gets the typed properties.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static JObject GetTypedProperties(this Model.CopyActivityEntity source)
+        {
+            JObject typedProperties = new JObject();
+
+
+            JObject sourceProperties = new JObject();
+            sourceProperties.Add(new JProperty("type", source.Source.Type.ToCopyActivityCopySourceType()));
+            foreach (var property in source.Source.GetCopyProperties())
+            {
+                sourceProperties.Add(property);
+            }
+
+            JObject destinationProperties = new JObject();
+            destinationProperties.Add(new JProperty("type", source.Destination.Type.ToCopyActivityCopySinkType()));
+            foreach (var property in source.Destination.GetCopyProperties())
+            {
+                destinationProperties.Add(property);
+            }
+
+
+            typedProperties.Add("source", sourceProperties);
+            typedProperties.Add("sink", destinationProperties);
+
+            return typedProperties;
         }
     }
 }
