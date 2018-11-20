@@ -1,8 +1,11 @@
 ﻿namespace ProcessMyMedia.Tests.Tasks.Data
 {
+    using System;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using WorkflowCore.Interface;
+    using WorkflowCore.Models;
 
     using ProcessMyMedia.Model;
 
@@ -14,6 +17,25 @@
         public CreateLinkedServiceTaskUnitTest()
         {
             this.Setup();
+        }
+
+        [TestMethod]
+        public void CreateLinkedServiceWithoutArgumentTest()
+        {
+            this.dataFactoryService.Setup(mock => mock.AuthAsync()).Throws<NotSupportedException>();
+            this.dataFactoryService.Setup(mock => mock.Dispose()).Throws<NotSupportedException>();
+
+
+            var datas = new CreateLinkedServiceWorkflowData();
+
+
+            var workflowId = this.StartWorkflow(datas);
+            WaitForWorkflowToComplete(workflowId, TimeSpan.FromSeconds(30));
+
+            Assert.AreEqual(WorkflowStatus.Terminated, this.GetStatus((workflowId)));
+            Assert.AreEqual(1, this.UnhandledStepErrors.Count);
+            Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.CreateLinkedServiceTask.LinkedServiceToCreate)));
         }
 
         public class CreateLinkedServiceWorkflow : IWorkflow<CreateLinkedServiceWorkflowData>
