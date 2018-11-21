@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata> 
+        <!-- The identifier that must be unique within the hosting gallery -->
+        <id>ProcessMyMedia</id>
+
+        <!-- The package version number that is used when resolving dependencies -->
+        <version>1.0.0.0</version>
+
+        <!-- Authors contain text that appears directly on the gallery -->
+        <authors>ProcessMyMedia</authors>
+
+        <!-- 
+            Owners are typically nuget.org identities that allow gallery
+            users to easily find other packages by the same owners.  
+        -->
+        <owners>ProcessMyMedia</owners>
+
+
+        <!-- 
+            If true, this value prompts the user to accept the license when
+            installing the package. 
+        -->
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+        <!-- Any details about this particular release -->
+        <releaseNotes></releaseNotes>
+
+        <!-- 
+            The description can be used in package manager UI. Note that the
+            nuget.org gallery uses information you add in the portal. 
+        -->
+        <description>Process your media with Azure</description>
+
+        <!-- Copyright information -->
+        <copyright>Copyright Process My Media</copyright>
+    </metadata>
+
+    <!-- A readme.txt to display when the package is installed -->
+    <files>
+        <file src="*ProcessMyMedia.dll" target="" />
+         <file src="*ProcessMyMedia.pdb" target="" />
+    </files>
+</package>
