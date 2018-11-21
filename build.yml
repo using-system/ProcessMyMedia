@@ -14,7 +14,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration) --output 'out/bin'
+- script: dotnet build 'ProcessMyMedia/ProcessMyMedia.csproj' --configuration $(buildConfiguration) --output 'out/bin'
   displayName: 'Build'
 - script: dotnet test 'ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration) --logger:trx
   displayName: 'Test'
@@ -28,5 +28,5 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifacts'
   inputs:
-    PathtoPublish: 'out/bin'
+    PathtoPublish: 'ProcessMyMedia/out/bin/'
     artifactName: 'bin'
