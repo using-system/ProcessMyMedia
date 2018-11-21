@@ -17,5 +17,5 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build'
-- script: dotnet test $(Build.SourcesDirectory)/**/*Test.csproj --configuration $(buildConfiguration)
+- script: dotnet test '~/ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration)
   displayName: 'Test'
