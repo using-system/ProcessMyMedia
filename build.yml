@@ -5,10 +5,17 @@
 
 pool:
   vmImage: 'Ubuntu 16.04'
+  
+trigger:
+  batch: false
+  branches:
+    include: [ 'master' ]
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'Build'
+- script: dotnet test --configuration $(buildConfiguration)
+  displayName: 'Test'
