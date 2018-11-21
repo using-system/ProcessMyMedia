@@ -16,5 +16,12 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build'
-- script: dotnet test 'ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration)
+- script: dotnet test 'ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration) --logger:trx
   displayName: 'Test'
+- task: PublishTestResults@2
+  displayName: 'Publish Test Result'
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    buildConfiguration: $(buildConfiguration)
+    publishRunAttachments: true
