@@ -7,7 +7,6 @@ pool:
   vmImage: 'Ubuntu 16.04'
   
 trigger:
-  batch: false
   branches:
     include: [ 'master' ]
 
@@ -17,5 +16,5 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build'
-- script: dotnet test '~/ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration)
+- script: dotnet test 'ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration)
   displayName: 'Test'
