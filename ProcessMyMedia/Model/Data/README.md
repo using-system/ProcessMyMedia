@@ -1,5 +1,7 @@
 # LinkedServiceEntity
 
+Class to use for the Task CreateLinkedServiceTask to create a new Linked Service.
+
 <table>
  <tr>
   <th>Property Name</th>
