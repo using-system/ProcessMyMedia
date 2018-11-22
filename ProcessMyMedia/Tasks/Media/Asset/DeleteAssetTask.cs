@@ -52,7 +52,7 @@
         /// <returns></returns>
         protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            await this.mediaService.DeleteAssetAsync(this.AssetName);
+            await this.service.DeleteAssetAsync(this.AssetName);
 
             return ExecutionResult.Next();
         }

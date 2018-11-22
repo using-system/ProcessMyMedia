@@ -1,9 +1,9 @@
 ﻿namespace ProcessMyMedia.Model
 {
     /// <summary>
-    /// Media Configuration
+    /// Azure Configuration
     /// </summary>
-    public class WamsConfiguration
+    public class AzureConfiguration
     {
         /// <summary>
         /// Gets or sets the arm endpoint.
@@ -12,14 +12,6 @@
         /// The arm endpoint.
         /// </value>
         public string ArmEndpoint { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the media account.
-        /// </summary>
-        /// <value>
-        /// The name of the media account.
-        /// </value>
-        public string MediaAccountName { get; set; }
 
         /// <summary>
         /// Gets or sets the subscription identifier.

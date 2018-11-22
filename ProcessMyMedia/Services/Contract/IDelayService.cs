@@ -8,6 +8,6 @@
     /// <seealso cref="ProcessMyMedia.Services.Contract.IService" />
     public interface IDelayService : IService
     {
-        TimeSpan GetTimeToSleep(DateTime startDate);
+        TimeSpan GetTimeToSleep(DateTime? startDate);
     }
 }

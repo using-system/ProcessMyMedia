@@ -8,5 +8,6 @@
     /// <seealso cref="System.IDisposable" />
     public interface IService : IDisposable
     {
+
     }
 }

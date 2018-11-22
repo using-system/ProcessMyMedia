@@ -23,7 +23,7 @@
     /// <seealso cref="ProcessMyMedia.Services.Contract.IMediaService" />
     public class AzureMediaServiceV3 : Contract.IMediaService
     {
-        private WamsConfiguration configuration;
+        private AmsConfiguration configuration;
 
         private AzureMediaServicesClient client;
 
@@ -31,7 +31,7 @@
         /// Initializes a new instance of the <see cref="AzureMediaServiceV3"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
-        public AzureMediaServiceV3(WamsConfiguration configuration)
+        public AzureMediaServiceV3(AmsConfiguration configuration)
         {
             this.configuration = configuration;
         }

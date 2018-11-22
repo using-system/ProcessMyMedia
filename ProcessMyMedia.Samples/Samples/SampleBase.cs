@@ -26,7 +26,7 @@
             //setup dependency injection
             IServiceCollection services = new ServiceCollection();
 
-            services.AddMediaServices(configuration: new WamsConfiguration()
+            services.AddMediaServices(configuration: new AmsConfiguration()
             {
                 ArmEndpoint = "https://management.azure.com/",
                 SubscriptionId = this.configuration["MediaServices:SubscriptionId"],
@@ -35,6 +35,17 @@
                 AadTenantId = this.configuration["MediaServices:AadTenantId"],
                 AadClientId = this.configuration["MediaServices:AadClientId"],
                 AadSecret = this.configuration["MediaServices:AadSecret"]
+            });
+
+            services.AddDataFactoryServices(configuration: new AdfConfiguration()
+            {
+                ArmEndpoint = "https://management.azure.com/",
+                SubscriptionId = this.configuration["DataFactory:SubscriptionId"],
+                FactoryName = this.configuration["DataFactory:FactoryName"],
+                ResourceGroup = this.configuration["DataFactory:ResourceGroup"],
+                AadTenantId = this.configuration["DataFactory:AadTenantId"],
+                AadClientId = this.configuration["DataFactory:AadClientId"],
+                AadSecret = this.configuration["DataFactory:AadSecret"]
             });
 
             services.AddLogging(builder =>

@@ -67,7 +67,7 @@
         /// <returns></returns>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            await this.mediaService.DownloadFilesAsync(this.AssetName, this.DirectoryToDownload);
+            await this.service.DownloadFilesAsync(this.AssetName, this.DirectoryToDownload);
 
             return ExecutionResult.Next();
         }

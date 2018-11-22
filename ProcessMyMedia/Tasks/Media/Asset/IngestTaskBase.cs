@@ -87,11 +87,11 @@
         /// <returns></returns>
         protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            AssetEntity asset = await this.mediaService.CreateOrUpdateAssetAsync(this.AssetName,
+            AssetEntity asset = await this.service.CreateOrUpdateAssetAsync(this.AssetName,
                 this.AssetDescription,
                 this.StorageAccountName);
 
-            await this.mediaService.UploadFilesToAssetAsync(this.AssetName, this.AssetFiles, this.Metadata);
+            await this.service.UploadFilesToAssetAsync(this.AssetName, this.AssetFiles, this.Metadata);
 
             this.Output = new IngestTaskOutput()
             {
@@ -110,7 +110,7 @@
         {
             if (this.onError && !String.IsNullOrEmpty(this.AssetName))
             {
-                await this.mediaService.DeleteAssetAsync(this.AssetName);
+                await this.service.DeleteAssetAsync(this.AssetName);
             }
         }
 

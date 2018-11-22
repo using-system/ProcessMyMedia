@@ -8,11 +8,13 @@
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-    public abstract class TaskBase : StepBodyAsync, ITask
+    public abstract class TaskBase<TService> : StepBodyAsync, ITask where TService : Services.Contract.IAzureService
     {
         protected ILogger logger;
 
         protected bool onError;
+
+        protected TService service;
 
         /// <summary>
         /// Gets or sets a value indicating whether [cleanup resources].
@@ -25,9 +27,11 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="MediaTaskBase" /> class.
         /// </summary>
+        /// <param name="service">The service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public TaskBase(ILoggerFactory loggerFactory)
+        public TaskBase(TService service, ILoggerFactory loggerFactory)
         {
+            this.service = service;
             this.logger = loggerFactory.CreateLogger(this.GetType());
             this.CleanupResources = true;
             this.onError = false;
@@ -42,7 +46,7 @@
         {
             this.ValidateInput();
 
-            await this.Initialize(context);
+            await this.service.AuthAsync();
 
             try
             {
@@ -78,13 +82,6 @@
         protected abstract void ValidateInput();
 
         /// <summary>
-        /// Initializes the specified context.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        protected abstract Task Initialize(IStepExecutionContext context);
-
-        /// <summary>
         /// Runs the media task asynchronous.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -103,7 +100,7 @@
         /// </summary>
         public virtual void Dispose()
         {
-
+            this.service?.Dispose();
         }
     }
 }
