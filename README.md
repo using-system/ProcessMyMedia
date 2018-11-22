@@ -16,6 +16,7 @@ Contributors welcome !
 
 * [Asset Model](ProcessMyMedia/Model/Asset)
 * [Encoding Model](ProcessMyMedia/Model/Encoding)
+* [Data Factory Model](ProcessMyMedia/Model/Data)
 
 ### Samples
 
