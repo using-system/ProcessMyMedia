@@ -62,3 +62,5 @@ Class to use to specify Source and Destination for the task CopyTask.
   <td>Copy Properties. Example for FTP : recursive, preserveHierarchy. See samples section for more details.</td>
  </tr>
 </table>
+
+You can use instead the GenericDataPath class the Typed Path classes : FtpDataPath, AzureBlobDataPath... 
