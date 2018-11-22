@@ -23,6 +23,7 @@ Contributors welcome !
 
 * [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
 * [Encoding Samples](ProcessMyMedia.Samples/Samples/Encoding)
+* [Data Factory Samples](ProcessMyMedia.Samples/Samples/Data)
 
 ## License
 
