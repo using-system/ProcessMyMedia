@@ -34,3 +34,31 @@ Class to use for the Task CreateLinkedServiceTask to create a new Linked Service
 # GenericDataPath
 
 Class to use to specify Source and Destination for the task CopyTask.
+
+<table>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>LinkedServiceName </td>
+  <td>string</td>
+  <td>Name of the Azure linked service associated to the path</td>
+ </tr>
+ <tr>
+  <td>Type</td>
+  <td>DataPathType</td>
+  <td>Type of the data source. Possible values : Ftp, FileSystem, AzureBlobStorage. (more comming soon)</td>
+ </tr>
+ <tr>
+  <td>PathProperties</td>
+  <td>object</td>
+  <td>Source properties. Example for Ftp : folderPath, fileName. See samples section for more details.</td>
+ </tr>
+ <tr>
+  <td>ActivityProperties</td>
+  <td>object</td>
+  <td>Copy Properties. Example for FTP : recursive, preserveHierarchy. See samples section for more details.</td>
+ </tr>
+</table>
