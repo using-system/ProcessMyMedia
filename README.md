@@ -11,6 +11,7 @@ Contributors welcome !
 
 * [Asset Tasks](ProcessMyMedia/Tasks/Media/Asset)
 * [Encoding Tasks](ProcessMyMedia/Tasks/Media/Encoding)
+* [Data Factory Tasks](ProcessMyMedia/Tasks/Data)
 
 ### Model documentation
 
