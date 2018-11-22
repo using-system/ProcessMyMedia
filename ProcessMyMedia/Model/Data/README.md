@@ -32,3 +32,5 @@ Class to use for the Task CreateLinkedServiceTask to create a new Linked Service
 
 
 # GenericDataPath
+
+Class to use to specify Source and Destination for the task CopyTask.
