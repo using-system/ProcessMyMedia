@@ -26,7 +26,7 @@ Class to use for the Task CreateLinkedServiceTask to create a new Linked Service
  <tr>
   <td>TypeProperties</td>
   <td>object</td>
-  <td>The type properties are different for each data store or compute.</td>
+  <td>The type properties are different for each data store or compute. More details : https://docs.microsoft.com/en-us/rest/api/datafactory/linkedservices/createorupdate</td>
  </tr>
 </table>
 
