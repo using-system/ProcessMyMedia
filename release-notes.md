@@ -1,5 +1,5 @@
 # Release Notes
 
-## v1.0.0 - 11/22/2018
+## v1.0.0 - Not Deployed
 New features:
 - Encoding & Data Factory Tasks
