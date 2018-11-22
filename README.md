@@ -5,17 +5,19 @@ ProcessMyMedia lib is based on [Workflow Core](https://github.com/danielgerlag/w
 
 Contributors welcome !
 
-## Tasks documentation
+## Documentation
+
+### Tasks documentation
 
 * [Asset Tasks](ProcessMyMedia/Tasks/Media/Asset)
 * [Encoding Tasks](ProcessMyMedia/Tasks/Media/Encoding)
 
-## Model documentation
+### Model documentation
 
 * [Asset Model](ProcessMyMedia/Model/Asset)
 * [Encoding Model](ProcessMyMedia/Model/Encoding)
 
-## Samples
+### Samples
 
 * [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
 * [Encoding Samples](ProcessMyMedia.Samples/Samples/Encoding)
