@@ -72,7 +72,7 @@
 
             if (string.IsNullOrEmpty(this.SourcePath.LinkedServiceName))
             {
-                throw new ArgumentException($"{nameof(this.SourcePath.LinkedServiceName)} is required for the property {this.SourcePath}");
+                throw new ArgumentException($"{nameof(this.SourcePath.LinkedServiceName)} is required for the property {nameof(this.SourcePath)}");
             }
 
             if (this.DestinationPath == null)
@@ -82,7 +82,7 @@
 
             if (string.IsNullOrEmpty(this.DestinationPath.LinkedServiceName))
             {
-                throw new ArgumentException($"{nameof(this.DestinationPath.LinkedServiceName)} is required for the property {this.DestinationPath}");
+                throw new ArgumentException($"{nameof(this.DestinationPath.LinkedServiceName)} is required for the property {nameof(this.DestinationPath)}");
             }
         }
 
@@ -138,7 +138,8 @@
 
             this.Output.Run = await this.service.GetPipelineRunAsync(runID);
 
-            if (!this.Output.Run.IsFinished)
+            if (!this.Output.Run.IsFinished
+                || context.PersistenceData == null)
             {
                 return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(this.Output.Run.StartDate), this.Output);
             }

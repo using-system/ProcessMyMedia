@@ -92,7 +92,8 @@
         /// <returns></returns>
         public static JObject GetPathProperties(this Model.GenericDataPath source)
         {
-            if(source == null)
+            if(source == null
+               || source.PathProperties == null)
             {
                 return null;
             }
