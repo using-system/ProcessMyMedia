@@ -18,8 +18,12 @@
         /// <param name="assetName">Name of the asset.</param>
         /// <param name="assetDescription">The asset description.</param>
         /// <param name="storageAccountName">Name of the storage account.</param>
+        /// <param name="containerName">Name of the container.</param>
         /// <returns></returns>
-        Task<AssetEntity> CreateOrUpdateAssetAsync(string assetName, string assetDescription = "", string storageAccountName ="");
+        Task<AssetEntity> CreateOrUpdateAssetAsync(string assetName, 
+            string assetDescription = "", 
+            string storageAccountName ="",
+            string containerName = "");
 
         /// <summary>
         /// Uploads the files to asset.

@@ -1,25 +1,28 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
     using System;
-    using System.Collections.Generic;
     using System.Threading.Tasks;
+
+    using Microsoft.Extensions.Logging;
 
     using WorkflowCore.Interface;
     using WorkflowCore.Models;
 
-
-    using Microsoft.Extensions.Logging;
-
     using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
 
-
-    /// <summary>
-    /// Ingest Task
-    /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class IngestFilesTaskBase : MediaTaskBase<IngestTaskOutput>
+    public class IngestFromContainerTask : MediaTaskBase<IngestTaskOutput>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IngestFromContainerTask"/> class.
+        /// </summary>
+        /// <param name="mediaService">The media service.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
+        public IngestFromContainerTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        {
+
+        }
+
         /// <summary>
         /// Gets or sets the name of the asset.
         /// </summary>
@@ -37,14 +40,6 @@
         public string AssetDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets the asset path.
-        /// </summary>
-        /// <value>
-        /// The asset path.
-        /// </value>
-        protected List<string> AssetFiles { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the storage account.
         /// Optionnal. Default behavior : get the primary storage account associated to the media services account)
         /// </summary>
@@ -54,23 +49,12 @@
         public string StorageAccountName { get; set; }
 
         /// <summary>
-        /// Gets or sets the metadata.
+        /// Gets or sets the name of the container.
         /// </summary>
         /// <value>
-        /// The metadata.
+        /// The name of the container.
         /// </value>
-        public Dictionary<string, string> Metadata { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFilesTaskBase"/> class.
-        /// </summary>
-        /// <param name="mediaService">The media service.</param>
-        /// <param name="loggerFactory">The logger factory.</param>
-        public IngestFilesTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
-        {
-            this.AssetFiles = new List<string>();
-            this.Metadata = new Dictionary<string, string>();
-        }
+        public string ContainerName { get; set; }
 
         /// <summary>
         /// Validates the input.
@@ -82,6 +66,11 @@
             {
                 throw new ArgumentException($"{nameof(this.AssetName)} is required");
             }
+
+            if (string.IsNullOrEmpty(this.ContainerName))
+            {
+                throw new ArgumentException($"{nameof(this.ContainerName)} is required");
+            }
         }
 
         /// <summary>
@@ -89,17 +78,16 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
+        protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
             AssetEntity asset = await this.service.CreateOrUpdateAssetAsync(this.AssetName,
                 assetDescription: this.AssetDescription,
-                storageAccountName: this.StorageAccountName);
-
-            await this.service.UploadFilesToAssetAsync(this.AssetName, this.AssetFiles, this.Metadata);
+                storageAccountName: this.StorageAccountName,
+                containerName: this.ContainerName);
 
             this.Output = new IngestTaskOutput()
             {
-                Asset =  asset
+                Asset = asset
             };
 
             return ExecutionResult.Next();

@@ -56,7 +56,7 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns( () => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
@@ -96,7 +96,7 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
@@ -172,7 +172,7 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(
@@ -232,7 +232,7 @@
             };
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>()))
+                    It.Is<string>(s => s == workflowDatas.AssetName), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() => Task.FromResult(expected))
                 .Verifiable();
             this.mediaService.Setup(mock => mock.UploadFilesToAssetAsync(

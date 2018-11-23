@@ -92,7 +92,8 @@
         /// <returns></returns>
         public async Task<AssetEntity> CreateOrUpdateAssetAsync(string assetName, 
             string assetDescription = "",
-            string storageAccountName = "")
+            string storageAccountName = "",
+            string containerName = "")
         {
             if (this.client == null)
             {
@@ -103,8 +104,9 @@
             {
                 Asset assetParameters = new Asset()
                 {
+                    Description = assetDescription,
                     StorageAccountName = storageAccountName,
-                    Description = assetDescription
+                    Container = containerName
                 };
 
                 var asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName, assetParameters);
