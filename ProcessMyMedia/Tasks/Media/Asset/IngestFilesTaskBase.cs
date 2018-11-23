@@ -18,7 +18,7 @@
     /// Ingest Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class IngestTaskBase : MediaTaskBase<IngestTaskOutput>
+    public abstract class IngestFilesTaskBase : MediaTaskBase<IngestTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -62,11 +62,11 @@
         public Dictionary<string, string> Metadata { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestTaskBase"/> class.
+        /// Initializes a new instance of the <see cref="IngestFilesTaskBase"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public IngestTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public IngestFilesTaskBase(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
             this.AssetFiles = new List<string>();
             this.Metadata = new Dictionary<string, string>();

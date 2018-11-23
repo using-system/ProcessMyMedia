@@ -14,7 +14,7 @@
     /// <summary>
     /// Ingest Files Task 
     /// </summary>
-    public class IngestFilesTask : IngestTaskBase
+    public class IngestFilesTask : IngestFilesTaskBase
     {
         /// <summary>
         /// Gets or sets the asset files path.

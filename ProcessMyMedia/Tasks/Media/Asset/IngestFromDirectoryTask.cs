@@ -15,8 +15,8 @@
     /// <summary>
     /// Ingest From Directory Task
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.IngestTaskBase" />
-    public class IngestFromDirectoryTask : IngestTaskBase
+    /// <seealso cref="ProcessMyMedia.Tasks.IngestFilesTaskBase" />
+    public class IngestFromDirectoryTask : IngestFilesTaskBase
     {
         /// <summary>
         /// Gets or sets the asset directory path.

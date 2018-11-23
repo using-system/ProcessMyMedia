@@ -14,8 +14,8 @@ namespace ProcessMyMedia.Tasks
     /// <summary>
     /// Ingest File Task
     /// </summary>
-    /// <seealso cref="ProcessMyMedia.Tasks.IngestTaskBase" />
-    public class IngestFileTask : IngestTaskBase
+    /// <seealso cref="ProcessMyMedia.Tasks.IngestFilesTaskBase" />
+    public class IngestFileTask : IngestFilesTaskBase
     {
         /// <summary>
         /// Gets or sets the asset file path.
