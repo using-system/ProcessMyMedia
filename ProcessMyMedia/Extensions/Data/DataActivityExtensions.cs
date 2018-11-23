@@ -65,9 +65,43 @@
             {
                 case Model.DataPathType.AzureBlobStorage:
                     return "BlobSource";
-                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.FileServer:
                 case Model.DataPathType.Ftp:
+                case Model.DataPathType.AmazonS3:
+                case Model.DataPathType.Sftp:
                     return "FileSystemSource";
+                case Model.DataPathType.CosmosDb:
+                    return "DocumentDbCollectionSource";
+                case Model.DataPathType.AzureMySql:
+                    return "AzureMySqlSource";
+                case Model.DataPathType.AzurePostgreSql:
+                    return "AzurePostgreSqlSource";
+                case Model.DataPathType.AzureSqlDatabase:
+                case Model.DataPathType.SqlServer:
+                    return "SqlSource";
+                case Model.DataPathType.AzureTableStorage:
+                    return "AzureTableSource";
+                case Model.DataPathType.MongoDb:
+                    return "MongoDbSource";
+                case Model.DataPathType.Cassandra:
+                    return "CassandraSource";
+                case Model.DataPathType.Couchbase:
+                    return "CouchbaseSource";
+                case Model.DataPathType.Hdfs:
+                    return "HdfsSource";
+                case Model.DataPathType.HttpServer:
+                    return "HttpSource";
+                case Model.DataPathType.Odbc:
+                case Model.DataPathType.OData:
+                case Model.DataPathType.Sybase:
+                case Model.DataPathType.MySql:
+                case Model.DataPathType.PostgreSql:
+                case Model.DataPathType.Db2:
+                    return "RelationalSource";
+                case Model.DataPathType.Oracle:
+                    return "OracleSource";
+                case Model.DataPathType.Salesforce:
+                    return "SalesforceSource";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as source");
             }
@@ -86,9 +120,22 @@
             {
                 case Model.DataPathType.AzureBlobStorage:
                     return "BlobSink";
-                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.FileServer:
                 case Model.DataPathType.Ftp:
                     return "FileSystemSink";
+                case Model.DataPathType.CosmosDb:
+                    return "DocumentDbCollectionSink";
+                case Model.DataPathType.AzureSqlDatabase:
+                case Model.DataPathType.SqlServer:
+                    return "SqlSink";
+                case Model.DataPathType.AzureTableStorage:
+                    return "AzureTableSink";
+                case Model.DataPathType.Odbc:
+                    return "OdbcSink";
+                case Model.DataPathType.Oracle:
+                    return "OracleSink";
+                case Model.DataPathType.Salesforce:
+                    return "SalesforceSink";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as source");
             }

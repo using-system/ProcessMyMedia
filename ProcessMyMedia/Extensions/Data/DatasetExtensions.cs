@@ -59,9 +59,45 @@
             {
                 case Model.DataPathType.AzureBlobStorage:
                     return "AzureBlob";
-                case Model.DataPathType.FileSystem:
+                case Model.DataPathType.FileServer:
                 case Model.DataPathType.Ftp:
+                case Model.DataPathType.Sftp:
+                case Model.DataPathType.Hdfs:
                     return "FileShare";
+                case Model.DataPathType.CosmosDb:
+                    return "DocumentDbCollection";
+                case Model.DataPathType.AzureMySql:
+                    return "AzureMySqlTable";
+                case Model.DataPathType.AzureSqlDatabase:
+                    return "AzureSqlTable";
+                case Model.DataPathType.AzureTableStorage:
+                    return "AzureTable";
+                case Model.DataPathType.AzurePostgreSql:
+                    return "AzurePostgreSqlTable";
+                case Model.DataPathType.MongoDb:
+                    return "MongoDbCollection";
+                case Model.DataPathType.Cassandra:
+                    return "CassandraTable";
+                case Model.DataPathType.Couchbase:
+                    return "CouchbaseTable";
+                case Model.DataPathType.AmazonS3:
+                    return "AmazonS3Object";
+                case Model.DataPathType.HttpServer:
+                    return "HttpFile";
+                case Model.DataPathType.Odbc:
+                case Model.DataPathType.Sybase:
+                case Model.DataPathType.MySql:
+                case Model.DataPathType.PostgreSql:
+                case Model.DataPathType.Db2:
+                    return "RelationalTable";
+                case Model.DataPathType.OData:
+                    return "ODataResource";
+                case Model.DataPathType.SqlServer:
+                    return "SqlServerTable";
+                case Model.DataPathType.Oracle:
+                    return "OracleTable";
+                case Model.DataPathType.Salesforce:
+                    return "SalesforceObject";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as an Data Factory Dataset");
             }
