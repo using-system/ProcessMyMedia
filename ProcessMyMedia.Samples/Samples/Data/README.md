@@ -10,20 +10,15 @@
 	{
 		builder
 			.UseDefaultErrorBehavior(WorkflowCore.Models.WorkflowErrorHandling.Terminate)
-			.StartWith<Tasks.CreateLinkedServiceTask>()
-				.Input(task => task.LinkedServiceToCreate, data => data.FtpServer)
-			.Then<Tasks.CopyTask>()
+			.StartWith<Tasks.CopyTask>()
 				.Input(task => task.SourcePath, data => data.SourcePath)
 				.Input(task => task.DestinationPath, data => data.DestinationPath);
+				
 	}
 }
 
 public class CopyWithGenericPathWorkflowData
 {
-	public LinkedServiceEntity FtpServer { get; set; }
-
-	public LinkedServiceEntity AzureStorageResource { get; set; }
-
 	public DataPath SourcePath { get; set; }
 
 	public DataPath DestinationPath { get; set; }
@@ -31,37 +26,6 @@ public class CopyWithGenericPathWorkflowData
 
 var datas = new CopyWithGenericPathWorkflowData()
 {
-	FtpServer = new LinkedServiceEntity()
-	{
-		Name = "MyFtpServer",
-		Type = "FtpServer",
-		TypeProperties = new
-		{
-			host = "localhost",
-			port = 21,
-			enableSsl = false,
-			authenticationType = "Basic",
-			username = "user",
-			password = new
-			{
-				type = "SecureString",
-				value = "password"
-			}
-		}
-	},
-	AzureStorageResource = new LinkedServiceEntity()
-	{
-		Name = "MyAzureStorage",
-		Type = "AzureBlobStorage",
-		TypeProperties = new
-		{
-			connectionString = new
-			{
-				type = "SecureString",
-				value = this.configuration["SamplesConfig:StorageConnectionString"]
-			}
-		}
-	},
 	SourcePath = new GenericDataPath()
 	{
 		LinkedServiceName = "MyFtpServer",
