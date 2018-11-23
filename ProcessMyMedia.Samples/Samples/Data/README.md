@@ -4,7 +4,7 @@
 
 
 ```c#
- public class CopyWithGenericPathWorkflow : IWorkflow<CopyWithGenericPathWorkflowData>
+public class CopyWithGenericPathWorkflow : IWorkflow<CopyWithGenericPathWorkflowData>
 {
 	public void Build(IWorkflowBuilder<CopyWithGenericPathWorkflowData> builder)
 	{
