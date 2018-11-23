@@ -1,7 +1,7 @@
 ﻿namespace ProcessMyMedia.Model
 {
     /// <summary>
-    /// Ftp Data Path
+    /// FtpServer Data Path
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Model.FileSystemDataPath" />
     public class FtpDataPath : FileSystemDataPath
@@ -10,9 +10,9 @@
         /// Gets the type of the data.
         /// </summary>
         /// <returns></returns>
-        public override DataPathType GetDataType()
+        public override LinkedServiceType GetServiceType()
         {
-            return DataPathType.Ftp;
+            return LinkedServiceType.FtpServer;
         }
     }
 }

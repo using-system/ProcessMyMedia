@@ -8,13 +8,13 @@
         /// <value>
         /// The type.
         /// </value>
-        public DataPathType Type { get; set; }
+        public LinkedServiceType Type { get; set; }
 
         /// <summary>
         /// Gets the type of the data.
         /// </summary>
         /// <returns></returns>
-        public override DataPathType GetDataType()
+        public override LinkedServiceType GetServiceType()
         {
             return this.Type;
         }

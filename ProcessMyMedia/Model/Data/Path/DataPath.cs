@@ -9,7 +9,7 @@
         /// Gets the type of the data.
         /// </summary>
         /// <returns></returns>
-        public abstract DataPathType GetDataType();
+        public abstract LinkedServiceType GetServiceType();
 
         /// <summary>
         /// Gets or sets the name of the linked service.

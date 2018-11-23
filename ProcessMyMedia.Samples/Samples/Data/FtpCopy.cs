@@ -19,7 +19,7 @@
             FtpServer = new LinkedServiceEntity()
             {
                 Name = "MyFtpServer",
-                Type = "FtpServer",
+                Type = LinkedServiceType.FtpServer.ToString(),
                 TypeProperties = new
                 {
                     host = "localhost",

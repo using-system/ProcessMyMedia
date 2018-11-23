@@ -59,48 +59,48 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException">DataPathType {source}</exception>
-        public static string ToSourceType(this Model.DataPathType source)
+        public static string ToSourceType(this Model.LinkedServiceType source)
         {
             switch (source)
             {
-                case Model.DataPathType.AzureBlobStorage:
+                case Model.LinkedServiceType.AzureBlobStorage:
                     return "BlobSource";
-                case Model.DataPathType.FileServer:
-                case Model.DataPathType.Ftp:
-                case Model.DataPathType.AmazonS3:
-                case Model.DataPathType.Sftp:
+                case Model.LinkedServiceType.FileServer:
+                case Model.LinkedServiceType.FtpServer:
+                case Model.LinkedServiceType.AmazonS3:
+                case Model.LinkedServiceType.Sftp:
                     return "FileSystemSource";
-                case Model.DataPathType.CosmosDb:
+                case Model.LinkedServiceType.CosmosDb:
                     return "DocumentDbCollectionSource";
-                case Model.DataPathType.AzureMySql:
+                case Model.LinkedServiceType.AzureMySql:
                     return "AzureMySqlSource";
-                case Model.DataPathType.AzurePostgreSql:
+                case Model.LinkedServiceType.AzurePostgreSql:
                     return "AzurePostgreSqlSource";
-                case Model.DataPathType.AzureSqlDatabase:
-                case Model.DataPathType.SqlServer:
+                case Model.LinkedServiceType.AzureSqlDatabase:
+                case Model.LinkedServiceType.SqlServer:
                     return "SqlSource";
-                case Model.DataPathType.AzureTableStorage:
+                case Model.LinkedServiceType.AzureTableStorage:
                     return "AzureTableSource";
-                case Model.DataPathType.MongoDb:
+                case Model.LinkedServiceType.MongoDb:
                     return "MongoDbSource";
-                case Model.DataPathType.Cassandra:
+                case Model.LinkedServiceType.Cassandra:
                     return "CassandraSource";
-                case Model.DataPathType.Couchbase:
+                case Model.LinkedServiceType.Couchbase:
                     return "CouchbaseSource";
-                case Model.DataPathType.Hdfs:
+                case Model.LinkedServiceType.Hdfs:
                     return "HdfsSource";
-                case Model.DataPathType.HttpServer:
+                case Model.LinkedServiceType.HttpServer:
                     return "HttpSource";
-                case Model.DataPathType.Odbc:
-                case Model.DataPathType.OData:
-                case Model.DataPathType.Sybase:
-                case Model.DataPathType.MySql:
-                case Model.DataPathType.PostgreSql:
-                case Model.DataPathType.Db2:
+                case Model.LinkedServiceType.Odbc:
+                case Model.LinkedServiceType.OData:
+                case Model.LinkedServiceType.Sybase:
+                case Model.LinkedServiceType.MySql:
+                case Model.LinkedServiceType.PostgreSql:
+                case Model.LinkedServiceType.Db2:
                     return "RelationalSource";
-                case Model.DataPathType.Oracle:
+                case Model.LinkedServiceType.Oracle:
                     return "OracleSource";
-                case Model.DataPathType.Salesforce:
+                case Model.LinkedServiceType.Salesforce:
                     return "SalesforceSource";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as source");
@@ -114,27 +114,27 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException">DataPathType {source}</exception>
-        public static string ToSinkType(this Model.DataPathType source)
+        public static string ToSinkType(this Model.LinkedServiceType source)
         {
             switch (source)
             {
-                case Model.DataPathType.AzureBlobStorage:
+                case Model.LinkedServiceType.AzureBlobStorage:
                     return "BlobSink";
-                case Model.DataPathType.FileServer:
-                case Model.DataPathType.Ftp:
+                case Model.LinkedServiceType.FileServer:
+                case Model.LinkedServiceType.FtpServer:
                     return "FileSystemSink";
-                case Model.DataPathType.CosmosDb:
+                case Model.LinkedServiceType.CosmosDb:
                     return "DocumentDbCollectionSink";
-                case Model.DataPathType.AzureSqlDatabase:
-                case Model.DataPathType.SqlServer:
+                case Model.LinkedServiceType.AzureSqlDatabase:
+                case Model.LinkedServiceType.SqlServer:
                     return "SqlSink";
-                case Model.DataPathType.AzureTableStorage:
+                case Model.LinkedServiceType.AzureTableStorage:
                     return "AzureTableSink";
-                case Model.DataPathType.Odbc:
+                case Model.LinkedServiceType.Odbc:
                     return "OdbcSink";
-                case Model.DataPathType.Oracle:
+                case Model.LinkedServiceType.Oracle:
                     return "OracleSink";
-                case Model.DataPathType.Salesforce:
+                case Model.LinkedServiceType.Salesforce:
                     return "SalesforceSink";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as source");
@@ -174,14 +174,14 @@
 
 
             JObject sourceProperties = new JObject();
-            sourceProperties.Add(new JProperty("type", source.Source.GetDataType().ToSourceType()));
+            sourceProperties.Add(new JProperty("type", source.Source.GetServiceType().ToSourceType()));
             foreach (var property in source.Source.GetActivityProperties())
             {
                 sourceProperties.Add(property);
             }
 
             JObject destinationProperties = new JObject();
-            destinationProperties.Add(new JProperty("type", source.Destination.GetDataType().ToSinkType()));
+            destinationProperties.Add(new JProperty("type", source.Destination.GetServiceType().ToSinkType()));
             foreach (var property in source.Destination.GetActivityProperties())
             {
                 destinationProperties.Add(property);

@@ -19,7 +19,7 @@
             AzureStorageResource = new LinkedServiceEntity()
             {
                 Name = "MyAzureStorage",
-                Type = "AzureBlobStorage",
+                Type = LinkedServiceType.AzureBlobStorage.ToString(),
                 TypeProperties = new
                 {
                     connectionString = new

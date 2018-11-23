@@ -19,7 +19,7 @@
             FtpServer = new LinkedServiceEntity()
             {
                 Name = "MyFtpServer",
-                Type = "FtpServer",
+                Type = LinkedServiceType.FtpServer.ToString(),
                 TypeProperties = new
                 {
                     host = "localhost",
@@ -37,7 +37,7 @@
             AzureStorageResource = new LinkedServiceEntity()
             {
                 Name = "MyAzureStorage",
-                Type = "AzureBlobStorage",
+                Type = LinkedServiceType.AzureBlobStorage.ToString(),
                 TypeProperties = new
                 {
                     connectionString = new
@@ -50,7 +50,7 @@
             SourcePath = new GenericDataPath()
             {
                 LinkedServiceName = "MyFtpServer",
-                Type = DataPathType.Ftp,
+                Type = LinkedServiceType.FtpServer,
                 PathProperties = new
                 {
                     folderPath = "in",
@@ -64,7 +64,7 @@
             DestinationPath = new GenericDataPath()
             {
                 LinkedServiceName = "MyAzureStorage",
-                Type = DataPathType.AzureBlobStorage,
+                Type = LinkedServiceType.AzureBlobStorage,
                 PathProperties = new
                 {
                     folderPath = "outfolder"

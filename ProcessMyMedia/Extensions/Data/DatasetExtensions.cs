@@ -42,7 +42,7 @@
             {
                 Name = Guid.NewGuid().ToString(),
                 LinkedServiceName = source.LinkedServiceName,
-                Type = source.GetDataType().ToDatasetType(),
+                Type = source.GetServiceType().ToDatasetType(),
                 TypeProperties = source.GetPathProperties()
             };
         }
@@ -53,50 +53,50 @@
         /// <param name="source">The source.</param>
         /// <returns></returns>
         /// <exception cref="NotImplementedException">DataPathType {source}</exception>
-        public static string ToDatasetType(this Model.DataPathType source)
+        public static string ToDatasetType(this Model.LinkedServiceType source)
         {
             switch (source)
             {
-                case Model.DataPathType.AzureBlobStorage:
+                case Model.LinkedServiceType.AzureBlobStorage:
                     return "AzureBlob";
-                case Model.DataPathType.FileServer:
-                case Model.DataPathType.Ftp:
-                case Model.DataPathType.Sftp:
-                case Model.DataPathType.Hdfs:
+                case Model.LinkedServiceType.FileServer:
+                case Model.LinkedServiceType.FtpServer:
+                case Model.LinkedServiceType.Sftp:
+                case Model.LinkedServiceType.Hdfs:
                     return "FileShare";
-                case Model.DataPathType.CosmosDb:
+                case Model.LinkedServiceType.CosmosDb:
                     return "DocumentDbCollection";
-                case Model.DataPathType.AzureMySql:
+                case Model.LinkedServiceType.AzureMySql:
                     return "AzureMySqlTable";
-                case Model.DataPathType.AzureSqlDatabase:
+                case Model.LinkedServiceType.AzureSqlDatabase:
                     return "AzureSqlTable";
-                case Model.DataPathType.AzureTableStorage:
+                case Model.LinkedServiceType.AzureTableStorage:
                     return "AzureTable";
-                case Model.DataPathType.AzurePostgreSql:
+                case Model.LinkedServiceType.AzurePostgreSql:
                     return "AzurePostgreSqlTable";
-                case Model.DataPathType.MongoDb:
+                case Model.LinkedServiceType.MongoDb:
                     return "MongoDbCollection";
-                case Model.DataPathType.Cassandra:
+                case Model.LinkedServiceType.Cassandra:
                     return "CassandraTable";
-                case Model.DataPathType.Couchbase:
+                case Model.LinkedServiceType.Couchbase:
                     return "CouchbaseTable";
-                case Model.DataPathType.AmazonS3:
+                case Model.LinkedServiceType.AmazonS3:
                     return "AmazonS3Object";
-                case Model.DataPathType.HttpServer:
+                case Model.LinkedServiceType.HttpServer:
                     return "HttpFile";
-                case Model.DataPathType.Odbc:
-                case Model.DataPathType.Sybase:
-                case Model.DataPathType.MySql:
-                case Model.DataPathType.PostgreSql:
-                case Model.DataPathType.Db2:
+                case Model.LinkedServiceType.Odbc:
+                case Model.LinkedServiceType.Sybase:
+                case Model.LinkedServiceType.MySql:
+                case Model.LinkedServiceType.PostgreSql:
+                case Model.LinkedServiceType.Db2:
                     return "RelationalTable";
-                case Model.DataPathType.OData:
+                case Model.LinkedServiceType.OData:
                     return "ODataResource";
-                case Model.DataPathType.SqlServer:
+                case Model.LinkedServiceType.SqlServer:
                     return "SqlServerTable";
-                case Model.DataPathType.Oracle:
+                case Model.LinkedServiceType.Oracle:
                     return "OracleTable";
-                case Model.DataPathType.Salesforce:
+                case Model.LinkedServiceType.Salesforce:
                     return "SalesforceObject";
                 default:
                     throw new NotImplementedException($"DataPathType {source} is not supported as an Data Factory Dataset");

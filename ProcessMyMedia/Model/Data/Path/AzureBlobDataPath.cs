@@ -6,9 +6,9 @@
     /// <seealso cref="ProcessMyMedia.Model.FileSystemDataPath" />
     public class AzureBlobDataPath : FileSystemDataPath
     {
-        public override DataPathType GetDataType()
+        public override LinkedServiceType GetServiceType()
         {
-            return DataPathType.AzureBlobStorage;
+            return LinkedServiceType.AzureBlobStorage;
         }
     }
 }

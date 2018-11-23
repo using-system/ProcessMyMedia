@@ -4,13 +4,13 @@
     /// Data Path Type
     /// https://docs.microsoft.com/en-us/azure/data-factory/copy-activity-overview##supported-data-stores-and-formats
     /// </summary>
-    public enum DataPathType
+    public enum LinkedServiceType
     {
         /// <summary>
         /// The FTP
         /// https://docs.microsoft.com/en-us/azure/data-factory/connector-ftp
         /// </summary>
-        Ftp,
+        FtpServer,
         /// <summary>
         /// The file system
         /// </summary>
