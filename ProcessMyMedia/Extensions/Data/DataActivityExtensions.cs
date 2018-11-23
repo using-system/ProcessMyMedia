@@ -137,7 +137,7 @@
                 case Model.LinkedServiceType.Salesforce:
                     return "SalesforceSink";
                 default:
-                    throw new NotImplementedException($"DataPathType {source} is not supported as source");
+                    throw new NotImplementedException($"DataPathType {source} is not supported as sink");
             }
         }
 
