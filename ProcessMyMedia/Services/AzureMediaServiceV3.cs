@@ -90,10 +90,10 @@
         /// <param name="assetDescription">The asset description.</param>
         /// <param name="storageAccountName">Name of the storage account.</param>
         /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
         public async Task<AssetEntity> CreateOrUpdateAssetAsync(string assetName, 
             string assetDescription = "",
-            string storageAccountName = "",
-            string containerName = "")
+            string storageAccountName = "")
         {
             if (this.client == null)
             {
@@ -105,8 +105,7 @@
                 Asset assetParameters = new Asset()
                 {
                     Description = assetDescription,
-                    StorageAccountName = storageAccountName,
-                    Container = containerName
+                    StorageAccountName = storageAccountName
                 };
 
                 var asset = await client.Assets.CreateOrUpdateAsync(this.configuration.ResourceGroup, this.configuration.MediaAccountName, assetName, assetParameters);

@@ -202,8 +202,8 @@
             string inputAssetName = null;
 
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns<string, string, string, string>((assetName, assetDescription, storageAccountName, containerName) =>
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns<string, string, string>((assetName, assetDescription, storageAccountName) =>
                 {
                     inputAssetName = assetName;
                     expected.Inputs.Add(new JobInputEntity() { Name = inputAssetName });

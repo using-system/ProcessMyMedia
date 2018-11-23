@@ -17,7 +17,6 @@
         protected override IngestFromContainerWorkflowData WorflowDatas => new IngestFromContainerWorkflowData()
         {
             AssetName = "4e1fe20b-a06c-4431-8a74-7f570a151bb7",
-            ContainerName = "4e1fe20b-a06c-4431-8a74-7f570a151bb7",
             DirectoryToDownload = Path.Combine(Directory.GetCurrentDirectory(), "output/", Guid.NewGuid().ToString()),
         };
 
@@ -30,9 +29,8 @@
             public void Build(IWorkflowBuilder<IngestFromContainerWorkflowData> builder)
             {
                 builder
-                    .StartWith<Tasks.IngestFromContainerTask>()
+                    .StartWith<Tasks.IngestTask>()
                         .Input(task => task.AssetName, data => data.AssetName)
-                        .Input(task => task.ContainerName, data => data.AssetName)
                     .Then<Tasks.DownloadAssetTask>()
                         .Input(task => task.AssetName, data => data.AssetName)
                         .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload);
@@ -42,8 +40,6 @@
         public class IngestFromContainerWorkflowData
         {
             public string AssetName { get; set; }
-
-            public string ContainerName { get; set; }
 
             public string DirectoryToDownload { get; set; }
         }

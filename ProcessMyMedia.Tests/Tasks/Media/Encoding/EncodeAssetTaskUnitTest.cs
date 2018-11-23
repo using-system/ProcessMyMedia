@@ -157,7 +157,7 @@
         private void MockIngestTask(string assetName)
         {
             this.mediaService.Setup(mock => mock.CreateOrUpdateAssetAsync(
-                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+                    It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(() =>
                 {
                     return Task.FromResult(new AssetEntity() { Name = assetName });

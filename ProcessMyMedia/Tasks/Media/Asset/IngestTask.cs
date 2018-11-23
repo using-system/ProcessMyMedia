@@ -11,14 +11,14 @@
     using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
 
-    public class IngestFromContainerTask : MediaTaskBase<IngestTaskOutput>
+    public class IngestTask : MediaTaskBase<IngestTaskOutput>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="IngestFromContainerTask"/> class.
+        /// Initializes a new instance of the <see cref="IngestTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public IngestFromContainerTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
+        public IngestTask(IMediaService mediaService, ILoggerFactory loggerFactory) : base(mediaService, loggerFactory)
         {
 
         }
@@ -49,14 +49,6 @@
         public string StorageAccountName { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the container.
-        /// </summary>
-        /// <value>
-        /// The name of the container.
-        /// </value>
-        public string ContainerName { get; set; }
-
-        /// <summary>
         /// Validates the input.
         /// </summary>
         /// <exception cref="ArgumentException"></exception>
@@ -65,11 +57,6 @@
             if (string.IsNullOrEmpty(this.AssetName))
             {
                 throw new ArgumentException($"{nameof(this.AssetName)} is required");
-            }
-
-            if (string.IsNullOrEmpty(this.ContainerName))
-            {
-                throw new ArgumentException($"{nameof(this.ContainerName)} is required");
             }
         }
 
@@ -82,8 +69,7 @@
         {
             AssetEntity asset = await this.service.CreateOrUpdateAssetAsync(this.AssetName,
                 assetDescription: this.AssetDescription,
-                storageAccountName: this.StorageAccountName,
-                containerName: this.ContainerName);
+                storageAccountName: this.StorageAccountName);
 
             this.Output = new IngestTaskOutput()
             {
