@@ -29,7 +29,7 @@ var datas = new CopyWithGenericPathWorkflowData()
 	SourcePath = new GenericDataPath()
 	{
 		LinkedServiceName = "MyFtpServer",
-		Type = DataPathType.Ftp,
+		Type = LinkedServiceType.FtpServer,
 		PathProperties = new
 		{
 			folderPath = "in",
@@ -43,7 +43,7 @@ var datas = new CopyWithGenericPathWorkflowData()
 	DestinationPath = new GenericDataPath()
 	{
 		LinkedServiceName = "MyAzureStorage",
-		Type = DataPathType.AzureBlobStorage,
+		Type = LinkedServiceType.AzureBlobStorage,
 		PathProperties = new
 		{
 			folderPath = "outfolder"

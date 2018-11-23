@@ -48,13 +48,13 @@ Class to use to specify Source and Destination for the task CopyTask.
  </tr>
  <tr>
   <td>Type</td>
-  <td>DataPathType</td>
-  <td>Type of the data source. Possible values : Ftp, FileSystem, AzureBlobStorage. (more comming soon)</td>
+  <td>LinkedServiceType</td>
+  <td>Type of the data source. Possible values : FtpServer, FileServer, AzureBlobStorage, CosmosDb, AzureMySql, AzurePostgreSql, AzureSqlDatabase, AzureTableStorage, MongoDb, Cassandra, Couchbase, AmazonS3, Sftp, Hdfs, HttpServer, Odbc, OData, SqlServer, Sybase, MySql, PostgreSql, Oracle,Db2, Salesforce.</td>
  </tr>
  <tr>
   <td>PathProperties</td>
   <td>object</td>
-  <td>Source properties. Example for Ftp : folderPath, fileName. See samples section for more details.</td>
+  <td>Source/Sink properties. Example for Ftp : folderPath, fileName. See samples section for more details.</td>
  </tr>
  <tr>
   <td>ActivityProperties</td>
