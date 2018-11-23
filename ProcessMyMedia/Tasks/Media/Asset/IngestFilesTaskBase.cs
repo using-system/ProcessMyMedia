@@ -10,7 +10,6 @@
 
     using Microsoft.Extensions.Logging;
 
-    using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
 
 
@@ -18,24 +17,8 @@
     /// Ingest Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public abstract class IngestFilesTaskBase : MediaTaskBase<IngestTaskOutput>
+    public abstract class IngestFilesTaskBase : IngestTask
     {
-        /// <summary>
-        /// Gets or sets the name of the asset.
-        /// </summary>
-        /// <value>
-        /// The name of the asset.
-        /// </value>
-        public string AssetName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the asset description. (Optionnal)
-        /// </summary>
-        /// <value>
-        /// The asset description.
-        /// </value>
-        public string AssetDescription { get; set; }
-
         /// <summary>
         /// Gets or sets the asset path.
         /// </summary>
@@ -43,15 +26,6 @@
         /// The asset path.
         /// </value>
         protected List<string> AssetFiles { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the storage account.
-        /// Optionnal. Default behavior : get the primary storage account associated to the media services account)
-        /// </summary>
-        /// <value>
-        /// The name of the storage account.
-        /// </value>
-        public string StorageAccountName { get; set; }
 
         /// <summary>
         /// Gets or sets the metadata.
@@ -91,16 +65,9 @@
         /// <returns></returns>
         protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            AssetEntity asset = await this.service.CreateOrUpdateAssetAsync(this.AssetName,
-                assetDescription: this.AssetDescription,
-                storageAccountName: this.StorageAccountName);
+            await base.RunTaskAsync(context);
 
             await this.service.UploadFilesToAssetAsync(this.AssetName, this.AssetFiles, this.Metadata);
-
-            this.Output = new IngestTaskOutput()
-            {
-                Asset =  asset
-            };
 
             return ExecutionResult.Next();
         }
