@@ -21,7 +21,7 @@ steps:
     testResultsFiles: '**/*.trx'
     buildConfiguration: $(buildConfiguration)
     publishRunAttachments: true
-- script: dotnet pack 'ProcessMyMedia/ProcessMyMedia.csproj' /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration) --output 'out/package'
+- script: dotnet pack 'ProcessMyMedia/ProcessMyMedia.csproj' /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration) /p:NuspecFile='ProcessMyMedia/ProcessMyMedia.nuspec' --output 'out/package'
   displayName: 'Pack'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifact'
