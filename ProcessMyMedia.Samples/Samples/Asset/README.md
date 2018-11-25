@@ -37,7 +37,7 @@ The asset name must be the same than the container name.
 
 ```c#
 
- public class IngestFromContainerWorkflow : IWorkflow<IngestFromContainerWorkflowData>
+public class IngestFromContainerWorkflow : IWorkflow<IngestFromContainerWorkflowData>
 {
 	public void Build(IWorkflowBuilder<IngestFromContainerWorkflowData> builder)
 	{
