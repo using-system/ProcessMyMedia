@@ -62,9 +62,9 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected async override Task Cleanup(IStepExecutionContext context)
+        protected override Task Cleanup(IStepExecutionContext context)
         {
-
+            return Task.CompletedTask;
         }
     }
 }
