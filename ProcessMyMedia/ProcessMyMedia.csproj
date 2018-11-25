@@ -3,7 +3,18 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;CodeCoverage</Configurations>
-    <NuspecFile>../ProcessMyMedia.nuspec</NuspecFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>Process My Media</Authors>
+    <Product>Process My Media</Product>
+    <Copyright>Copyright Process My Media</Copyright>
+    <PackageProjectUrl>https://github.com/using-system/ProcessMyMedia</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/using-system/ProcessMyMedia</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseUrl>https://github.com/using-system/ProcessMyMedia/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>Build your Azure Media Services workflow (V3 API version) and Azure Data Factory (V2 API version) in .NET Core.</Description>
+    <PackageTags>azure azure-media-services dotnet-core dotnet-core2 azure-storage azure-data-factory</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CodeCoverage|AnyCPU'">
