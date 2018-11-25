@@ -186,6 +186,53 @@ Create a new asset and upload the files presents in a directory
  </tr>
 </table>
 
+## IngestTask
+
+Ingest task wich create a new asset with an container already presents in the Media Services storage account.
+The asset name must be the same than the container name.
+
+<table>
+ <caption>Input</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+  <th>Is Required ?</th>
+ </tr>
+ <tr>
+  <td>AssetName</td>
+  <td>string</td>
+  <td>The asset name to create.</td>
+  <td>Yes</td>
+ </tr>
+ <tr>
+  <td>AssetDescription</td>
+  <td>string</td>
+  <td>Specify an asset description.</td>
+  <td>No</td>
+ </tr>
+ <tr>
+  <td>StorageAccountName</td>
+  <td>string</td>
+  <td>If not specified, the task upload the file into the primary storage account associated to the Media Services account</td>
+  <td>No</td>
+ </tr>
+</table>
+
+<table>
+ <caption>Output</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Asset</td>
+  <td>AssetEntity</td>
+  <td>The asset created or updated by the task</td>
+ </tr>
+</table>
+
 ## DownloadAssetTask
 
 Download asset to a local directory

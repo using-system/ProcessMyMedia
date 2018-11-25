@@ -28,3 +28,33 @@ public class IngestFromDirectoryWorkflowData
   
   public Guid AssetID { get; set; }
 }
+```
+
+## Ingest from container
+
+In this sample, we ingest an asset which have already a container associated to the Media Services storage account. 
+The asset name must be the same than the container name.
+
+```c#
+
+ public class IngestFromContainerWorkflow : IWorkflow<IngestFromContainerWorkflowData>
+{
+	public void Build(IWorkflowBuilder<IngestFromContainerWorkflowData> builder)
+	{
+		builder
+		.StartWith<Tasks.IngestTask>()
+			.Input(task => task.AssetName, data => data.AssetName)
+		.Then<Tasks.DownloadAssetTask>()
+			.Input(task => task.AssetName, data => data.AssetName)
+			.Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload);
+	}
+}
+
+ public class IngestFromContainerWorkflowData
+{
+	public string AssetName { get; set; }
+
+	public string DirectoryToDownload { get; set; }
+}
+
+```
