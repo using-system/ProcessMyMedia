@@ -5,6 +5,10 @@ ProcessMyMedia lib is based on [Workflow Core](https://github.com/danielgerlag/w
 
 Contributors welcome !
 
+## Installation
+
+Install-Package ProcessMyMedia -Version 1.0.0.56
+
 ## Documentation
 
 ### Tasks documentation
