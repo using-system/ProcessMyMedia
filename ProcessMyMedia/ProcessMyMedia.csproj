@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;CodeCoverage</Configurations>
+    <NuspecFile>../ProcessMyMedia.nuspec</NuspecFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CodeCoverage|AnyCPU'">
