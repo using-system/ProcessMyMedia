@@ -15,6 +15,7 @@ Install-Package ProcessMyMedia -Version 1.0.0.56
 
 * [Asset Tasks](ProcessMyMedia/Tasks/Media/Asset)
 * [Encoding Tasks](ProcessMyMedia/Tasks/Media/Encoding)
+* [Analyzing Tasks](ProcessMyMedia/Tasks/Media/Analyzing)
 * [Data Factory Tasks](ProcessMyMedia/Tasks/Data)
 
 ### Model documentation
@@ -27,6 +28,7 @@ Install-Package ProcessMyMedia -Version 1.0.0.56
 
 * [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
 * [Encoding Samples](ProcessMyMedia.Samples/Samples/Encoding)
+* [Analyzing Samples](ProcessMyMedia.Samples/Samples/Analyzing)
 * [Data Factory Samples](ProcessMyMedia.Samples/Samples/Data)
 
 ## License
