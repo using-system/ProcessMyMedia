@@ -42,9 +42,11 @@
                         .Input(task => task.AssetName, data => data.InputAssetName)
                     .If(data => !string.IsNullOrEmpty(data.OutputAssetName))
                     .Do(then =>
+                        //Get the analysing result
                         then.StartWith<Tasks.DownloadAssetTask>()
                             .Input(task => task.AssetName, data => data.OutputAssetName)
                             .Input(task => task.DirectoryToDownload, data => data.DirectoryToDownload)
+                        //Delete output asset (analysing result)
                         .Then< Tasks.DeleteAssetTask>()
                             .Input(task => task.AssetName, data => data.OutputAssetName));
             }

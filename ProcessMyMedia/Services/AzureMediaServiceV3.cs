@@ -281,7 +281,7 @@
 
             try
             {
-                AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync($"{assetName}{Guid.NewGuid()}",
+                AssetEntity outputAsset = await this.CreateOrUpdateAssetAsync(Guid.NewGuid().ToString(),
                     assetDescription: $"Media Analysing for {assetName}");
 
                 TransformOutput[] outputs = new TransformOutput[]
@@ -319,7 +319,7 @@
         /// </summary>
         /// <param name="job">The job associated to the analyse.</param>
         /// <returns></returns>
-        public async Task<AnalyzingResult> EndAnalyseAsync(JobEntity job)
+        public Task<AnalyzingResult> EndAnalyseAsync(JobEntity job)
         {
             var result = new AnalyzingResult();
 
@@ -330,27 +330,15 @@
 
             try
             {
-                string workingDirectory = Path.Combine(Path.GetTempPath(), "Analysing", job.Name);
-
-                if (job.Outputs.Count() > 0)
+                return Task.FromResult(new AnalyzingResult()
                 {
-                    var assetToDownload = job.Outputs.First();
-                    await this.DownloadFilesAsync(assetToDownload.Name, workingDirectory);
-                    result.OutputAssetName = assetToDownload.Name;
-                }
-
-                //TODO:analyse result
-
-                Directory.Delete(workingDirectory, true);
-
-                return result;
+                    OutputAssetName = job.Outputs.First().Name
+                });
             }
             catch (ApiErrorException exc)
             {
                 throw GetApiException(exc);
             }
-
-
         }
 
         /// <summary>
