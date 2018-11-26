@@ -9,6 +9,7 @@
     using ProcessMyMedia.Services;
     using ProcessMyMedia.Services.Contract;
     using ProcessMyMedia.Tasks;
+    using WorkflowCore.Models;
 
     /// <summary>
     /// Middleware Extensions
@@ -20,13 +21,16 @@
         /// </summary>
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
+        /// <param name="workflowOptions">The workflow options.</param>
         /// <returns></returns>
-        public static IServiceCollection AddMediaServices(this IServiceCollection services, AmsConfiguration configuration = null)
+        public static IServiceCollection AddMediaServices(this IServiceCollection services,
+            AmsConfiguration configuration = null,
+            Action<WorkflowOptions> workflowOptions = null)
         {
-            services.AddWorkflowServices();
+            services.AddWorkflowServices(workflowOptions);
 
             services.AddMediaTasks();
-            
+
             services.AddTransient<IMediaService, AzureMediaServiceV3>();
 
             if (configuration != null)
@@ -42,10 +46,13 @@
         /// </summary>
         /// <param name="services">The services.</param>
         /// <param name="configuration">The configuration.</param>
+        /// <param name="workflowOptions">The workflow options.</param>
         /// <returns></returns>
-        public static IServiceCollection AddDataFactoryServices(this IServiceCollection services, AdfConfiguration configuration = null)
+        public static IServiceCollection AddDataFactoryServices(this IServiceCollection services, 
+            AdfConfiguration configuration = null,
+            Action<WorkflowOptions> workflowOptions = null)
         {
-            services.AddWorkflowServices();
+            services.AddWorkflowServices(workflowOptions);
 
             services.AddDataTasks();
 
@@ -78,14 +85,14 @@
             services.AddTasks<IDataFactoryTask>();
         }
 
-        private static void AddWorkflowServices(this IServiceCollection services)
+        private static void AddWorkflowServices(this IServiceCollection services, Action<WorkflowOptions> workflowOptions)
         {
             if (services.SingleOrDefault(service => service.ServiceType == typeof(IDelayService)) != null)
             {
                 return;
             }
 
-            services.AddWorkflow();
+            services.AddWorkflow(workflowOptions);
             services.AddSingleton<IDelayService, DelayService>();
         }
 
