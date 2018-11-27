@@ -9,6 +9,58 @@ Contributors welcome !
 
 Install-Package ProcessMyMedia -Version 1.0.0.56
 
+```c#
+public void ConfigureServices(IServiceCollection services)
+{
+	//Configure Azure Media Services tasks
+	services.AddMediaServices(configuration: new AmsConfiguration()
+	{
+		ArmEndpoint = this.Configuration["MediaServices:ArmEndpoint"],
+		SubscriptionId = this.Configuration["MediaServices:SubscriptionId"],
+		MediaAccountName = this.Configuration["MediaServices:MediaAccountName"],
+		ResourceGroup = this.Configuration["MediaServices:ResourceGroup"],
+		AadTenantId = this.Configuration["MediaServices:AadTenantId"],
+		AadClientId = this.Configuration["MediaServices:AadClientId"],
+		AadSecret = this.Configuration["MediaServices:AadSecret"]
+	});
+
+	//Configure Azure Data Factory tasks
+	services.AddDataFactoryServices(configuration: new AdfConfiguration()
+	{
+		ArmEndpoint = this.Configuration["DataFactory:ArmEndpoint"],
+		SubscriptionId = this.Configuration["DataFactory:SubscriptionId"],
+		FactoryName = this.Configuration["DataFactory:FactoryName"],
+		ResourceGroup = this.Configuration["DataFactory:ResourceGroup"],
+		AadTenantId = this.Configuration["DataFactory:AadTenantId"],
+		AadClientId = this.Configuration["DataFactory:AadClientId"],
+		AadSecret = this.Configuration["DataFactory:AadSecret"]
+	});
+}
+```
+
+```json
+{
+  "MediaServices": {
+    "ArmEndpoint": "https://management.azure.com/",
+    "SubscriptionId": "00000000-0000-0000-0000-000000000000",
+    "ResourceGroup": "amsResourceGroup",
+    "MediaAccountName": "amsaccount",
+    "AadTenantId": "00000000-0000-0000-0000-000000000000",
+    "AadClientId": "00000000-0000-0000-0000-000000000000",
+    "AadSecret": "00000000-0000-0000-0000-000000000000"
+  },
+  "DataFactory": {
+    "ArmEndpoint": "https://management.azure.com/",
+    "SubscriptionId": "00000000-0000-0000-0000-000000000000",
+    "ResourceGroup": "adfResourceGroup",
+    "FactoryName": "adfaccount",
+    "AadTenantId": "00000000-0000-0000-0000-000000000000",
+    "AadClientId": "00000000-0000-0000-0000-000000000000",
+    "AadSecret": "00000000-0000-0000-0000-000000000000"
+  }
+}
+```
+
 ## Documentation
 
 ### Tasks documentation
