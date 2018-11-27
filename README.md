@@ -9,6 +9,8 @@ Contributors welcome !
 
 Install-Package ProcessMyMedia -Version 1.0.0.56
 
+**Startup : **
+
 ```c#
 public void ConfigureServices(IServiceCollection services)
 {
@@ -37,6 +39,7 @@ public void ConfigureServices(IServiceCollection services)
 	});
 }
 ```
+**appsettings.json : **
 
 ```json
 {
