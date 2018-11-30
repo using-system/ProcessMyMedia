@@ -88,6 +88,7 @@
 
             if (!job.IsFinished)
             {
+                this.logger.LogInformation($"Encoding progress : {job.Progress} %");
                 return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)
