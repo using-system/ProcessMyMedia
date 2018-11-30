@@ -88,5 +88,13 @@
         /// The created.
         /// </value>
         public DateTime Created { get; set; }
+
+        /// <summary>
+        /// Gets or sets the progress.
+        /// </summary>
+        /// <value>
+        /// The progress.
+        /// </value>
+        public int Progress { get; set; }
     }
 }

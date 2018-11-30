@@ -25,7 +25,7 @@
                 return null;
             }
 
-            return new JobEntity()
+            var job = new JobEntity()
             {
                 ID = source.Id,
                 Name = source.Name,
@@ -39,6 +39,13 @@
                              || source.State == JobState.Finished,
                 Created = source.Created
             };
+
+            if (job.Outputs.Count > 0)
+            {
+                job.Progress = job.Outputs.Sum(output => output.Progress) / job.Outputs.Count;
+            }
+
+            return job;
         }
 
         /// <summary>

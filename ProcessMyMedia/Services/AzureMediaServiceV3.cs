@@ -407,11 +407,11 @@
 
             try
             {
-                var job = await this.client.Jobs.ListAsync(configuration.ResourceGroup,
+                var job = await this.client.Jobs.GetAsync(configuration.ResourceGroup,
                     this.configuration.MediaAccountName,
-                    templateName);
+                    templateName, jobName);
 
-                return job.FirstOrDefault()?.ToJobEntity(templateName: templateName);
+                return job?.ToJobEntity(templateName: templateName);
             }
             catch (ApiErrorException exc)
             {
