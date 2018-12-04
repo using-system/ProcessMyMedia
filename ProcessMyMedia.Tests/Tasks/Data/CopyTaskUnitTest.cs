@@ -191,6 +191,10 @@
             string runID = Guid.NewGuid().ToString();
             string pipelineName = Guid.NewGuid().ToString();
 
+            this.dataFactoryService.Setup(mock => mock.GetLinkedServiceAsync(It.IsAny<string>()))
+                .Returns(Task.FromResult(new LinkedServiceEntity() { Type = LinkedServiceType.FileServer.ToString()}))
+                .Verifiable();
+
             this.dataFactoryService.Setup(mock => mock.CreateOrUpdateDatasetAsync(
                     It.Is<DatasetEntity>(dataset => dataset.LinkedServiceName == datas.SourcePath.LinkedServiceName)))
                 .Returns(Task.FromResult(new DatasetEntity()))
