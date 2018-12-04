@@ -57,6 +57,21 @@
         }
 
         /// <summary>
+        /// Gets the linked service.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task<Model.LinkedServiceEntity> GetLinkedServiceAsync(string name)
+        {
+            var linkedService = await this.client.LinkedServices.GetAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name);
+
+            return linkedService.ToEntity();
+        }
+
+        /// <summary>
         /// Adds the linked service.
         /// https://docs.microsoft.com/en-us/rest/api/datafactory/linkedservices/createorupdate
         /// </summary>
@@ -224,7 +239,5 @@
         {
            this.client?.Dispose();
         }
-
-
     }
 }

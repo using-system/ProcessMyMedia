@@ -49,7 +49,7 @@ Class to use to specify Source and Destination for the task CopyTask.
  <tr>
   <td>Type</td>
   <td>LinkedServiceType</td>
-  <td>Type of the data source. Possible values : FtpServer, FileServer, AzureBlobStorage, CosmosDb, AzureMySql, AzurePostgreSql, AzureSqlDatabase, AzureTableStorage, MongoDb, Cassandra, Couchbase, AmazonS3, Sftp, Hdfs, HttpServer, Odbc, OData, SqlServer, Sybase, MySql, PostgreSql, Oracle,Db2, Salesforce.</td>
+  <td>Type of the data source. (Optional. Default behavior : Get the linkedservice with api to retrieve the LinkedServiceType). Possible values : FtpServer, FileServer, AzureBlobStorage, CosmosDb, AzureMySql, AzurePostgreSql, AzureSqlDatabase, AzureTableStorage, MongoDb, Cassandra, Couchbase, AmazonS3, Sftp, Hdfs, HttpServer, Odbc, OData, SqlServer, Sybase, MySql, PostgreSql, Oracle,Db2, Salesforce.</td>
  </tr>
  <tr>
   <td>PathProperties</td>

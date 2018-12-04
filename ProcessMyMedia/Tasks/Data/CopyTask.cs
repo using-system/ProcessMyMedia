@@ -103,6 +103,9 @@
                 //First call : Create and run the pipeline
                 this.Output = new CopyTaskOutput();
 
+                await RetrieveLinkedServiceType(this.SourcePath);
+                await RetrieveLinkedServiceType(this.DestinationPath);
+
                 this.Output.InputDataset = this.SourcePath.ToDatasetEntity();
                 this.Output.OutputDataset = this.DestinationPath.ToDatasetEntity();
 
@@ -176,6 +179,21 @@
                 {
                     await this.service.DeleteDatasetAsync(taskOutput.OutputDataset.Name);
                 }            
+            }
+        }
+
+        private  async Task RetrieveLinkedServiceType(DataPath path)
+        {
+            if (path.GetServiceType() == LinkedServiceType.Unknown
+                && path is GenericDataPath)
+            {
+                var linkedService = await this.service.GetLinkedServiceAsync(path.LinkedServiceName);
+
+                if (linkedService != null)
+                {
+                    ((GenericDataPath)path).Type = (LinkedServiceType)
+                        Enum.Parse(typeof(LinkedServiceType), linkedService.Type, true);
+                }
             }
         }
 

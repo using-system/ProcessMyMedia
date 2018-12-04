@@ -7,6 +7,10 @@
     public enum LinkedServiceType
     {
         /// <summary>
+        /// The unknown
+        /// </summary>
+        Unknown,
+        /// <summary>
         /// The FTP
         /// https://docs.microsoft.com/en-us/azure/data-factory/connector-ftp
         /// </summary>
