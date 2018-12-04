@@ -57,7 +57,11 @@
         {
             string assetName = $"input-{Guid.NewGuid()}";
 
+            this.logger.LogInformation($"Create the asset {assetName}");
+
             var asset = await service.CreateOrUpdateAssetAsync(assetName);
+
+            this.logger.LogDebug($"Upload the file {this.FilePath} for the asset {this.AssetName}");
 
             await service.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 

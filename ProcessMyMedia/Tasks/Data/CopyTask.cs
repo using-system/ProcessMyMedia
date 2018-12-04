@@ -127,6 +127,8 @@
                     }
                 };
 
+                this.logger.LogDebug($"Create the pipeline for the Copy Task");
+
                 await this.service.CreateOrUpdatePipelineyAsync(pipeline);
 
                 runID = await this.service.RunPipelineAsync(pipeline.Name);
@@ -141,6 +143,7 @@
             if (!this.Output.Run.IsFinished
                 || context.PersistenceData == null)
             {
+                this.logger.LogInformation("The copy is in progress.");
                 return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(this.Output.Run.StartDate), this.Output);
             }
             else if (this.Output.Run.OnError)

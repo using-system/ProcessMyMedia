@@ -64,7 +64,11 @@
         {
             string assetName = $"input-{Guid.NewGuid()}";
 
+            this.logger.LogInformation($"Create the encoding input asset {assetName} for the file {this.FilePath}");
+
             var asset = await service.CreateOrUpdateAssetAsync(assetName);
+
+            this.logger.LogInformation($"Upload the file {this.FilePath} for the asset {assetName}");
 
             await service.UploadFilesToAssetAsync(assetName, new[] { this.FilePath });
 

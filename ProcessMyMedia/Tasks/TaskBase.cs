@@ -50,6 +50,8 @@
 
             try
             {
+                this.logger.LogDebug($"Task {this.GetType().Name} started");
+
                 var result = await this.RunTaskAsync(context);
 
                 if (this.CleanupResources && !result.SleepFor.HasValue)
@@ -57,11 +59,15 @@
                     await this.Cleanup(context);
                 }
 
+                this.logger.LogDebug($"Task {this.GetType().Name} completed");
+
                 return result;
             }
-            catch
+            catch(Exception exc)
             {
                 this.onError = true;
+
+                this.logger.LogError($"Task {this.GetType().Name} terminated with error {exc}");
 
                 if (this.CleanupResources)
                 {

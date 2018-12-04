@@ -52,6 +52,8 @@
         /// <returns></returns>
         protected override async Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
+            this.logger.LogInformation($"Delete the asset {this.AssetName}");
+
             await this.service.DeleteAssetAsync(this.AssetName);
 
             return ExecutionResult.Next();

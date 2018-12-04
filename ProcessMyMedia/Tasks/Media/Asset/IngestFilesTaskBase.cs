@@ -67,6 +67,8 @@
         {
             await base.RunTaskAsync(context);
 
+            this.logger.LogDebug($"Upload {this.AssetFiles.Count} files for the asset {this.AssetName}");
+
             await this.service.UploadFilesToAssetAsync(this.AssetName, this.AssetFiles, this.Metadata);
 
             return ExecutionResult.Next();

@@ -67,6 +67,8 @@
         /// <returns></returns>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
+            this.logger.LogInformation($"Upload files from the asset {this.AssetName} to {this.DirectoryToDownload}");
+
             await this.service.DownloadFilesAsync(this.AssetName, this.DirectoryToDownload);
 
             return ExecutionResult.Next();

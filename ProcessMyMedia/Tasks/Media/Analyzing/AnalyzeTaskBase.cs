@@ -63,6 +63,9 @@
             {
                 //First call: stat analyse
                 await this.RunMediaAnalyseTaskAsync(context);
+
+                this.logger.LogInformation($"Start analyse the asset {this.AssetName}");
+
                 job = await this.service.StartAnalyseAsync(this.AssetName, this.AnalyzingParameters);
             }
             else
@@ -75,6 +78,7 @@
             if (!job.IsFinished)
             {
                 this.logger.LogInformation($"Analysing progress : {job.Progress} %");
+
                 return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)

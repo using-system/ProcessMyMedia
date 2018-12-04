@@ -77,6 +77,9 @@
             {
                 //First call: start encoding
                 await this.RunMediaEncodingTaskAsync(context);
+
+                this.logger.LogInformation("Start encoding");
+
                 job = await this.service.StartEncodeAsync(this.Inputs, this.Outputs, this.Priority);
             }
             else

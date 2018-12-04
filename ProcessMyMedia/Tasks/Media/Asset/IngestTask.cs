@@ -67,6 +67,8 @@
         /// <returns></returns>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
+            this.logger.LogInformation($"Create the asset {this.AssetName}");
+
             AssetEntity asset = await this.service.CreateOrUpdateAssetAsync(this.AssetName,
                 assetDescription: this.AssetDescription,
                 storageAccountName: this.StorageAccountName);

@@ -67,6 +67,8 @@
         /// <returns></returns>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
+            this.logger.LogInformation($"Create the Linked service {this.LinkedServiceToCreate.Name}");
+
             await this.service.CreateOrUpdateLinkedServiceAsync(
                 this.LinkedServiceToCreate.Name,
                 this.LinkedServiceToCreate.Type,

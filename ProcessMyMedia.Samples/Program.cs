@@ -1,6 +1,5 @@
 ﻿namespace ProcessMyMedia.Samples
 {
-    using System;
     using System.IO;
 
     using Microsoft.Extensions.Configuration;
@@ -16,7 +15,7 @@
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.AnalyseAsset(configuration).Execute();
+            new Samples.IngestFromDirectory(configuration).Execute();
         }
     }
 }
