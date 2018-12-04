@@ -10,6 +10,13 @@
     public interface IDataFactoryService : IAzureService
     {
         /// <summary>
+        /// Gets the linked service.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task<Model.LinkedServiceEntity> GetLinkedServiceAsync(string name);
+
+        /// <summary>
         /// Creates the or update linked service.
         /// </summary>
         /// <param name="name">The name.</param>

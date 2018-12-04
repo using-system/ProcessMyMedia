@@ -1,7 +1,19 @@
 ﻿namespace ProcessMyMedia.Model
 {
+    /// <summary>
+    /// Generic Data Path
+    /// </summary>
+    /// <seealso cref="ProcessMyMedia.Model.DataPath" />
     public class GenericDataPath : DataPath
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericDataPath"/> class.
+        /// </summary>
+        public GenericDataPath()
+        {
+            this.Type = LinkedServiceType.Unknown;
+        }
+
         /// <summary>
         /// Gets or sets the type.
         /// </summary>

@@ -50,7 +50,6 @@
             SourcePath = new GenericDataPath()
             {
                 LinkedServiceName = "MyFtpServer",
-                Type = LinkedServiceType.FtpServer,
                 PathProperties = new
                 {
                     folderPath = "in",
@@ -64,7 +63,6 @@
             DestinationPath = new GenericDataPath()
             {
                 LinkedServiceName = "MyAzureStorage",
-                Type = LinkedServiceType.AzureBlobStorage,
                 PathProperties = new
                 {
                     folderPath = "outfolder"
