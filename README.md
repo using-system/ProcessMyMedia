@@ -77,6 +77,7 @@ public void ConfigureServices(IServiceCollection services)
 * [Asset Tasks](ProcessMyMedia/Tasks/Media/Asset)
 * [Encoding Tasks](ProcessMyMedia/Tasks/Media/Encoding)
 * [Analyzing Tasks](ProcessMyMedia/Tasks/Media/Analyzing)
+* [Streaming Tasks](ProcessMyMedia/Tasks/Media/Streaming)
 * [Data Factory Tasks](ProcessMyMedia/Tasks/Data)
 
 ### Model documentation
