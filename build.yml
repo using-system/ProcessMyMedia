@@ -1,4 +1,4 @@
-name: '1.0.0.$(BuildID)'
+name: '1.0.1.$(BuildID)'
 pool:
   vmImage: 'Ubuntu 16.04'
   
