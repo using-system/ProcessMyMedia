@@ -111,5 +111,21 @@
         /// <param name="name">The name.</param>
         /// <returns></returns>
         Task DeleteTemplateAsync(string name);
+
+        /// <summary>
+        /// Creates the streaming locator.
+        /// </summary>
+        /// <param name="locatorName">Name of the locator.</param>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <returns></returns>
+        Task CreateStreamingLocatorAsync(string locatorName, string assetName);
+
+        /// <summary>
+        /// Gets the streaming urls.
+        /// </summary>
+        /// <param name="locatorName">Name of the locator.</param>
+        /// <param name="streamingEndpointName">Name of the streaming endpoint.</param>
+        /// <returns></returns>
+        Task<IEnumerable<string>> GetStreamingUrlsAsync(string locatorName, string streamingEndpointName = "default");
     }
 }

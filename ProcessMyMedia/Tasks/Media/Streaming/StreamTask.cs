@@ -1,5 +1,7 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -8,13 +10,13 @@
     using WorkflowCore.Models;
 
     using ProcessMyMedia.Services.Contract;
-
+    using ProcessMyMedia.Model;
 
     /// <summary>
     /// Stream Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public class StreamTask : MediaTaskBase
+    public class StreamTask : MediaTaskBase<StreamTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -37,13 +39,14 @@
         }
 
         /// <summary>
-        /// Cleanups the specified context.
+        /// Validates the input.
         /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns></returns>
-        protected override Task Cleanup(IStepExecutionContext context)
+        protected override void ValidateInput()
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(this.AssetName))
+            {
+                throw new ArgumentException($"{nameof(this.AssetName)} is required");
+            }
         }
 
         /// <summary>
@@ -51,17 +54,32 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
+        protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            string locatorName = Guid.NewGuid().ToString();
+
+            await this.service.CreateStreamingLocatorAsync(locatorName, this.AssetName);
+
+            var urls = await this.service.GetStreamingUrlsAsync(locatorName);
+
+            this.Output = new StreamTaskOutput()
+            {
+                LocatorName = locatorName,
+                StreamingUrls = urls.ToList()
+            };
+
+            return ExecutionResult.Next();
         }
 
         /// <summary>
-        /// Validates the input.
+        /// Cleanups the specified context.
         /// </summary>
-        protected override void ValidateInput()
+        /// <param name="context">The context.</param>
+        /// <returns></returns>
+        protected override Task Cleanup(IStepExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
+
     }
 }

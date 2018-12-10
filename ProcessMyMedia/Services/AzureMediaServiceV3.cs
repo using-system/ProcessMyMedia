@@ -511,6 +511,96 @@
             }
         }
 
+        /// <summary>
+        /// Creates the streaming locator.
+        /// </summary>
+        /// <param name="locatorName">Name of the locator.</param>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task CreateStreamingLocatorAsync(string locatorName, string assetName)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            try
+            {
+                var locator = await this.client.StreamingLocators.CreateAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    locatorName,
+                    new StreamingLocator()
+                    {
+                        AssetName = assetName,
+                        StreamingPolicyName = PredefinedStreamingPolicy.ClearStreamingOnly
+                    });
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+        }
+
+        /// <summary>
+        /// Gets the streaming urls.
+        /// </summary>
+        /// <param name="locatorName">Name of the locator.</param>
+        /// <param name="streamingEndpointName">Name of the streaming endpoint.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task<IEnumerable<string>> GetStreamingUrlsAsync(string locatorName, string streamingEndpointName = "default")
+        {
+            IList<string> streamingUrls = new List<string>();
+
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            try
+            {
+                var streamingEndpoint = await this.client.StreamingEndpoints.GetAsync(
+                    this.configuration.ResourceGroup, 
+                    this.configuration.MediaAccountName,
+                    streamingEndpointName);
+
+                if (streamingEndpoint != null)
+                {
+                    if (streamingEndpoint.ResourceState != StreamingEndpointResourceState.Running)
+                    {
+                        await this.client.StreamingEndpoints.StartAsync(
+                            this.configuration.ResourceGroup, 
+                            this.configuration.MediaAccountName, 
+                            streamingEndpointName);
+                    }
+                }
+
+                ListPathsResponse paths = await client.StreamingLocators.ListPathsAsync(
+                    this.configuration.ResourceGroup, 
+                    this.configuration.MediaAccountName, 
+                    locatorName);
+
+                foreach (StreamingPath path in paths.StreamingPaths)
+                {
+                    UriBuilder uriBuilder = new UriBuilder();
+                    uriBuilder.Scheme = "https";
+                    uriBuilder.Host = streamingEndpoint.HostName;
+
+                    uriBuilder.Path = path.Paths[0];
+                    streamingUrls.Add(uriBuilder.ToString());
+                }
+
+                return streamingUrls;
+
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+        }
+
         private static Exception GetApiException(ApiErrorException exc)
         {
             if (!string.IsNullOrEmpty(exc?.Body?.Error?.Message))
@@ -537,5 +627,7 @@
         {
             this.client?.Dispose();
         }
+
+
     }
 }
