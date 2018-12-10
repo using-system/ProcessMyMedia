@@ -65,7 +65,8 @@
         /// <returns></returns>
         public static TransformOutput ToTransformOutput(this Model.BuiltInPresetEncodingOutput source, Model.JobPriority priority)
         {
-            return new TransformOutput(new BuiltInStandardEncoderPreset(Enum.Parse<EncoderNamedPreset>(source.Preset.ToString())), 
+            return new TransformOutput(new BuiltInStandardEncoderPreset(
+                    (EncoderNamedPreset)Enum.Parse(typeof(EncoderNamedPreset), source.Preset.ToString(), true)), 
                 onError: OnErrorType.StopProcessingJob, relativePriority: priority.ToPrority());
         }
 
@@ -296,7 +297,7 @@
         /// <returns></returns>
         public static Priority ToPrority(this Model.JobPriority priority)
         {
-            return Enum.Parse<Priority>(priority.ToString(), true);
+            return (Priority) Enum.Parse(typeof(Priority), priority.ToString(), true);
         }
 
 
