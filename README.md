@@ -7,7 +7,13 @@ Contributors welcome !
 
 ## Installation
 
-Install-Package ProcessMyMedia -Version 1.0.0.56
+### Nuget Package Manager
+
+Install-Package ProcessMyMedia -Version VERSION_NUMBER
+
+### .NET CLI
+
+dotnet add package ProcessMyMedia --version VERSION_NUMBER
 
 **Startup :**
 
