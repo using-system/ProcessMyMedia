@@ -91,6 +91,7 @@ public void ConfigureServices(IServiceCollection services)
 * [Asset Samples](ProcessMyMedia.Samples/Samples/Asset)
 * [Encoding Samples](ProcessMyMedia.Samples/Samples/Encoding)
 * [Analyzing Samples](ProcessMyMedia.Samples/Samples/Analyzing)
+* [Streaming Samples](ProcessMyMedia.Samples/Samples/Streaming)
 * [Data Factory Samples](ProcessMyMedia.Samples/Samples/Data)
 
 ## License
