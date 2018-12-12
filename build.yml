@@ -10,9 +10,9 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build 'ProcessMyMedia/ProcessMyMedia.csproj' --configuration $(buildConfiguration) --output 'out/bin'
+- script: dotnet build '$(Build.SourcesDirectory)/ProcessMyMedia/ProcessMyMedia.csproj' --configuration $(buildConfiguration) --output 'out/bin'
   displayName: 'Build'
-- script: dotnet test 'ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration) --logger:trx
+- script: dotnet test '$(Build.SourcesDirectory)/ProcessMyMedia.Tests/ProcessMyMedia.Tests.csproj' --configuration $(buildConfiguration) --logger:trx
   displayName: 'Test'
 - task: PublishTestResults@2
   displayName: 'Publish Test Result'
@@ -21,15 +21,15 @@ steps:
     testResultsFiles: '**/*.trx'
     buildConfiguration: $(buildConfiguration)
     publishRunAttachments: true
-- script: dotnet pack 'ProcessMyMedia/ProcessMyMedia.csproj' /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration) --output 'out/package'
+- script: dotnet pack '$(Build.SourcesDirectory)/ProcessMyMedia/ProcessMyMedia.csproj' /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration) --output 'out/package'
   displayName: 'Pack'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifact'
   inputs:
-    PathtoPublish: 'ProcessMyMedia/out/bin/'
+    PathtoPublish: '$(Build.SourcesDirectory)/ProcessMyMedia/out/bin/'
     artifactName: 'bin'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Package Artifact'
   inputs:
-    PathtoPublish: 'ProcessMyMedia/out/package/'
+    PathtoPublish: '$(Build.SourcesDirectory)/ProcessMyMedia/out/package/'
     artifactName: 'package'
