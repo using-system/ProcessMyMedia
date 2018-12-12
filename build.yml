@@ -10,7 +10,7 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration) --output out/bin
+- script: dotnet build --configuration $(buildConfiguration)
   displayName: 'Build'
   workingDirectory: '$(Build.SourcesDirectory)/ProcessMyMedia/'
 - script: dotnet test --configuration $(buildConfiguration) --logger:trx
@@ -23,16 +23,11 @@ steps:
     testResultsFiles: '**/*.trx'
     buildConfiguration: $(buildConfiguration)
     publishRunAttachments: true
-- script: dotnet pack /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration) --output out/package
+- script: dotnet pack /p:Version=$(Build.BuildNumber) --configuration $(buildConfiguration)
   displayName: 'Pack'
   workingDirectory: '$(Build.SourcesDirectory)/ProcessMyMedia/'
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Build Artifact'
   inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/ProcessMyMedia/out/bin/'
-    artifactName: 'bin'
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Package Artifact'
-  inputs:
-    PathtoPublish: '$(Build.SourcesDirectory)/ProcessMyMedia/out/package/'
-    artifactName: 'package'
+    PathtoPublish: '$(Build.SourcesDirectory)/ProcessMyMedia/bin/$(buildConfiguration)/'
+    artifactName: 'drop'
