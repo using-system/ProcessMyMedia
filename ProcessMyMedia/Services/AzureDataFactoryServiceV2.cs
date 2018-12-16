@@ -1,6 +1,7 @@
 ﻿namespace ProcessMyMedia.Services
 {
     using System;
+    using System.Security;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Collections.Generic;
@@ -63,6 +64,11 @@
         /// <returns></returns>
         public async Task<Model.LinkedServiceEntity> GetLinkedServiceAsync(string name)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var linkedService = await this.client.LinkedServices.GetAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -81,6 +87,11 @@
         /// <returns></returns>
         public async Task<Model.LinkedServiceEntity> CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var linkedService = await this.client.LinkedServices.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -102,6 +113,11 @@
         /// <returns></returns>
         public async Task<Model.DatasetEntity> GetDatasetAsync(string name)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var dataset = await this.client.Datasets.GetAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -118,6 +134,11 @@
         /// <returns></returns>
         public async Task<Model.DatasetEntity> CreateOrUpdateDatasetAsync(Model.DatasetEntity dataset)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var response = await this.client.Datasets.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -139,6 +160,11 @@
         /// <returns></returns>
         public async Task DeleteDatasetAsync(string name)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var datasetToDelete = await this.GetDatasetAsync(name);
             if (datasetToDelete != null)
             {
@@ -156,6 +182,11 @@
         /// <returns></returns>
         public async Task<Model.DataPipelineEntity> GetPipelineAsync(string name)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var pipeline = await this.client.Pipelines.GetAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -171,6 +202,11 @@
         /// <returns></returns>
         public async Task CreateOrUpdatePipelineyAsync(Model.DataPipelineEntity pipeline)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             await this.client.Pipelines.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -186,6 +222,11 @@
         /// <returns></returns>
         public async Task DeletePipelineAsync(string name)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var pipelineToDelete = await this.GetPipelineAsync(name);
             if (pipelineToDelete != null)
             {
@@ -204,6 +245,11 @@
         /// <returns></returns>
         public async Task<string> RunPipelineAsync(string pipelineName, Dictionary<string, object> properties = null)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var response = await this.client.Pipelines.CreateRunAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
@@ -220,6 +266,11 @@
         /// <returns></returns>
         public async Task<Model.DataPipelineRunEntity> GetPipelineRunAsync(string runID)
         {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
             var run = await this.client.PipelineRuns.GetAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
