@@ -79,9 +79,9 @@
         /// <param name="type">The type.</param>
         /// <param name="typeProperties">The properties.</param>
         /// <returns></returns>
-        public async Task CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties)
+        public async Task<Model.LinkedServiceEntity> CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties)
         {
-            await this.client.LinkedServices.CreateOrUpdateAsync(
+            var linkedService = await this.client.LinkedServices.CreateOrUpdateAsync(
                 this.configuration.ResourceGroup,
                 this.configuration.FactoryName,
                 name,
@@ -91,6 +91,8 @@
                         {"typeProperties", JObject.FromObject(typeProperties)}
                     }),
                     type:type));
+
+            return linkedService.ToEntity();
         }
 
         /// <summary>

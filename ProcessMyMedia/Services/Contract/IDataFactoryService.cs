@@ -23,7 +23,7 @@
         /// <param name="type">The type.</param>
         /// <param name="typeProperties">The type properties.</param>
         /// <returns></returns>
-        Task CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties);
+        Task<Model.LinkedServiceEntity> CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties);
 
         /// <summary>
         /// Gets the dataset.

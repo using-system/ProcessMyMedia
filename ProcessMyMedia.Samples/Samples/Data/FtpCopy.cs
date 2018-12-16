@@ -60,7 +60,9 @@
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.CreateLinkedServiceTask>()
-                        .Input(task => task.LinkedServiceToCreate, data => data.FtpServer)
+                         .Input(task => task.Name, data => data.FtpServer.Name)
+                         .Input(task => task.Type, data => data.FtpServer.Type)
+                         .Input(task => task.Properties, data => data.FtpServer.TypeProperties)
                     .Then<Tasks.CopyTask>()
                         .Input(task => task.SourcePath, data => data.SourcePath)
                         .Input(task => task.DestinationPath, data => data.DestinationPath);

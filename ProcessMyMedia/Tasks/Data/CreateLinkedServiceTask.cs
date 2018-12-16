@@ -11,15 +11,31 @@
     using ProcessMyMedia.Model;
     using ProcessMyMedia.Services.Contract;
 
-    public class CreateLinkedServiceTask : DataFactoryTaskBase
+    public class CreateLinkedServiceTask : DataFactoryTaskBase<LinkedServiceEntity>
     {
         /// <summary>
-        /// Gets or sets the linked service to create.
+        /// Gets or sets the name.
         /// </summary>
         /// <value>
-        /// The linked service to create.
+        /// The name.
         /// </value>
-        public LinkedServiceEntity LinkedServiceToCreate { get; set; }
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type.
+        /// </summary>
+        /// <value>
+        /// The type.
+        /// </value>
+        public string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the properties.
+        /// </summary>
+        /// <value>
+        /// The properties.
+        /// </value>
+        public object Properties { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateLinkedServiceTask"/> class.
@@ -43,19 +59,14 @@
         /// </exception>
         protected override void ValidateInput()
         {
-            if (this.LinkedServiceToCreate == null)
+            if (string.IsNullOrEmpty(this.Name))
             {
-                throw new ArgumentException($"{nameof(this.LinkedServiceToCreate)} is required");
+                throw new ArgumentException($"{nameof(this.Name)} is required");
             }
 
-            if (string.IsNullOrEmpty(this.LinkedServiceToCreate.Name))
+            if (string.IsNullOrEmpty(this.Type))
             {
-                throw new ArgumentException($"{nameof(this.LinkedServiceToCreate.Name)} is required for the property {nameof(this.LinkedServiceToCreate)}");
-            }
-
-            if (string.IsNullOrEmpty(this.LinkedServiceToCreate.Type))
-            {
-                throw new ArgumentException($"{nameof(this.LinkedServiceToCreate.Type)} is required for the property {nameof(this.LinkedServiceToCreate)}");
+                throw new ArgumentException($"{nameof(this.Type)} is required");
             }
         }
 
@@ -67,12 +78,12 @@
         /// <returns></returns>
         protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            this.logger.LogInformation($"Create the Linked service {this.LinkedServiceToCreate.Name}");
+            this.logger.LogInformation($"Create the Linked service {this.Name}");
 
-            await this.service.CreateOrUpdateLinkedServiceAsync(
-                this.LinkedServiceToCreate.Name,
-                this.LinkedServiceToCreate.Type,
-                this.LinkedServiceToCreate.TypeProperties);
+            this.Output = await this.service.CreateOrUpdateLinkedServiceAsync(
+                this.Name,
+                this.Type,
+                this.Properties);
 
             return ExecutionResult.Next();
         }

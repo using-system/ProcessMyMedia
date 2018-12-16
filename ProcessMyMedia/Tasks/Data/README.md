@@ -13,9 +13,21 @@ Create or update an Azure Data Factory linked service.
   <th>Is Required ?</th>
  </tr>
  <tr>
-  <td>LinkedServiceToCreate</td>
-  <td>LinkedServiceEntity</td>
-  <td>Linked service to create or update.</td>
+  <td>Name</td>
+  <td>string</td>
+  <td>Linked service name to create or update.</td>
+  <td>Yes</td>
+ </tr>
+ <tr>
+  <td>Type</td>
+  <td>string</td>
+  <td>Linked service type to create or update.</td>
+  <td>Yes</td>
+ </tr>
+  <tr>
+  <td>Properties</td>
+  <td>object</td>
+  <td>Linked service ojbect to create or update.</td>
   <td>Yes</td>
  </tr>
  <tr>
@@ -23,6 +35,20 @@ Create or update an Azure Data Factory linked service.
   <td>bool</td>
   <td>Clean all azure resources (Pipeline, dataset) used by the task. Default value : true.</td>
   <td>No</td>
+ </tr>
+</table>
+
+<table>
+ <caption>Output</caption>
+ <tr>
+  <th>Property Name</th>
+  <th>Type</th>
+  <th>Description</th>
+ </tr>
+ <tr>
+  <td>Output</td>
+  <td>LinkedServiceEntity</td>
+  <td>Linked service created by the task.</td>
  </tr>
 </table>
 

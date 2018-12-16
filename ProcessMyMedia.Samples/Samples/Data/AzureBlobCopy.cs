@@ -55,7 +55,9 @@
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
                     .StartWith<Tasks.CreateLinkedServiceTask>()
-                        .Input(task => task.LinkedServiceToCreate, data => data.AzureStorageResource)
+                        .Input(task => task.Name, data => data.AzureStorageResource.Name)
+                        .Input(task => task.Type, data => data.AzureStorageResource.Type)
+                        .Input(task => task.Properties, data => data.AzureStorageResource.TypeProperties)
                     .Then<Tasks.CopyTask>()
                         .Input(task => task.SourcePath, data => data.SourcePath)
                         .Input(task => task.DestinationPath, data => data.DestinationPath);
