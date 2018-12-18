@@ -107,6 +107,24 @@
         }
 
         /// <summary>
+        /// Delets the linked service.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        public async Task DeletLinkedServiceAsync(string name)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            await this.client.LinkedServices.DeleteAsync(
+                this.configuration.ResourceGroup,
+                this.configuration.FactoryName,
+                name);
+        }
+
+        /// <summary>
         /// Gets the dataset.
         /// </summary>
         /// <param name="name">The name.</param>

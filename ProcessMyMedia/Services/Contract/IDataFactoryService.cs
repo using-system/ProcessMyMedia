@@ -26,6 +26,13 @@
         Task<Model.LinkedServiceEntity> CreateOrUpdateLinkedServiceAsync(string name, string type, object typeProperties);
 
         /// <summary>
+        /// Delets the linked service.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
+        Task DeletLinkedServiceAsync(string name);
+
+        /// <summary>
         /// Gets the dataset.
         /// </summary>
         /// <param name="name">The name.</param>
