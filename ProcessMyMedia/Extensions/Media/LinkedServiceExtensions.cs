@@ -22,7 +22,8 @@
             return new Model.LinkedServiceEntity()
             {
                 Name = source.Name,
-                Type = source.Type,
+                Type = source?.Properties?.AdditionalProperties?.ContainsKey("type") == true ? 
+                    source.Properties.AdditionalProperties["type"].ToString() : Model.LinkedServiceType.Unknown.ToString(),
                 Description = source.Properties.Description
             };
         }
