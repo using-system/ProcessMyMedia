@@ -133,12 +133,13 @@
         /// <returns></returns>
         public static IEnumerable<JProperty> GetActivityProperties(this Model.GenericDataPath source)
         {
-            if(source == null)
+            if(source == null
+               || source.ActivityProperties == null)
             {
                 return null;
             }
 
-            return new JObject(source.ActivityProperties).Properties();
+            return JObject.FromObject(source.ActivityProperties).Properties();
         }
     }
 }
