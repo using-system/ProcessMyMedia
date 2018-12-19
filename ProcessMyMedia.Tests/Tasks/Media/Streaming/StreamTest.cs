@@ -50,7 +50,7 @@ namespace ProcessMyMedia.Tests.Tasks.Media.Streaming
             };
 
             this.mediaService.Setup(mock => mock.CreateStreamingLocatorAsync(
-                It.IsAny<string>(), It.Is<string>(s => s == datas.AssetName)))
+                It.IsAny<string>(), It.Is<string>(s => s == datas.AssetName), It.IsAny<Model.StreamingOptions>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 

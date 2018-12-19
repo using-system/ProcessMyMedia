@@ -27,6 +27,14 @@
         public string AssetName { get; set; }
 
         /// <summary>
+        /// Gets or sets the options.
+        /// </summary>
+        /// <value>
+        /// The options.
+        /// </value>
+        public StreamingOptions Options { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="StreamTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
@@ -36,6 +44,7 @@
             base(mediaService,
                 loggerFactory)
         {
+            this.Options = new StreamingOptions();
         }
 
         /// <summary>
@@ -58,7 +67,7 @@
         {
             string locatorName = Guid.NewGuid().ToString();
 
-            await this.service.CreateStreamingLocatorAsync(locatorName, this.AssetName);
+            await this.service.CreateStreamingLocatorAsync(locatorName, this.AssetName, this.Options);
 
             var urls = await this.service.GetStreamingUrlsAsync(locatorName);
 

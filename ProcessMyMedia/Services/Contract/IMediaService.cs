@@ -117,8 +117,9 @@
         /// </summary>
         /// <param name="locatorName">Name of the locator.</param>
         /// <param name="assetName">Name of the asset.</param>
+        /// <param name="options">The options.</param>
         /// <returns></returns>
-        Task CreateStreamingLocatorAsync(string locatorName, string assetName);
+        Task CreateStreamingLocatorAsync(string locatorName, string assetName, Model.StreamingOptions options = null);
 
         /// <summary>
         /// Gets the streaming urls.

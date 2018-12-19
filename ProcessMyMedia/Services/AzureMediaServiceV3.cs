@@ -516,9 +516,10 @@
         /// </summary>
         /// <param name="locatorName">Name of the locator.</param>
         /// <param name="assetName">Name of the asset.</param>
+        /// <param name="options">The options.</param>
         /// <returns></returns>
         /// <exception cref="SecurityException">Not Authenticated</exception>
-        public async Task CreateStreamingLocatorAsync(string locatorName, string assetName)
+        public async Task CreateStreamingLocatorAsync(string locatorName, string assetName, Model.StreamingOptions options = null)
         {
             if (this.client == null)
             {
@@ -531,11 +532,7 @@
                     this.configuration.ResourceGroup,
                     this.configuration.MediaAccountName,
                     locatorName,
-                    new StreamingLocator()
-                    {
-                        AssetName = assetName,
-                        StreamingPolicyName = PredefinedStreamingPolicy.ClearStreamingOnly
-                    });
+                    options.ToStreamingLocator(assetName));
             }
             catch (ApiErrorException exc)
             {
