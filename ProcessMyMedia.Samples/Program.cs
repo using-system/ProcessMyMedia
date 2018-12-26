@@ -15,7 +15,7 @@
 
             IConfigurationRoot configuration = builder.Build();
 
-            new Samples.PublicStreamAsset(configuration).Execute();
+            new Samples.CopyWithGenericPath(configuration).Execute();
         }
     }
 }
