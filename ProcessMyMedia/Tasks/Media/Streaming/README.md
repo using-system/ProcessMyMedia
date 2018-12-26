@@ -18,6 +18,12 @@ Stream an asset
   <td>The asset name to stream</td>
   <td>Yes</td>
  </tr>
+  <tr>
+  <td>Options</td>
+  <td>StreamingOptions</td>
+  <td>Streaming options (Specify Start date and End date of the stream)</td>
+  <td>No</td>
+ </tr>
 </table>
 
 <table>
