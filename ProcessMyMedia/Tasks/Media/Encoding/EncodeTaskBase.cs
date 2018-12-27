@@ -91,7 +91,7 @@
 
             if (!job.IsFinished)
             {
-                this.logger.LogInformation($"Encoding progress : {job.Progress} %");
+                this.UpdateEncodingProgress(job.Progress);
                 return ExecutionResult.Sleep(this.delayService.GetTimeToSleep(job.Created), job);
             }
             else if (job.Canceled)
@@ -131,5 +131,13 @@
             await this.service.DeleteTemplateAsync(job.TemplateName);
         }
 
+        /// <summary>
+        /// Updates the encoding progress.
+        /// </summary>
+        /// <param name="progress">The progress.</param>
+        protected virtual void UpdateEncodingProgress(int progress)
+        {
+            this.logger.LogInformation($"Encoding progress : {progress} %");
+        }
     }
 }
