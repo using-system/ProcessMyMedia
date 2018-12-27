@@ -27,6 +27,14 @@
         public string Preset { get; set; }
 
         /// <summary>
+        /// Gets or sets the name of the output asset.
+        /// </summary>
+        /// <value>
+        /// The name of the output asset.
+        /// </value>
+        public string OutputAssetName { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EncodeFileBuiltInPresetTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
@@ -66,7 +74,10 @@
         /// <returns></returns>
         protected async override Task RunMediaEncodingTaskAsync(IStepExecutionContext context)
         {
-            this.Outputs.Add(new BuiltInPresetEncodingOutput(this.buildInPreset));
+            this.Outputs.Add(new BuiltInPresetEncodingOutput(this.buildInPreset)
+            {
+                Name = this.OutputAssetName
+            });
 
             await base.RunMediaEncodingTaskAsync(context);
         }

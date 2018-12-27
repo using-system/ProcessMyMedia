@@ -31,6 +31,12 @@ Encode a file with a BuiltInPreset
   <td>Yes</td>
  </tr>
  <tr>
+  <td>OutputAssetName</td>
+  <td>string</td>
+  <td>Specify the output asset name. If not specified, the output asset name will be generated automatically.</td>
+  <td>No</td>
+ </tr>
+ <tr>
   <td>CleanupResources</td>
   <td>bool</td>
   <td>Clean all azure media services resources (job, transform, file ingested) used by the task to encode the file</td>
@@ -81,6 +87,12 @@ Encode an asset with a BuiltInPreset
   <td>JobInputEntity</td>
   <td>Input Asset to encode.</td>
   <td>Yes</td>
+ </tr>
+ <tr>
+  <td>OutputAssetName</td>
+  <td>string</td>
+  <td>Specify the output asset name. If not specified, the output asset name will be generated automatically.</td>
+  <td>No</td>
  </tr>
  <tr>
   <td>CleanupResources</td>

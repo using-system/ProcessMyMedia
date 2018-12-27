@@ -368,7 +368,12 @@
                 IList<JobOutput> jobOutputs = new List<JobOutput>();
                 foreach (var jobOuput in encodingOutputs)
                 {
-                    string assetName = Guid.NewGuid().ToString();
+                    string assetName = jobOuput.Name;
+                    if (string.IsNullOrEmpty(assetName))
+                    {
+                        assetName = Guid.NewGuid().ToString();
+                    }
+
                     await this.CreateOrUpdateAssetAsync(assetName);
                     jobOutputs.Add(new JobOutputAsset(assetName, label: jobOuput.Label));
                 }
