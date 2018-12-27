@@ -100,7 +100,7 @@
             }
             else if (job.OnError)
             {
-                throw new Exception("Encoding Job is on error");
+                throw new Exception($"Encoding Job is on error : {job.ErrorMessage}");
             }
 
             return ExecutionResult.Next();

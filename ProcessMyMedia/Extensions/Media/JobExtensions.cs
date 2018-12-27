@@ -1,5 +1,6 @@
 ﻿namespace ProcessMyMedia.Extensions
 {
+    using System.Text;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -46,6 +47,41 @@
             }
 
             return job;
+        }
+
+        /// <summary>
+        /// To the error message.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static string ToErrorMessage(this Job source)
+        {
+            if (source.State != JobState.Error)
+            {
+                return string.Empty;
+            }
+
+            StringBuilder errorMessage = new StringBuilder();
+
+            for (int i = 0; i < source.Outputs.Count; i++)
+            {
+                var error = source.Outputs[i].Error;
+                if (error != null)
+                {
+                    if (error.Details != null
+                        && error.Details.Count > 0)
+                    {
+                        errorMessage.AppendLine($"Error on output {i} : {error.Message}. {string.Join(",", error.Details.Select(detail => detail.Message))}");
+                    }
+                    else
+                    {
+                        errorMessage.AppendLine($"Error on output {i} : {error.Message}.");
+                    }
+
+                }              
+            }
+
+            return errorMessage.ToString();
         }
 
         /// <summary>
