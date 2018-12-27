@@ -5,7 +5,7 @@
     /// <summary>
     /// Stream Task Output
     /// </summary>
-    public class StreamTaskOutput
+    public class StreamAssetTaskOutput
     {
         /// <summary>
         /// Gets or sets the name of the locator.

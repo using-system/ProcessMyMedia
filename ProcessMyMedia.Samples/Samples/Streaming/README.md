@@ -19,7 +19,7 @@ public class PublicStreamAssetWorkflow : IWorkflow<PublicStreamAssetWorkflowData
 			.Input(task => task.FilePath, data => data.IntputFilePath)
 			.Input(task => task.Preset, data => Model.BuiltInPreset.AdaptiveStreaming.ToString())
 			.Output(data => data.AssetName, task => task.Output.Job.Outputs.First().Name)
-		.Then<Tasks.StreamTask>()
+		.Then<Tasks.StreamAssetTask>()
 			.Input(task => task.AssetName, data => data.AssetName)
 			.Output(data => data.StreamingUrls, task => task.Output.StreamingUrls);
 	}

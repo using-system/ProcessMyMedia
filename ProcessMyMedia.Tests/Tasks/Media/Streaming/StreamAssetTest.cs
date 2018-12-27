@@ -11,10 +11,10 @@ namespace ProcessMyMedia.Tests.Tasks.Media.Streaming
     using WorkflowCore.Models;
 
     [TestClass]
-    public class StreamTest :
-        UnitTestBase<StreamTest.StreamAssetWorkflow, StreamTest.StreamAssetWorkflowData>
+    public class StreamAssetTest :
+        UnitTestBase<StreamAssetTest.StreamAssetWorkflow, StreamAssetTest.StreamAssetWorkflowData>
     {
-        public StreamTest()
+        public StreamAssetTest()
         {
             this.Setup();
         }
@@ -34,7 +34,7 @@ namespace ProcessMyMedia.Tests.Tasks.Media.Streaming
             Assert.IsNull(this.GetData(workflowId).StreamingUrls);
             Assert.AreEqual(1, this.UnhandledStepErrors.Count);
             Assert.IsInstanceOfType(this.UnhandledStepErrors[0].Exception, typeof(ArgumentException));
-            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.StreamTask.AssetName)));
+            Assert.IsTrue(this.UnhandledStepErrors[0].Exception.Message.Contains(nameof(ProcessMyMedia.Tasks.StreamAssetTask.AssetName)));
 
             this.mediaService.Verify();
         }
@@ -86,7 +86,7 @@ namespace ProcessMyMedia.Tests.Tasks.Media.Streaming
             {
                 builder
                     .UseDefaultErrorBehavior(WorkflowErrorHandling.Terminate)
-                    .StartWith<ProcessMyMedia.Tasks.StreamTask>()
+                    .StartWith<ProcessMyMedia.Tasks.StreamAssetTask>()
                         .Input(task => task.AssetName, data => data.AssetName)
                         .Output(data => data.StreamingUrls, task => task.Output.StreamingUrls)
                         .Output(data => data.LocatorName, task => task.Output.LocatorName);

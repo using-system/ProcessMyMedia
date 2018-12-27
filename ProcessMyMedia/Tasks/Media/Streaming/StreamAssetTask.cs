@@ -16,7 +16,7 @@
     /// Stream Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase" />
-    public class StreamTask : MediaTaskBase<StreamTaskOutput>
+    public class StreamAssetTask : MediaTaskBase<StreamAssetTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the asset.
@@ -35,12 +35,12 @@
         public StreamingOptions Options { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StreamTask"/> class.
+        /// Initializes a new instance of the <see cref="StreamAssetTask"/> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
         /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public StreamTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) :
+        public StreamAssetTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) :
             base(mediaService,
                 loggerFactory)
         {
@@ -71,7 +71,7 @@
 
             var urls = await this.service.GetStreamingUrlsAsync(locatorName);
 
-            this.Output = new StreamTaskOutput()
+            this.Output = new StreamAssetTaskOutput()
             {
                 LocatorName = locatorName,
                 StreamingUrls = urls.ToList()
