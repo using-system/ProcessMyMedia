@@ -128,5 +128,13 @@
         /// <param name="streamingEndpointName">Name of the streaming endpoint.</param>
         /// <returns></returns>
         Task<IEnumerable<string>> GetStreamingUrlsAsync(string locatorName, string streamingEndpointName = "default");
+
+        /// <summary>
+        /// Creates the live event asynchronous.
+        /// </summary>
+        /// <param name="liveEventName">Name of the live event.</param>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <returns></returns>
+        Task<Model.LiveEventEntity> CreateLiveEventAsync(string liveEventName, string assetName = null);
     }
 }

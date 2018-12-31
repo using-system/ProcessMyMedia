@@ -603,6 +603,94 @@
             }
         }
 
+        /// <summary>
+        /// Creates the live event asynchronous.
+        /// </summary>
+        /// <param name="liveEventName">Name of the live event.</param>
+        /// <param name="assetName">Name of the asset.</param>
+        /// <returns></returns>
+        /// <exception cref="SecurityException">Not Authenticated</exception>
+        public async Task<Model.LiveEventEntity> CreateLiveEventAsync(string liveEventName, string assetName = null)
+        {
+            if (this.client == null)
+            {
+                throw new SecurityException("Not Authenticated");
+            }
+
+            try
+            {
+                if (string.IsNullOrEmpty(assetName))
+                {
+                    assetName = Guid.NewGuid().ToString();
+                }
+
+                LiveEventInputAccessControl liveEventInputAccess = new LiveEventInputAccessControl
+                {
+                    Ip = new IPAccessControl(
+                            allow: new IPRange[]
+                            {
+                                new IPRange (
+                                    name: "AllowAll",
+                                    address: "0.0.0.0",
+                                    subnetPrefixLength: 0
+                                    )
+                            })
+                };
+
+                LiveEventPreview liveEventPreview = new LiveEventPreview
+                {
+                    AccessControl = new LiveEventPreviewAccessControl(
+                        ip: new IPAccessControl(
+                            allow: new IPRange[]
+                            {
+                                new IPRange (
+                                    name: "AllowAll",
+                                    address: "0.0.0.0",
+                                    subnetPrefixLength: 0
+                                    )
+                            }))
+                };
+
+                LiveEvent liveEvent = new LiveEvent(
+                    //location: mediaService.Location,
+                    description: "Sample LiveEvent for testing",
+                    vanityUrl: false,
+                    encoding: new LiveEventEncoding(
+                        encodingType: LiveEventEncodingType.None,
+                        presetName: null
+                        ),
+                    input: new LiveEventInput(LiveEventInputProtocol.RTMP, liveEventInputAccess),
+                    preview: liveEventPreview,
+                    streamOptions: new List<StreamOptionsFlag?>() { });
+
+                liveEvent = await client.LiveEvents.CreateAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    liveEventName,
+                    liveEvent,
+                    autoStart: true);
+
+                var asset = await client.Assets.CreateOrUpdateAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    assetName, new Asset());
+
+                LiveOutput liveOutput = new LiveOutput(assetName: asset.Name, manifestName: "output", archiveWindowLength: TimeSpan.FromMinutes(10));
+                liveOutput = await client.LiveOutputs.CreateAsync(
+                    this.configuration.ResourceGroup,
+                    this.configuration.MediaAccountName,
+                    liveEventName,
+                    Guid.NewGuid().ToString(),
+                    liveOutput);
+
+                return liveEvent.ToEntity();
+            }
+            catch (ApiErrorException exc)
+            {
+                throw GetApiException(exc);
+            }
+        }
+
         private static Exception GetApiException(ApiErrorException exc)
         {
             if (!string.IsNullOrEmpty(exc?.Body?.Error?.Message))
