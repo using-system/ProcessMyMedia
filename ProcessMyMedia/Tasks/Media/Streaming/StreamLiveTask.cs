@@ -1,7 +1,6 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -16,7 +15,7 @@
     /// Stream Live Task
     /// </summary>
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.StreamAssetTaskOutput}" />
-    public class StreamLiveTask : MediaTaskBase<StreamLiveTaskOutput>
+    public class StreamLiveTask : StreamTaskBase<StreamLiveTaskOutput>
     {
         /// <summary>
         /// Gets or sets the name of the live event.
@@ -27,28 +26,11 @@
         public string LiveEventName { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the asset.
-        /// </summary>
-        /// <value>
-        /// The name of the asset.
-        /// </value>
-        public string AssetName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the options.
-        /// </summary>
-        /// <value>
-        /// The options.
-        /// </value>
-        public StreamingOptions Options { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StreamLiveTask"/> class.
+        /// Initializes a new instance of the <see cref="StreamLiveTask" /> class.
         /// </summary>
         /// <param name="mediaService">The media service.</param>
-        /// <param name="delayService">The delay service.</param>
         /// <param name="loggerFactory">The logger factory.</param>
-        public StreamLiveTask(IMediaService mediaService, IDelayService delayService, ILoggerFactory loggerFactory) :
+        public StreamLiveTask(IMediaService mediaService,ILoggerFactory loggerFactory) :
             base(mediaService,
                 loggerFactory)
         {
@@ -75,21 +57,12 @@
         {
             var liveEvent = await this.service.CreateLiveEventAsync(this.LiveEventName, this.AssetName);
 
-            string locatorName = Guid.NewGuid().ToString();
+            await base.RunTaskAsync(context);
 
-            await this.service.CreateStreamingLocatorAsync(locatorName, this.AssetName, this.Options);
-
-            var urls = await this.service.GetStreamingUrlsAsync(locatorName);
-
-            this.Output = new StreamLiveTaskOutput()
-            {
-                LocatorName = locatorName,
-                LiveEventName = liveEvent.LiveEventName,
-                LiveOutputName = liveEvent.LiveOutputName,
-                StreamingUrls = urls.ToList(),
-                IngestUrls = liveEvent.IngestUrls,
-                PreviewUrls = liveEvent.PreviewUrls
-            };
+            this.Output.LiveEventName = liveEvent.LiveEventName;
+            this.Output.LiveOutputName = liveEvent.LiveOutputName;
+            this.Output.IngestUrls = liveEvent.IngestUrls;
+            this.Output.PreviewUrls = liveEvent.PreviewUrls;
 
             return ExecutionResult.Next();
         }
