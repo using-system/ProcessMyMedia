@@ -40,8 +40,9 @@
         /// Converts to entity.
         /// </summary>
         /// <param name="liveEvent">The live event.</param>
+        /// <param name="outputName">Name of the output.</param>
         /// <returns></returns>
-        public static Model.LiveEventEntity ToEntity(this LiveEvent liveEvent)
+        public static Model.LiveEventEntity ToEntity(this LiveEvent liveEvent, string outputName = null)
         {
             if (liveEvent == null)
             {
@@ -50,6 +51,8 @@
 
             return new Model.LiveEventEntity()
             {
+                LiveEventName = liveEvent.Name,
+                LiveOutputName = outputName,
                 IngestUrls = liveEvent.Input.Endpoints.Select(endpoint => endpoint.Url).ToList(),
                 PreviewUrls = liveEvent.Preview.Endpoints.Select(preview => preview.Url).ToList()
             };

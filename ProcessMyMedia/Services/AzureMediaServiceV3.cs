@@ -683,7 +683,7 @@
                     Guid.NewGuid().ToString(),
                     liveOutput);
 
-                return liveEvent.ToEntity();
+                return liveEvent.ToEntity(liveOutput.Name);
             }
             catch (ApiErrorException exc)
             {

@@ -1,5 +1,7 @@
 ﻿namespace ProcessMyMedia.Tasks
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
@@ -16,6 +18,22 @@
     /// <seealso cref="ProcessMyMedia.Tasks.MediaTaskBase{ProcessMyMedia.Model.StreamAssetTaskOutput}" />
     public class StreamLiveTask : MediaTaskBase<StreamLiveTaskOutput>
     {
+        /// <summary>
+        /// Gets or sets the name of the live event.
+        /// </summary>
+        /// <value>
+        /// The name of the live event.
+        /// </value>
+        public string LiveEventName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the asset.
+        /// </summary>
+        /// <value>
+        /// The name of the asset.
+        /// </value>
+        public string AssetName { get; set; }
+
         /// <summary>
         /// Gets or sets the options.
         /// </summary>
@@ -42,7 +60,10 @@
         /// </summary>
         protected override void ValidateInput()
         {
-            throw new System.NotImplementedException();
+            if (string.IsNullOrEmpty(this.LiveEventName))
+            {
+                throw new ArgumentException($"{nameof(this.LiveEventName)} is required");
+            }
         }
 
         /// <summary>
@@ -50,9 +71,27 @@
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns></returns>
-        protected override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
+        protected async override Task<ExecutionResult> RunTaskAsync(IStepExecutionContext context)
         {
-            throw new System.NotImplementedException();
+            var liveEvent = await this.service.CreateLiveEventAsync(this.LiveEventName, this.AssetName);
+
+            string locatorName = Guid.NewGuid().ToString();
+
+            await this.service.CreateStreamingLocatorAsync(locatorName, this.AssetName, this.Options);
+
+            var urls = await this.service.GetStreamingUrlsAsync(locatorName);
+
+            this.Output = new StreamLiveTaskOutput()
+            {
+                LocatorName = locatorName,
+                LiveEventName = liveEvent.LiveEventName,
+                LiveOutputName = liveEvent.LiveOutputName,
+                StreamingUrls = urls.ToList(),
+                IngestUrls = liveEvent.IngestUrls,
+                PreviewUrls = liveEvent.PreviewUrls
+            };
+
+            return ExecutionResult.Next();
         }
 
 
